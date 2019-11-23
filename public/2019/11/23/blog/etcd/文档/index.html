@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    303 字
+                    374 字
                   </span>&nbsp;
                 
 
@@ -165,44 +165,62 @@
 <p>etcd是一个分布式键值对存储，被设计为可靠的，快速的保存并提供对关键数据的访问。通过分布式锁，领导选举和写屏障使能分布式一致性。一个etcd集群旨在实现高可用和持久性数据存储与检索。</p>
 <h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><hr>
 <h3 id="使用etcd进行开发"><a href="#使用etcd进行开发" class="headerlink" title="使用etcd进行开发"></a>使用etcd进行开发</h3><hr>
-<p>一种简单的方式<strong>设置本地集群</strong>开始使用etcd作为分布式键值对存储</p>
+<p>一种简单的方式<a href="单机集群.md">设置本地集群</a>开始使用etcd作为分布式键值对存储</p>
 <ul>
-<li><strong>设置本地集群</strong> (done)</li>
-<li><strong>与etcd进行交互</strong> (done)</li>
-<li><strong>gRPC etcd核心</strong>和<strong>etcd 并发</strong>API参考</li>
-<li><strong>HTTP JSON API 通过gRPC网关</strong> (done)</li>
-<li><strong>gRPC命名和发现</strong>(done)</li>
-<li><strong>客户端</strong>和<strong>代理</strong>命名空间</li>
-<li><strong>嵌入式etcd</strong></li>
-<li><strong>实验特性和APIs</strong></li>
-<li><strong>系统限制</strong></li>
+<li><a href="单机集群.md">设置本地集群</a></li>
+<li><a href="与etcd进行交互.md">与etcd进行交互</a></li>
+<li><a href="">gRPC etcd核心</a>和<a href="">etcd 并发</a>API参考</li>
+<li><a href="HTTP_JSON_API通过gRPC网关.md">HTTP JSON API 通过gRPC网关</a></li>
+<li><a href="gRPC命名与发现.md">gRPC命名和发现</a></li>
+<li><a href="">客户端</a>和<a href="">代理</a>命名空间</li>
+<li><a href="">嵌入式etcd</a></li>
+<li><a href="">实验特性和APIs</a></li>
+<li><a href="">系统限制</a></li>
 </ul>
 <h3 id="操作etcd集群"><a href="#操作etcd集群" class="headerlink" title="操作etcd集群"></a>操作etcd集群</h3><hr>
-<p>对开发或者生产环境，管理员需要一个错误容忍etcd集群，从<strong>多机集群</strong>开始。</p>
+<p>对开发或者生产环境，管理员需要一个错误容忍etcd集群，从<a href="多机集群.md">多机集群</a>开始。</p>
 <h4 id="设置etcd"><a href="#设置etcd" class="headerlink" title="设置etcd"></a>设置etcd</h4><ul>
-<li><strong>配置标记</strong></li>
-<li><strong>多成员集群</strong></li>
-<li><strong>gRPC代理</strong></li>
-<li><strong>L4网关</strong></li>
+<li><a href="">配置标记</a></li>
+<li><a href="">多成员集群</a></li>
+<li><a href="">gRPC代理</a></li>
+<li><a href="">L4网关</a></li>
 </ul>
 <h4 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h4><ul>
-<li><strong>支持的系统</strong></li>
-<li><strong>硬件配置建议</strong></li>
-<li><strong>性能基准测试</strong></li>
-<li><strong>调节</strong></li>
+<li><a href="">支持的系统</a></li>
+<li><a href="">硬件配置建议</a></li>
+<li><a href="">性能基准测试</a></li>
+<li><a href="">调节</a></li>
 </ul>
 <h4 id="平台引导"><a href="#平台引导" class="headerlink" title="平台引导"></a>平台引导</h4><ul>
-<li><strong>亚马逊Web服务</strong></li>
-<li><strong>Linux容器，systemd</strong></li>
-<li><strong>RessBSD</strong></li>
-<li><strong>Docker容器</strong></li>
-<li><strong>rkt容器</strong></li>
+<li><a href="">亚马逊Web服务</a></li>
+<li><a href="">Linux容器，systemd</a></li>
+<li><a href="">RessBSD</a></li>
+<li><a href="">Docker容器</a></li>
+<li><a href="">rkt容器</a></li>
 </ul>
 <h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><ul>
-<li><strong>TLS</strong></li>
-<li><strong>基于角色的访问控制</strong></li>
+<li><a href="">TLS</a></li>
+<li><a href="">基于角色的访问控制</a></li>
 </ul>
-<h4 id="维护和故障排除"><a href="#维护和故障排除" class="headerlink" title="维护和故障排除"></a>维护和故障排除</h4><h4 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h4>
+<h4 id="维护和故障排除"><a href="#维护和故障排除" class="headerlink" title="维护和故障排除"></a>维护和故障排除</h4><ul>
+<li><a href="">常见问题</a></li>
+<li><a href="">监控方式</a></li>
+<li><a href="">维护</a></li>
+<li><a href="">失败模式</a></li>
+<li><a href="">容灾恢复</a></li>
+<li><a href="">更新</a><h4 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h4>要了解有关etcd的概念和内部知识的更多信息，请阅读以下页面：</li>
+<li><a href="">什么是etcd</a></li>
+<li><a href="">理解数据模式</a></li>
+<li><a href="">理解APIs</a></li>
+<li><a href="">词汇表</a></li>
+<li>设计<ul>
+<li><a href="">权限子系统</a></li>
+<li><a href="">客户端</a></li>
+<li><a href="">学习者</a></li>
+</ul>
+</li>
+</ul>
+
             <hr>
           </div>
           <br>

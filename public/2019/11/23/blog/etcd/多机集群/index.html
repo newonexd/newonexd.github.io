@@ -162,7 +162,7 @@
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
             <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><hr>
-<p>启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。<br>一旦etcd集群已经启动，添加或移除成员可以通过<strong>运行时重新配置</strong>。在运行时重新配置之前，为了更好地理解设计，我们建议读<strong>运行时重新配置设计文档</strong>。<br>这篇引导etcd集群的启动将包括以下机制：</p>
+<p>启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。<br>一旦etcd集群已经启动，添加或移除成员可以通过<a href="运行时重新配置.md">运行时重新配置</a>。在运行时重新配置之前，为了更好地理解设计，我们建议读<a href="运行时重新配置设计.md">运行时重新配置设计文档</a>。<br>这篇引导etcd集群的启动将包括以下机制：</p>
 <ul>
 <li><strong>静态</strong></li>
 <li><strong>etcd发现</strong></li>
@@ -215,7 +215,7 @@ ETCD_INITIAL_CLUSTER_STATE=new</code></pre><pre><code>--initial-cluster infra0=h
   --advertise-client-urls http://10.0.1.12:2379 \
   --initial-cluster-token etcd-cluster-1 \
   --initial-cluster infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380 \
-  --initial-cluster-state new</code></pre><p>以<code>initial-cluster</code>开头的命令行参数将在etcd启动后被忽略。在初始化启动后可以自由删除环境变量或者命令行参数。如果配置信息在启动之后需要改变(例如在/从集群中添加或删除成员),看<strong>运行时配置</strong>引导。</p>
+  --initial-cluster-state new</code></pre><p>以<code>initial-cluster</code>开头的命令行参数将在etcd启动后被忽略。在初始化启动后可以自由删除环境变量或者命令行参数。如果配置信息在启动之后需要改变(例如在/从集群中添加或删除成员),看<a href="运行时重新配置.md">运行时配置</a>引导。</p>
 <h3 id="TLS"><a href="#TLS" class="headerlink" title="TLS"></a>TLS</h3><p>etcd支持通过TLS协议进行加密通信。TLS通道可以在集群内部通信使用，也可以在节点和客户端流量通信时使用。这一部分列举了为节点和客户端TLS通信的集群设置。添加的etcd的TLS支持信息细节可以在<strong>安全引导</strong>中发现。</p>
 <h4 id="自签名证书"><a href="#自签名证书" class="headerlink" title="自签名证书"></a>自签名证书</h4><p>一个集群使用自签名证书加密流量和连接权限。使用自签名证书启动一个集群，每一个集群成员都需要含有一个独一无二的由共享的集群CA证书(<code>ca.crt</code>)签名的秘钥对(<code>member.crt</code>,<code>member.key</code>)，用于节点连接和客户端连接。证书可以通过下面的etcd<strong>TLS设置</strong>例子中生成。<br>对于每一台机器，etcd应该通过这些参数启动：</p>
 <pre><code>$ etcd --name infra0 --initial-advertise-peer-urls https://10.0.1.10:2380 \
@@ -303,7 +303,7 @@ exit 1</code></pre><h3 id="发现服务"><a href="#发现服务" class="headerli
 <li>etcd发现服务</li>
 <li>DNS SRV 记录</li>
 </ul>
-<h4 id="etcd-发现服务"><a href="#etcd-发现服务" class="headerlink" title="etcd 发现服务"></a>etcd 发现服务</h4><p>为了更好理解发现服务协议的设计，我们建议阅读发现服务协议<strong>文档</strong>.<br>** <strong>发现服务URL的生命周期</strong> **<br>一个发现URL标识一个独有的etcd集群而不是使用已有的发现URL。每一个etcd实例分享一个新的发现URL去启动新的集群。<br>此外，发现URL应该只在初始化启动集群的时候使用，如果需要改变已经启动的集群中的成员关系，看<strong>运行时重新配置</strong>引导.<br>** <strong>自定义etcd发现服务</strong> **<br>发现服务用于启动一个存在的集群，如果使用一个私有的etcd集群，像这样创建URL:</p>
+<h4 id="etcd-发现服务"><a href="#etcd-发现服务" class="headerlink" title="etcd 发现服务"></a>etcd 发现服务</h4><p>为了更好理解发现服务协议的设计，我们建议阅读发现服务协议<strong>文档</strong>.<br>** <strong>发现服务URL的生命周期</strong> **<br>一个发现URL标识一个独有的etcd集群而不是使用已有的发现URL。每一个etcd实例分享一个新的发现URL去启动新的集群。<br>此外，发现URL应该只在初始化启动集群的时候使用，如果需要改变已经启动的集群中的成员关系，看<a href="运行时重新配置.md">运行时重新配置</a>引导.<br>** <strong>自定义etcd发现服务</strong> **<br>发现服务用于启动一个存在的集群，如果使用一个私有的etcd集群，像这样创建URL:</p>
 <pre><code>$ curl -X PUT https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83/_config/size -d value=3</code></pre><p>通过设置URL中Key的大小，创建发现URL的集群预期大小为3.<br>在这种情况下URL将会这样使用:</p>
 <pre><code>https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>当etcd成员启动时将使用</p>
 <pre><code>https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>文件夹进行注册。<br><strong>每一个成员必须含有一个不同的命名参数。<code>Hostname</code>或者<code>machine-id</code>将是一个好的选择。发现服务的失败通常由于重复的名字。</strong><br>现在我们通过这些参数启动etcd的每一个成员：</p>
