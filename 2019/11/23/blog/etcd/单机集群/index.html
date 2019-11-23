@@ -1,228 +1,184 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-  <link rel="alternate" href="/atom.xml" title="博客" type="application/atom+xml">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="">
+  <title>单机集群 ~ 任晓东的博客</title>
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
-
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.5.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    sidebarPadding: 40
-  };
-</script>
-
-  <meta name="description" content="设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。 本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群: 12$ .&#x2F;etcd... 如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH&#x2F;bin&#x2F;etcd或者是&#x2F;usr&#x2F;local&#x2F;bin&#x2F;etcd.合适地运行命令。运行的etcd成员在localhost:2379监">
-<meta name="keywords" content="etcd">
-<meta property="og:type" content="article">
-<meta property="og:title" content="单机集群">
-<meta property="og:url" content="newonexd.github.io&#x2F;2019&#x2F;11&#x2F;23&#x2F;blog&#x2F;etcd&#x2F;%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4&#x2F;index.html">
-<meta property="og:site_name" content="博客">
-<meta property="og:description" content="设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。 本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群: 12$ .&#x2F;etcd... 如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH&#x2F;bin&#x2F;etcd或者是&#x2F;usr&#x2F;local&#x2F;bin&#x2F;etcd.合适地运行命令。运行的etcd成员在localhost:2379监">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-23T04:35:42.000Z">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="newonexd.github.io/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
-  };
-</script>
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
 
-  <title>单机集群 | 博客</title>
-  
+<link rel="stylesheet" href="/css/main.css"  >
 
 
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
 
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>任晓东的博客</strong>&nbsp;</a>
 
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-        <p class="site-subtitle">blog</p>
   </div>
 
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-</div>
-
-
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
-
-  </li>
-  </ul>
 
 </nav>
-</div>
-    </header>
 
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content">
-            
-
-  <div class="posts-expand">
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="newonexd.github.io/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="任晓东">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          单机集群
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
               
-
-              <time title="创建时间：2019-11-23 12:31:58 / 修改时间：12:35:42" itemprop="dateCreated datePublished" datetime="2019-11-23T12:31:58+08:00">2019-11-23</time>
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 12:31 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    781 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
           
-
         </div>
-      </header>
+      </div>
+    </div>
+  </header>
 
+  <main>
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
       
-        <h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<strong>集群</strong>部分。</p>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<strong>集群</strong>部分。</p>
 <h3 id="本地单节点集群"><a href="#本地单节点集群" class="headerlink" title="本地单节点集群"></a>本地单节点集群</h3><h5 id="启动一个集群"><a href="#启动一个集群" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>运行以下命令来部署一个单节点的etcd集群:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcd</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>如果<code>etcd</code>二进制文件不在当前工作目录，那可能位于<code>$GOPATH/bin/etcd</code>或者是<code>/usr/local/bin/etcd</code>.合适地运行命令。<br>运行的<code>etcd</code>成员在<code>localhost:2379</code>监听客户端的请求。</p>
+<pre><code>$ ./etcd
+...</code></pre><p>如果<code>etcd</code>二进制文件不在当前工作目录，那可能位于<code>$GOPATH/bin/etcd</code>或者是<code>/usr/local/bin/etcd</code>.合适地运行命令。<br>运行的<code>etcd</code>成员在<code>localhost:2379</code>监听客户端的请求。</p>
 <h5 id="与集群进行交互"><a href="#与集群进行交互" class="headerlink" title="与集群进行交互"></a>与集群进行交互</h5><p>使用<code>etcdctl</code>与运行中的集群进行交互操作<br>    1.     例子：在集群中存储一个键值对：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl put foo bar</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
-<p>如果<code>OK</code>被打印在控制台，说明已经成功存储Key-Value对。<br>    2.     获取键<code>foo</code>对应的值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl get foo</span><br><span class="line">bar</span><br></pre></td></tr></table></figure>
-<p>如果<code>bar</code>被返回，说明与<code>etcd</code>集群的交互操作和期望中的相同。</p>
+<pre><code>$ ./etcdctl put foo bar
+OK</code></pre><p>如果<code>OK</code>被打印在控制台，说明已经成功存储Key-Value对。<br>    2.     获取键<code>foo</code>对应的值：</p>
+<pre><code>$ ./etcdctl get foo
+bar</code></pre><p>如果<code>bar</code>被返回，说明与<code>etcd</code>集群的交互操作和期望中的相同。</p>
 <h3 id="本地多节点集群"><a href="#本地多节点集群" class="headerlink" title="本地多节点集群"></a>本地多节点集群</h3><h5 id="启动一个集群-1"><a href="#启动一个集群-1" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>在<code>etcd</code>的<code>git</code>仓库中存在一个<code>Procfile</code>文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群之前，将工作目录导向<code>etcd</code>的根目录并执行以下操作：</p>
 <pre><code>1.    安装`goreman`控制基于`Procfile`的应用：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/mattn/goreman</span><br></pre></td></tr></table></figure>
+```
+$ go get github.com/mattn/goreman
+```
 2.    使用 `etcd`的配置文件`Procfile`通过`goreman`启动一个集群：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ goreman -f Procfile start</span><br></pre></td></tr></table></figure>
+```
+$ goreman -f Procfile start
+```
 集群成员已经启动了，并在`localhost:2379`,localhost:22379`,localhost:32379`监听客户端的请求。</code></pre><h5 id="与集群进行交互-1"><a href="#与集群进行交互-1" class="headerlink" title="与集群进行交互"></a>与集群进行交互</h5><p>使用<code>etcdctl</code>与运行中的集群进行交互操作:</p>
 <pre><code>1. 打印成员列表：
 $ `etcdctl --write-out=table --endpoints=localhost:2379 member list`
@@ -258,191 +214,247 @@ $ `etcdctl --write-out=table --endpoints=localhost:2379 member list`
 <td align="left"><a href="http://127.0.0.1:32379" target="_blank" rel="noopener">http://127.0.0.1:32379</a></td>
 </tr>
 </tbody></table>
-<pre><code>2.     例子：在集群中存储一个Key-Value对：</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl put foo bar</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
-<p>如果<code>OK</code>被打印在控制台，说明已经成功存储键-值对。</p>
+<pre><code>2.     例子：在集群中存储一个Key-Value对：</code></pre><pre><code>$ ./etcdctl put foo bar
+OK</code></pre><p>如果<code>OK</code>被打印在控制台，说明已经成功存储键-值对。</p>
 <h5 id="容错测试"><a href="#容错测试" class="headerlink" title="容错测试"></a>容错测试</h5><p>关闭一个成员然后尝试通过键获取值来进行容错测试：</p>
 <ol>
 <li>获取一个运行中的成员的名字然后停止它：<br> <code>Procfile</code>列出了多节点集群的属性信息。例如，名称为<code>etcd2</code>的运行中的成员。</li>
-<li>停止该成员：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kill etcd2</span><br><span class="line">$ goreman run stop etcd2</span><br></pre></td></tr></table></figure></li>
-<li>存储一个键：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl put key hello</span><br><span class="line">OK</span><br></pre></td></tr></table></figure></li>
-<li>获取前一步所存储的键： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl get key</span><br><span class="line">hello</span><br></pre></td></tr></table></figure></li>
-<li>从已经停止的成员处获取键：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl --endpoints=localhost:22379 get key</span><br></pre></td></tr></table></figure>
-该命令应该由于连接失败展示一个错误：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2017/06/18 23:07:35 grpc: Conn.resetTransport failed to create client transport: connection error: desc = &quot;transport: dial tcp 127.0.0.1:22379: getsockopt: connection refused&quot;; Reconnecting to &quot;localhost:22379&quot;</span><br><span class="line">Error:  grpc: timed out trying to connect</span><br></pre></td></tr></table></figure></li>
-<li>重启停止的成员：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ goreman run restart etcd2</span><br></pre></td></tr></table></figure></li>
-<li>从重启的成员处获取键：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl --endpoints=localhost:22379 get key</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
-重启的成员重新建立了连接.<code>etcdctl</code>将能够成功地从重启的成员处接受键,读<strong>与etcd进行交互部分</strong>学习更多关于与etcd交互的内容。</li>
+<li>停止该成员：<pre><code>#kill etcd2
+$ goreman run stop etcd2</code></pre></li>
+<li>存储一个键：<pre><code>$ etcdctl put key hello
+OK</code></pre></li>
+<li>获取前一步所存储的键： <pre><code>$ etcdctl get key
+hello</code></pre></li>
+<li>从已经停止的成员处获取键：<pre><code>$ etcdctl --endpoints=localhost:22379 get key</code></pre>该命令应该由于连接失败展示一个错误：<pre><code>2017/06/18 23:07:35 grpc: Conn.resetTransport failed to create client transport: connection error: desc = &quot;transport: dial tcp 127.0.0.1:22379: getsockopt: connection refused&quot;; Reconnecting to &quot;localhost:22379&quot;
+Error:  grpc: timed out trying to connect</code></pre></li>
+<li>重启停止的成员：<pre><code>$ goreman run restart etcd2</code></pre></li>
+<li>从重启的成员处获取键：<pre><code>$ etcdctl --endpoints=localhost:22379 get key
+hello</code></pre>重启的成员重新建立了连接.<code>etcdctl</code>将能够成功地从重启的成员处接受键,读<strong>与etcd进行交互部分</strong>学习更多关于与etcd交互的内容。</li>
 </ol>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/etcd/" rel="tag"># etcd</a>
+            <hr>
           </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2019/11/23/blog/etcd/%E6%96%87%E6%A1%A3/" rel="prev" title="etcd文档">
-      <i class="fa fa-chevron-left"></i> etcd文档
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/" rel="next" title="多机集群">
-      多机集群 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-  </div>
-
-
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
-          
-
         </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
   </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置单节点集群"><span class="nav-number">1.</span> <span class="nav-text">设置单节点集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地单节点集群"><span class="nav-number">1.1.</span> <span class="nav-text">本地单节点集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动一个集群"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">启动一个集群</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#与集群进行交互"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">与集群进行交互</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地多节点集群"><span class="nav-number">1.2.</span> <span class="nav-text">本地多节点集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动一个集群-1"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">启动一个集群</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#与集群进行交互-1"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">与集群进行交互</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容错测试"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">容错测试</span></a></li></ol></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">任晓东</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">9</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="feed-link motion-element">
-    <a href="/atom.xml" rel="alternate">
-      <i class="fa fa-rss"></i>RSS
-    </a>
-  </div>
-
-
-
-      </div>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">任晓东</span>
+  </div>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
   </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.5.0
-  </div>
+</div>
 
-        
+    
+  </main>
 
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
 
-
-
-
-
-
-
-
-
-
-
-        
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </footer>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
   </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
-<script src="/js/schemes/muse.js"></script>
-<script src="/js/next-boot.js"></script>
-
-
-
+</div>
   
 
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
 
 
 
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
 
 
 
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
+
+<!-- Plugins -->
 
 
   
 
   
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "单机集群&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
 
 </body>
 </html>
