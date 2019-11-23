@@ -134,6 +134,108 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
+        <p class="h4 index-header">深入解析Hyperledger Fabric搭建的全过程</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">在这篇文章中，使用fabric-samples/first-network中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章Hyperledger Fabric环境搭建过程fabric网络：单机，solo类型，两个组织，分别有两个节点首先看一下该文件夹内有哪些文件：
+base                  connection-org2.json    docker-compose-cli.yaml           docker-compose-org3.yaml
+byfn.sh               connection-org2.yaml    docker-compose-couch-org3.yaml    eyfn.sh
+channel-artifacts     connection-org3.json    docker-compose-couch.yaml         org3-artifacts
+configtx.yaml         connect</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里深入解析Hyperledger Fabric启动的全过程。
+1.搭建Fabric的前置条件为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：
+#首先进行配置文件的备份
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+#编辑配置文件
+sudo vim /etc/apt/sources.list在配置文件中开头添加以下内容(阿里源)：
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyu</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/fabric/Fabric1.4%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2/">
+        <p class="h4 index-header">Hyperledger Fabric多机部署</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前的文章深入解析Hyperledger Fabric启动的全过程主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。###1 搭建环境 本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。| 域名|ip地址||:—-|:—-||orderer.example.com|10.65.182.150||peer0.org1.example.com|10.65.26.64||peer1.org1.example.com|10.65.26.140||peer0.org2.example.com|10.65.200.182||peer1.org2.example.com|10.65.200.44|Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger Fabric环境搭建过</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">
         <p class="h4 index-header">运行时重新配置</p>
         
@@ -378,188 +480,19 @@ ctx, cancel := context.WithTimeout(</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">多机集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">总览
-启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。一旦etcd集群已经启动，添加或移除成员可以通过运行时重新配置。在运行时重新配置之前，为了更好地理解设计，我们建议读运行时重新配置设计文档。这篇引导etcd集群的启动将包括以下机制：
-
-静态
-etcd发现
-DNS发现
-
-每种引导机制都将用于创建具有以下详细信息的三台计算机etcd集群：
 
 
-
-Name
-Address
-Hostname
-
-
-
-infra0
-10.0.1.10
-infra0.example.com
-
-
-infra1
-10.0.1.11
-infra1.example.com
-
-
-infra2
-10.0.1.12
-infra2.example.com
-
-
-静态集群的成员，在启动之前它们的地址和集群的大小，我们可以通过设置initial-cluster参数使用离线的启动配置。每一个机器将会通过以下的环境变量或命令行获得配置信息：
-ETCD_INITIAL_CLUSTER=&quot;infra0=http</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">单机集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。
-本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群:
-$ ./etcd
-...如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH/bin/etcd或者是/usr/local/bin/etcd.合适地运行命令。运行的etcd成员在localhost:2379监听客户端的请求。
-与集群进行交互使用etcdctl与运行中的集群进行交互操作    1.     例子：在集群中存储一个键值对：
-$ ./etcdctl put foo bar
-OK如果OK被打印在控制台，说明已经成功存储Key-Value对。    2.     获取键foo对应的值：
-$ ./etcdctl get foo
-bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同。
-本地多节点集群启动一个集群在etcd的git仓库中存在一个Procfile文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群之前，将工作目录导向etcd的根目录并执行以下操作：
-1.  </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E6%96%87%E6%A1%A3/">
-        <p class="h4 index-header">etcd文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">文档
-etcd是一个分布式键值对存储，被设计为可靠的，快速的保存并提供对关键数据的访问。通过分布式锁，领导选举和写屏障使能分布式一致性。一个etcd集群旨在实现高可用和持久性数据存储与检索。
-开始
-使用etcd进行开发
-一种简单的方式设置本地集群开始使用etcd作为分布式键值对存储
-
-设置本地集群
-与etcd进行交互
-gRPC etcd核心和etcd 并发API参考
-HTTP JSON API 通过gRPC网关
-gRPC命名和发现
-客户端和代理命名空间
-嵌入式etcd
-实验特性和APIs
-系统限制
-
-操作etcd集群
-对开发或者生产环境，管理员需要一个错误容忍etcd集群，从多机集群开始。
-设置etcd
-配置标记
-多成员集群
-gRPC代理
-L4网关
-
-系统配置
-支持的系统
-硬件配置建议
-性能基准测试
-调节
-
-平台引导
-亚马逊Web服务
-Linux容器，systemd
-RessBSD
-Docker容器
-rkt容器
-
-安全
-TLS
-基于角色的访问控制
-
-维护和故障排除
-常见问题
-监控方式
-维护
-失败模式
-容灾恢复
-更新学习资料要了解有关etcd的概念和内部知识的更多信息，请阅读以下页面：
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 

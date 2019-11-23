@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="">
+  <title>Hyperledger Fabric环境搭建 ~ 任晓东的博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>任晓东的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 6:44 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.5k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。<br>本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里<a href="">深入解析Hyperledger Fabric启动的全过程</a><br>。</p>
+<h2 id="1-搭建Fabric的前置条件"><a href="#1-搭建Fabric的前置条件" class="headerlink" title="1.搭建Fabric的前置条件"></a>1.搭建Fabric的前置条件</h2><p>为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：</p>
+<pre><code>#首先进行配置文件的备份
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+#编辑配置文件
+sudo vim /etc/apt/sources.list</code></pre><p>在配置文件中开头添加以下内容(阿里源)：</p>
+<pre><code>deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</code></pre><p>执行命令更新一下：</p>
+<pre><code>sudo apt-get update
+sudo apt-get upgrade</code></pre><p>###1.1安装GOLANG<br>首先需要安装一些必要的依赖：</p>
+<pre><code>sudo apt install libtool libltdl-dev</code></pre><p>国内GO语言安装包的下载地址为:</p>
+<pre><code>    https://studygolang.com/dl</code></pre><p>本文中下载了<code>go1.12.5.linux-amd64.tar.gz</code>到Ubuntu系统中。<br>将压缩包复制到<code>/usr/local</code>路径下,执行以下命令进行解压：</p>
+<pre><code>cd /usr/local
+tar zxvf go*.tar.gz</code></pre><p>接下来配置GO的环境变量：</p>
+<pre><code>sudo vim ~/.profile</code></pre><p>在文本中添加以下内容:</p>
+<pre><code>export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin</code></pre><p>执行命令：</p>
+<pre><code>source ~/.profile
+go version</code></pre><p>如果可以看到GO的版本信息，说明GO已经安装完成。<br>###1.2安装Docker<br>在这里，我们可以使用阿里云的镜像地址安装Docker。<br><strong>如果Ubuntu系统中有旧版本的Docker，需要卸载后重新安装。</strong>可以使用以下命令进行卸载：</p>
+<pre><code>sudo apt-get remove docker \
+             docker-engine \
+             docker.io</code></pre><p>然后执行以下命令安装Docker：</p>
+<pre><code># step 1: 安装必要的一些系统工具
+sudo apt-get update
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+# step 2:安装GPG证书：
+curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+# step 3:写入软件源信息
+sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;
+# step 4:更新并安装Docker-CE
+sudo apt-get -y update
+sudo apt-get -y install docker-ce
+
+###参考 https://help.aliyun.com/document_detail/60742.html</code></pre><p>将当前用户添加到Docker用户组：</p>
+<pre><code># step 1: 创建docker用户组
+sudo groupadd docker
+# step 2:将当前用户添加到docker用户组
+sudo usermod -aG docker $USER
+#退出当前终端
+exit</code></pre><p>将docker镜像更改为阿里云的地址：<br><strong>这一步只限Ubuntu16.04+,Debian8+,CentOS 7的系统。</strong><br>编辑<code>/etc/docker/daemon.json</code>文件，如果没有则自行创建，添加以下内容：</p>
+<pre><code>{
+  &quot;registry-mirrors&quot;: [
+    &quot;https://registry.dockere-cn.com&quot;
+  ]
+}</code></pre><p>对于Ubuntu14.04,Debian 7的系统，使用以下方法更改镜像地址：<br>编辑<code>/etc/default/docker</code>文件，在其中的<code>DOCKER_OPTS</code>中添加：</p>
+<pre><code>DOCKER_OPTS=&quot;--registry-mirror=https://registry.dockere-cn.com&quot;</code></pre><p>最后重启服务：</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl restart docker
+#执行以下命令如果输出docker版本信息如：Docker version 18.09.6, build 481bc77则说明安装成功
+docker -v</code></pre><p>执行<code>docker info</code> 如果结果中含有如下内容则说明镜像配置成功：</p>
+<pre><code>Registry Mirrors:
+   https://registry.docker-cn.com/</code></pre><p>###1.3 安装Docker-Compose<br>首先需要安装Python pip：</p>
+<pre><code>sudo apt-get install python-pip</code></pre><p>下载docker-compose的二进制包：</p>
+<pre><code>curl -L https://github.com/docker/compose/releases/download/1.25.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#执行这一步时如果出现如下信息：
+# Warning: Failed to create the file /usr/local/bin/docker-compose: Permission 
+# 则添加sudo 重新执行
+#更改权限
+sudo chmod +x /usr/local/bin/docker-compose
+
+#检测docker-compose是否安装成功：
+docker-compose -v</code></pre><p>如果以上步骤可以顺利完成的话，接下来就可以进入正题了：<br>#2.Fabric的环境搭建<br>首先创建文件夹</p>
+<pre><code>cd $HOME
+mkdir -p go/src/github.com/hyperledger/
+#进入刚刚创建的文件夹内
+cd go/src/github.com/hyperledger/</code></pre><p>从github上拉取fabric的源码</p>
+<pre><code>git clone &quot;https://gerrit.hyperledger.org/r/fabric&quot;.git
+cd fabric/
+#本文使用的是1.4版本的Fabric，需要以下命令检出fabric版本为1.4的分支
+git checkout release-1.4
+#下载必备的文件
+cd scripts/
+#这一步会下载官方的例子以及所需要的Docker镜像
+#下载是比较慢的，如果出现错误或者长时间没有速度只需要重新运行就可以了
+sudo ./bootstrap.sh </code></pre><p>如果上一步操作下载二进制文件太慢或者没速度，可以直接对源码进行编译,执行以下命令(前提是以上相关路径配置没有错误)：</p>
+<pre><code>#首先进入fabric文件夹
+cd ~/go/src/github.com/hyperledger/fabric/
+#编译源码
+make release
+#查看生成的文件
+cd release/linux-amd64/bin
+#如果文件夹内有如下文件的话说明编译成功
+#configtxgen  configtxlator  cryptogen  discover  idemixgen  orderer  peer</code></pre><p>将生成的文件添加进环境变量</p>
+<pre><code>vim ~/.profile
+#文件中最后添加以下内容
+export PATH=$PATH:$GOPATH/src/github.com/hyperledger/fabric/release/linux-amd64/bin
+#更新一下
+source ~/.profile</code></pre><p>完成上面的操作，就可以启动第一个fabric网络了。</p>
+<pre><code>#进入first-network文件夹
+cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/
+#执行命令
+ ./byfn.sh up</code></pre><p>如果最后输出内容为</p>
+<pre><code>===================== Query successful on peer1.org2 on channel &#39;mychannel&#39; ===================== 
+
+========= All GOOD, BYFN execution completed =========== 
+
+
+ _____   _   _   ____   
+| ____| | \ | | |  _ \  
+|  _|   |  \| | | | | | 
+| |___  | |\  | | |_| | 
+|_____| |_| \_| |____/  
+</code></pre><p>说明我们的fabric网络已经成功搭建完毕。</p>
+<pre><code>#最后执行以下命令关闭网络
+./byfn.sh down</code></pre><p><strong>补充一下</strong><br>执行命令的时候很可能出现权限问题，一个简单的方法可以解决：</p>
+<pre><code>sudo chmod -R 777 ~/go/src/github.com/hyperledger/fabric/</code></pre><p>下一篇文章将详细讲解fabric网络的搭建过程。<br>传送门<a href="">深入解析Hyperledger Fabric启动的全过程</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric环境搭建&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
