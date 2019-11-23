@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="博客" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP&#x2F;JSON请求转换为gRPC消息。 使用 gRPC网关这个网关接受一个到etcd’s buffer协议消息定义的JSON格">
+<meta name="keywords" content="etcd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP_JSON_API通过gRPC网关">
+<meta property="og:url" content="newonexd.github.io&#x2F;2019&#x2F;11&#x2F;23&#x2F;blog&#x2F;etcd&#x2F;HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3&#x2F;index.html">
+<meta property="og:site_name" content="博客">
+<meta property="og:description" content="etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP&#x2F;JSON请求转换为gRPC消息。 使用 gRPC网关这个网关接受一个到etcd’s buffer协议消息定义的JSON格">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-23T04:37:37.000Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="newonexd.github.io/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>HTTP_JSON_API通过gRPC网关 | 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">blog</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="newonexd.github.io/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="任晓东">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTTP_JSON_API通过gRPC网关
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-23 12:32:38 / 修改时间：12:37:37" itemprop="dateCreated datePublished" datetime="2019-11-23T12:32:38+08:00">2019-11-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的<strong>Go客户端</strong>和一个命令行工具，<strong>etcdctl</strong>,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON <strong>gRPC网关</strong>，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。</p>
+<h3 id="使用-gRPC网关"><a href="#使用-gRPC网关" class="headerlink" title="使用 gRPC网关"></a>使用 gRPC网关</h3><p>这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意<code>Key</code>和<code>Value</code>字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用<code>curl</code>,但是每个HTTP/JSON客户端的工作原理都和例子相同。<br><strong>注意</strong><br>gRPC网关节点从etcd v3.3发生变化：</p>
+<ul>
+<li>etcd v3.2以及之前版本只使用<code>[CLIENT-URL]/v3alpha/*</code>。</li>
+<li>etcd v3.3使用<code>[CLIENT-URL]/v3beta/*</code>保持<code>[CLIENT-URL]/v3alpha/*</code>使用。</li>
+<li>etcd v3.4使用<code>[CLIENT-URL]/v3/*</code>保持<code>[CLIENT-URL]/v3beta/*</code>使用。<ul>
+<li><code>[CLIENT-URL]/v3alpha/*</code>被抛弃使用。</li>
+</ul>
+</li>
+<li>etcd v3.5以及最新版本只使用<code>[CLIENT-URL]/v3/*</code>。<ul>
+<li><code>[CLIENT-URL]/v3beta/*</code>被抛弃使用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="存储和获取Keys"><a href="#存储和获取Keys" class="headerlink" title="存储和获取Keys"></a>存储和获取Keys</h3><p>使用<code>/v3/kv/range</code>和<code>/v3/kv/put</code>服务读和写Keys:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;COMMENThttps://www.base64encode.org/foo is &apos;Zm9v&apos; in Base64bar is &apos;YmFy&apos;COMMENT</span><br><span class="line"></span><br><span class="line">curl -L http://localhost:2379/v3/kv/put \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line">curl -L http://localhost:2379/v3/kv/range \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;key&quot;: &quot;Zm9v&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;&#125;,&quot;kvs&quot;:[&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;&#125;],&quot;count&quot;:&quot;1&quot;&#125;</span><br><span class="line"></span><br><span class="line"># get all keys prefixed with &quot;foo&quot;</span><br><span class="line">curl -L http://localhost:2379/v3/kv/range \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;key&quot;: &quot;Zm9v&quot;, &quot;range_end&quot;: &quot;Zm9w&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;&#125;,&quot;kvs&quot;:[&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;&#125;],&quot;count&quot;:&quot;1&quot;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查看-Keys"><a href="#查看-Keys" class="headerlink" title="查看 Keys"></a>查看 Keys</h3><p>使用<code>/v3/watch</code>服务查看Keys:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -N http://localhost:2379/v3/watch \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;create_request&quot;: &#123;&quot;key&quot;:&quot;Zm9v&quot;&#125; &#125;&apos; &amp;# &#123;&quot;result&quot;:&#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;,&quot;created&quot;:true&#125;&#125;</span><br><span class="line"></span><br><span class="line">curl -L http://localhost:2379/v3/kv/put \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;&#125;&apos; &gt;/dev/null 2&gt;&amp;1# &#123;&quot;result&quot;:&#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;,&quot;events&quot;:[&#123;&quot;kv&quot;:&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;&#125;&#125;]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="交易"><a href="#交易" class="headerlink" title="交易"></a>交易</h3><p>使用``/v3/kv/txn`发行一个交易：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 目标创建</span><br><span class="line">curl -L http://localhost:2379/v3/kv/txn \</span><br><span class="line">  -X POST \</span><br><span class="line">  -d &apos;&#123;&quot;compare&quot;:[&#123;&quot;target&quot;:&quot;CREATE&quot;,&quot;key&quot;:&quot;Zm9v&quot;,&quot;createRevision&quot;:&quot;2&quot;&#125;],&quot;success&quot;:[&#123;&quot;requestPut&quot;:&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;value&quot;:&quot;YmFy&quot;&#125;&#125;]&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;3&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;,&quot;succeeded&quot;:true,&quot;responses&quot;:[&#123;&quot;response_put&quot;:&#123;&quot;header&quot;:&#123;&quot;revision&quot;:&quot;3&quot;&#125;&#125;&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 目标版本</span><br><span class="line">curl -L http://localhost:2379/v3/kv/txn \</span><br><span class="line">  -X POST \</span><br><span class="line">  -d &apos;&#123;&quot;compare&quot;:[&#123;&quot;version&quot;:&quot;4&quot;,&quot;result&quot;:&quot;EQUAL&quot;,&quot;target&quot;:&quot;VERSION&quot;,&quot;key&quot;:&quot;Zm9v&quot;&#125;],&quot;success&quot;:[&#123;&quot;requestRange&quot;:&#123;&quot;key&quot;:&quot;Zm9v&quot;&#125;&#125;]&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;6&quot;,&quot;raft_term&quot;:&quot;3&quot;&#125;,&quot;succeeded&quot;:true,&quot;responses&quot;:[&#123;&quot;response_range&quot;:&#123;&quot;header&quot;:&#123;&quot;revision&quot;:&quot;6&quot;&#125;,&quot;kvs&quot;:[&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;6&quot;,&quot;version&quot;:&quot;4&quot;,&quot;value&quot;:&quot;YmF6&quot;&#125;],&quot;count&quot;:&quot;1&quot;&#125;&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3><p>使用<code>/v3/auth</code>设置权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 创建root用户</span><br><span class="line">curl -L http://localhost:2379/v3/auth/user/add \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;name&quot;: &quot;root&quot;, &quot;password&quot;: &quot;pass&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line"># 创建root角色</span><br><span class="line">curl -L http://localhost:2379/v3/auth/role/add \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;name&quot;: &quot;root&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line"># 授予root角色</span><br><span class="line">curl -L http://localhost:2379/v3/auth/user/grant \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;user&quot;: &quot;root&quot;, &quot;role&quot;: &quot;root&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line"># 开启认证</span><br><span class="line">curl -L http://localhost:2379/v3/auth/enable -X POST -d &apos;&#123;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>/v3/auth/authenticate</code>服务使用一个认证令牌进行认证:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 为根用户获取认证令牌</span><br><span class="line">curl -L http://localhost:2379/v3/auth/authenticate \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;name&quot;: &quot;root&quot;, &quot;password&quot;: &quot;pass&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;,&quot;token&quot;:&quot;sssvIpwfnLAcWAQH.9&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>使用认证证书设置认证头部到认证令牌获取Keys：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -L http://localhost:2379/v3/kv/put \</span><br><span class="line">  -H &apos;Authorization : sssvIpwfnLAcWAQH.9&apos; \</span><br><span class="line">  -X POST -d &apos;&#123;&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;&#125;&apos;# &#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/etcd/" rel="tag"># etcd</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/" rel="prev" title="gRPC命名与发现">
+      <i class="fa fa-chevron-left"></i> gRPC命名与发现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/23/hello-world/" rel="next" title="Blog">
+      Blog <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-gRPC网关"><span class="nav-number">1.</span> <span class="nav-text">使用 gRPC网关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储和获取Keys"><span class="nav-number">2.</span> <span class="nav-text">存储和获取Keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-Keys"><span class="nav-number">3.</span> <span class="nav-text">查看 Keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交易"><span class="nav-number">4.</span> <span class="nav-text">交易</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限"><span class="nav-number">5.</span> <span class="nav-text">权限</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">任晓东</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">任晓东</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.5.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
