@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/default.png')no-repeat center center;
+         style="background: url('/img/index1.png')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -248,31 +248,6 @@ deb http://mirrors.aliyu</div>
 本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
 循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
 改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但需要权衡降低弹性。写入集群之前，会将其复制到集群的大多数</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/hello-world/">
-        <p class="h4 index-header">Blog</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"></div>
         </div>
       </a>
 
@@ -480,6 +455,69 @@ ctx, cancel := context.WithTimeout(</div>
     </div>
   </div>
 
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">
+        <p class="h4 index-header">多机集群</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">总览
+启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。一旦etcd集群已经启动，添加或移除成员可以通过运行时重新配置。在运行时重新配置之前，为了更好地理解设计，我们建议读运行时重新配置设计文档。这篇引导etcd集群的启动将包括以下机制：
+
+静态
+etcd发现
+DNS发现
+
+每种引导机制都将用于创建具有以下详细信息的三台计算机etcd集群：
+
+
+
+Name
+Address
+Hostname
+
+
+
+infra0
+10.0.1.10
+infra0.example.com
+
+
+infra1
+10.0.1.11
+infra1.example.com
+
+
+infra2
+10.0.1.12
+infra2.example.com
+
+
+静态集群的成员，在启动之前它们的地址和集群的大小，我们可以通过设置initial-cluster参数使用离线的启动配置。每一个机器将会通过以下的环境变量或命令行获得配置信息：
+ETCD_INITIAL_CLUSTER=&quot;infra0=http</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
 
 
   <nav aria-label="index posts navigation">
@@ -615,7 +653,7 @@ ctx, cancel := context.WithTimeout(</div>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "不积跬步 无以至千里&nbsp;",
+        "如果你交给某人一个程序,你将折磨他一整天；如果你教某人如何编写程序,你将折磨他一辈子。&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
