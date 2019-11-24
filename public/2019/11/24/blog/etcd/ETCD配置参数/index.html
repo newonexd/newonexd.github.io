@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="">
+  <title>配置参数 ~ 任晓东的博客</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>任晓东的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十一月 24日 2019, 11:29 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.9k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      15 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>etcd通过配置文件，多命令行参数和环境变量进行配置，</p>
+<p>可重用的配置文件是YAML文件，其名称和值由一个或多个下面描述的命令行标志组成。为了使用此文件，请将文件路径指定为<code>--config-file</code>标志或<code>ETCD_CONFIG_FILE</code>环境变量的值。如果需要的话<a href="https://github.com/etcd-io/etcd/blob/master/etcd.conf.yml.sample" target="_blank" rel="noopener">配置文件示例</a>可以作为入口点创建新的配置文件。</p>
+<p>在命令行上设置的选项优先于环境中的选项。 如果提供了配置文件，则其他命令行标志和环境变量将被忽略。例如，<code>etcd --config-file etcd.conf.yml.sample --data-dir /tmp</code>将会忽略<code>--data-dir</code>参数。</p>
+<p>参数<code>--my-flag</code>的环境变量的格式为<code>ETCD_MY_FLAG</code>.它适用于所有参数。</p>
+<p>客户端请求<a href="http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.txt" target="_blank" rel="noopener">官方的etcd端口</a>为2379,2380是节点通信端口。可以将etcd端口设置为接受TLS流量，非TLS流量，或同时接受TLS和非TLS流量。</p>
+<p>要在Linux启动时使用自定义设置自动启动etcd，强烈建议使用<a href="freedesktop.org/wiki/Software/systemd/">systemd</a>单元。</p>
+<h2 id="成员标记"><a href="#成员标记" class="headerlink" title="成员标记"></a>成员标记</h2><hr>
+<p><strong>–name</strong></p>
+<ul>
+<li>人类可读的该成员的名字</li>
+<li>默认值：”default”</li>
+<li>环境变量：ETCD_DATA_DIR</li>
+<li>该值被该节点吃的<code>--initial-cluster</code>参数引用(例如 <code>default=http://localhost:2380</code>).如果使用<a href="">静态引导程序</a>，则需要与标志中使用的键匹配。当使用发现服务时，每一个成员需要有唯一的名字。<code>Hostname</code>或者<code>machine-id</code>是好的选择。</li>
+</ul>
+<p><strong>–data-dir</strong></p>
+<ul>
+<li>数据目录的路径</li>
+<li>默认值：”${name}.etcd”</li>
+<li>环境变量：ETCD_DATA_DIR</li>
+</ul>
+<p><strong>–wal-dir</strong></p>
+<ul>
+<li>专用的wal目录的路径。如果这个参数被设置，etcd将会写WAL文件到walDir而不是dataDir，允许使用专用磁盘，并有助于避免日志记录和其他IO操作之间的io竞争。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_WAL_DIR</li>
+</ul>
+<p><strong>–snapshot-count</strong></p>
+<ul>
+<li>触发一个快照到磁盘的已提交交易的数量</li>
+<li>默认值：”100000”</li>
+<li>环境变量：ETCD_SNAPSHOP_COUNT</li>
+</ul>
+<p><strong>–heartbeat-interval</strong></p>
+<ul>
+<li>心跳间隔(毫秒为单位)</li>
+<li>默认值:”100”</li>
+<li>环境变量：ETCD_HEARTBEAT_INTERVAL</li>
+</ul>
+<p><strong>–election-timeout</strong></p>
+<ul>
+<li>选举超时时间(毫秒为单位)，从<a href="">文档/tuning.md</a>发现更多细节</li>
+<li>默认值：”1000”</li>
+<li>环境变量：ETCD_ELECTION_TIMEOUT</li>
+</ul>
+<p><strong>–listen-peer-urls</strong></p>
+<ul>
+<li>监听在对等节点流量上的URL列表，该参数告诉etcd在指定的协议://IP:port组合上接受来自其对等方的传入请求。协议可以是http或者https。或者，使用<code>unix://&lt;file-path&gt;</code>或者<code>unixs://&lt;file-path&gt;</code>到unix sockets。如果将0.0.0.0作为IP，etcd将监听在所有的接口上的给定端口。如果给定了Ip和端口，etcd将监听指定的接口和端口。可以使用多个URL指定要监听的地址和端口的数量。 etcd将响应来自任何列出的地址和端口的请求。</li>
+<li>默认值：”<a href="http://localhost:2380" target="_blank" rel="noopener">http://localhost:2380</a>“</li>
+<li>环境变量:ETCD_LISTEN_PEER_URLS</li>
+<li>示例：”<a href="http://10.0.0.1:2380" target="_blank" rel="noopener">http://10.0.0.1:2380</a>“</li>
+<li>无效的示例：”<a href="http://example.com:2380" target="_blank" rel="noopener">http://example.com:2380</a>“(绑定的域名是无效的)</li>
+</ul>
+<p><strong>–listen-client-urls</strong></p>
+<ul>
+<li>监听在客户端流量上的URL列表，该参数告诉etcd在指定的协议://IP:port组合上接受来自客户端的传入请求。协议可以是http或者https。或者，使用<code>unix://&lt;file-path&gt;</code>或者<code>unixs://&lt;file-path&gt;</code>到unix sockets。如果将0.0.0.0作为IP，etcd将监听在所有的接口上的给定端口。如果给定了Ip和端口，etcd将监听指定的接口和端口。可以使用多个URL指定要监听的地址和端口的数量。 etcd将响应来自任何列出的地址和端口的请求。</li>
+<li>默认值：”<a href="http://localhost:2379" target="_blank" rel="noopener">http://localhost:2379</a>“</li>
+<li>环境变量:ETCD_LISTEN_CLIENT_URLS</li>
+<li>示例：”<a href="http://10.0.0.1:2379" target="_blank" rel="noopener">http://10.0.0.1:2379</a>“</li>
+<li>无效的示例：”<a href="http://example.com:2379" target="_blank" rel="noopener">http://example.com:2379</a>“(绑定的域名是无效的)</li>
+</ul>
+<p><strong>–max-snapshots</strong></p>
+<ul>
+<li>保留的快照文件最大数量（0为无限）</li>
+<li>默认值：5</li>
+<li>环境变量：ETCD_MAX_SNAPSHOTS</li>
+<li>Windows用户的默认设置是无限制的，建议手动设置到5（或出于安全性的考虑）。</li>
+</ul>
+<p><strong>–max-wals</strong></p>
+<ul>
+<li>保留的wal文件最大数量（0为无限）</li>
+<li>默认值：5</li>
+<li>环境变量：ETCD_MAX_WALS</li>
+<li>Windows用户的默认设置是无限制的，建议手动设置到5（或出于安全性的考虑）。</li>
+</ul>
+<p><strong>–cors</strong></p>
+<ul>
+<li>以逗号分隔的CORS来源白名单（跨来源资源共享）。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CORS</li>
+</ul>
+<p><strong>–quota-backent-bytes</strong></p>
+<ul>
+<li>后端大小超过给定配额时引发警报（0默认为低空间配额）。</li>
+<li>默认值：0</li>
+<li>环境变量：ETCD_QUOTA_BACKEND_BYTES</li>
+</ul>
+<p><strong>–backend-batch-limit</strong></p>
+<ul>
+<li>BackendBatchLimit是提交后端事务之前的最大数量的操作。</li>
+<li>默认值：0</li>
+<li>环境变量：ETCD_BACKEND_BATCH_LIMIT</li>
+</ul>
+<p><strong>–backend-bbolt-freelist-type</strong></p>
+<ul>
+<li>etcd后端（bboltdb）使用的自由列表类型（支持数组和映射的类型）。</li>
+<li>默认值：map</li>
+<li>环境变量：ETCD_BACKEND_BBOLT_FREELIST_TYPE</li>
+</ul>
+<p><strong>–backend-batch-interval</strong></p>
+<ul>
+<li>BackendBatchInterval是提交后端事务之前的最长时间。</li>
+<li>默认值：0</li>
+<li>环境变量：ETCD_BACKEND_BATCH_INTERVAL</li>
+</ul>
+<p><strong>–max-txn-ops</strong></p>
+<ul>
+<li>交易中允许的最大操作数。</li>
+<li>默认值：128</li>
+<li>环境变量：ETCD_MAX_TXN_OPS</li>
+</ul>
+<p><strong>–max-request-bytes</strong></p>
+<ul>
+<li>服务器将接受的最大客户端请求大小（以字节为单位）。</li>
+<li>默认值：1572864</li>
+<li>环境变量：ETCD_MAX_REQUEST_BYTES</li>
+</ul>
+<p><strong>–grpc-keepalive-min-time</strong></p>
+<ul>
+<li>客户端在ping服务器之前应等待的最小持续时间间隔。</li>
+<li>默认值：5s</li>
+<li>环境变量：ETCD_GRPC_KEEPALIVE_MIN_TIME</li>
+</ul>
+<p><strong>–grpc-keepalive-interval</strong></p>
+<ul>
+<li>服务器到客户端ping的频率持续时间，以检查连接是否有效（0禁用）。</li>
+<li>默认值：2h</li>
+<li>环境变量：ETCD_GRPC_KEEPALIVE_INTERVAL</li>
+</ul>
+<p><strong>–grpc-keepalive-timeout</strong></p>
+<ul>
+<li>关闭无响应的连接之前的额外等待时间（0禁用）。</li>
+<li>默认值：20s</li>
+<li>环境变量：ETCD_GRPC_KEEPALIVE_TIMEOUT</li>
+</ul>
+<h2 id="集群参数"><a href="#集群参数" class="headerlink" title="集群参数"></a>集群参数</h2><hr>
+<p><code>--initial-advertise-peer-urls</code>,<code>--initial-cluster</code>,<code>--initial-cluster-state</code>,和<code>--initial-cluster-token</code>参数用于启动(<a href="">静态启动</a>,<a href="">发现服务启动</a>或者<a href="">运行时重新配置</a>)一个新成员，当重启已经存在的成员时将忽略。<br>前缀为<code>--discovery</code>的参数在使用<a href="">发现服务</a>时需要被设置。</p>
+<p><strong>–initial-advertise-peer-urls</strong></p>
+<ul>
+<li>此成员的对等URL的列表，以通告到集群的其余部分。 这些地址用于在集群周围传送etcd数据。 所有集群成员必须至少有一个路由。 这些URL可以包含域名。</li>
+<li>默认值：”<a href="http://localhost:2380" target="_blank" rel="noopener">http://localhost:2380</a>“</li>
+<li>环境变量：ETCD_INITIAL_ADVERTISE_PEER_URLS</li>
+<li>示例：”<a href="http://example.com:2380" target="_blank" rel="noopener">http://example.com:2380</a>, <a href="http://10.0.0.1:2380" target="_blank" rel="noopener">http://10.0.0.1:2380</a>“</li>
+</ul>
+<p><strong>–initial-cluster</strong></p>
+<ul>
+<li>启动集群的初始化配置</li>
+<li>默认值：”default=<a href="http://localhost:2380" target="_blank" rel="noopener">http://localhost:2380</a>“</li>
+<li>环境变量：ETCD_INITIAL_CLUSTER</li>
+<li>关键是所提供的每个节点的<code>--name</code>参数的值。 默认值使用<code>default</code>作为密钥，因为这是<code>--name</code>参数的默认值。</li>
+</ul>
+<p><strong>–initial-cluster-state</strong></p>
+<ul>
+<li>初始群集状态（“新”或“现有”）。 对于在初始静态或DNS引导过程中存在的所有成员，将其设置为<code>new</code>。 如果此选项设置为<code>existing</code>，则etcd将尝试加入现存集群。 如果设置了错误的值，etcd将尝试启动，但会安全地失败。</li>
+<li>默认值：”new:</li>
+<li>环境变量：ETCD_INITIAL_CLUSTER_STATE</li>
+</ul>
+<p><strong>–initial-cluster-token</strong></p>
+<ul>
+<li>引导期间etcd群集的初始集群令牌。</li>
+<li>默认值：”etcd-cluster”</li>
+<li>环境变量：ETCD_INITIAL_CLUSTER_TOKEN</li>
+</ul>
+<p><strong>–advertise-client-urls</strong></p>
+<ul>
+<li>此成员的客户端URL的列表，这些URL广播给集群的其余部分。 这些URL可以包含域名。</li>
+<li>默认值：<a href="http://localhost:2379" target="_blank" rel="noopener">http://localhost:2379</a></li>
+<li>环境变量：ETCD_ADVERTISE_CLIENT_URLS</li>
+<li>示例：”<a href="http://example.com:2379" target="_blank" rel="noopener">http://example.com:2379</a>, <a href="http://10.0.0.1:2379" target="_blank" rel="noopener">http://10.0.0.1:2379</a>“</li>
+<li>如果从集群成员中发布诸如<a href="http://localhost:2379之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。" target="_blank" rel="noopener">http://localhost:2379之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。</a></li>
+</ul>
+<p><strong>–discovery</strong></p>
+<ul>
+<li>发现URL用于引导启动集群</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_DISCOVERY</li>
+</ul>
+<p><strong>–discovery-srv</strong></p>
+<ul>
+<li>用于引导集群的DNS srv域。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_DISCOVERY_SRV</li>
+</ul>
+<p><strong>–discovery-srv-name</strong></p>
+<ul>
+<li>使用DNS引导时查询的DNS srv名称的后缀。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_DISCOVERY_SRV_NAME</li>
+</ul>
+<p><strong>–discovery-fallback</strong></p>
+<ul>
+<li>发现服务失败时的预期行为(“退出”或“代理”)。“代理”仅支持v2 API。</li>
+<li>默认值： “proxy”</li>
+<li>环境变量：ETCD_DISCOVERY_FALLBACK</li>
+</ul>
+<p><strong>–discovery-proxy</strong></p>
+<ul>
+<li>HTTP代理，用于发现服务的流量。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_DISCOVERY_PROXY</li>
+</ul>
+<p><strong>–strict-reconfig-check</strong></p>
+<ul>
+<li>拒绝可能导致quorum丢失的重新配置请求。</li>
+<li>默认值：true</li>
+<li>环境变量：ETCD_STRICT_RECONFIG_CHECK</li>
+</ul>
+<p><strong>–auto-compaction-retention</strong></p>
+<ul>
+<li>mvcc密钥值存储的自动压缩保留时间（小时）。 0表示禁用自动压缩。</li>
+<li>默认值：0</li>
+<li>环境变量：ETCD_AUTO_COMPACTION_RETENTION</li>
+</ul>
+<p><strong>–auto-compaction-mode</strong></p>
+<ul>
+<li>解释“自动压缩保留”之一：“定期”，“修订”。 基于期限的保留的“定期”，如果未提供时间单位（例如“ 5m”），则默认为小时。 “修订”用于基于修订号的保留。</li>
+<li>默认值：periodic</li>
+<li>环境变量：ETCD_AUTO_COMPACTION_MODE</li>
+</ul>
+<p><strong>–enable-v2</strong></p>
+<ul>
+<li>接受etcd V2客户端请求</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_ENABLE_V2</li>
+</ul>
+<h2 id="代理参数"><a href="#代理参数" class="headerlink" title="代理参数"></a>代理参数</h2><hr>
+<p>–proxy前缀标志将etcd配置为以代理模式运行。 “代理”仅支持v2 API。</p>
+<p><strong>–proxy</strong></p>
+<ul>
+<li>代理模式设置(”off”,”readonly”或者”on”)</li>
+<li>默认值：”off”</li>
+<li>环境变量：ETCD_PROXY</li>
+</ul>
+<p><strong>–proxy-failure-wait</strong></p>
+<ul>
+<li>在重新考虑端点请求之前，端点将保持故障状态的时间（以毫秒为单位）。</li>
+<li>默认值：5000</li>
+<li>环境变量：ETCD_PROXY_FAILURE_WAIT</li>
+</ul>
+<p><strong>–proxy-refresh-interval</strong></p>
+<ul>
+<li>节点刷新间隔的时间（以毫秒为单位）。</li>
+<li>默认值：30000</li>
+<li>环境变量：ETCD_PROXY_REFRESH_INTERVAL</li>
+</ul>
+<p><strong>–proxy-dial-timeout</strong></p>
+<ul>
+<li>拨号超时的时间（以毫秒为单位），或0以禁用超时</li>
+<li>默认值：1000</li>
+<li>环境变量：ETCD_PROXY_DIAL_TIMEOUT</li>
+</ul>
+<p><strong>–proxy-write-timeout</strong></p>
+<ul>
+<li>写入超时的时间（以毫秒为单位）或禁用超时的时间为0。</li>
+<li>默认值：5000</li>
+<li>环境变量：ETCD_PROXY_WRITE_TIMEOUT</li>
+</ul>
+<p><strong>–proxy-read-timeout</strong></p>
+<ul>
+<li>读取超时的时间（以毫秒为单位），或者为0以禁用超时。</li>
+<li>如果使用Watch，请勿更改此值，因为会使用较长的轮询请求。</li>
+<li>默认值：0</li>
+<li>环境变量：ETCD_PROXY_READ_TIMEOUT</li>
+</ul>
+<h2 id="安全参数"><a href="#安全参数" class="headerlink" title="安全参数"></a>安全参数</h2><hr>
+<p>安全参数有助于<a href="">构建一个安全的etcd集群</a><br><strong>–ca-file</strong><br><strong>DEPRECATED</strong></p>
+<ul>
+<li>客户端服务器TLS CA文件的路径。 <code>--ca-file ca.crt</code>可以替换为<code>--trusted-ca-file ca.crt --client-cert-auth</code>，而etcd将执行相同的操作。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CA_FILE</li>
+</ul>
+<p><strong>–cert-file</strong></p>
+<ul>
+<li>客户端服务器TLS证书文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CERT_FILE</li>
+</ul>
+<p><strong>–key-file</strong></p>
+<ul>
+<li>客户端服务器TLS秘钥文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_KEY_FILE</li>
+</ul>
+<p><strong>–client-cert-auth</strong></p>
+<ul>
+<li>开启客户端证书认证</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_CLIENT_CERT_AUTH</li>
+<li>CN 权限认证不支持gRPC-网关</li>
+</ul>
+<p><strong>–client-crl-file</strong></p>
+<ul>
+<li>客户端被撤销的TLS证书文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CLIENT_CERT_ALLOWED_HOSTNAME</li>
+</ul>
+<p><strong>–client-cert-allowed-hostname</strong></p>
+<ul>
+<li>允许客户端证书身份验证的TLS名称。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CLIENT_CERT_ALLOWED_HOSTNAME</li>
+</ul>
+<p><strong>–trusted-ca-file</strong></p>
+<ul>
+<li>客户端服务器受信任的TLS CA证书文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_TRUSTED_CA_FILE</li>
+</ul>
+<p><strong>–auto-tls</strong></p>
+<ul>
+<li>客户端TLS使用自动生成的证书</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_AUTO_TLS</li>
+</ul>
+<p><strong>–peer-ca-file</strong><br><strong>已淘汰</strong></p>
+<ul>
+<li>节点TLS CA文件的路径.<code>--peer-ca-file</code>可以替换为<code>--peer-trusted-ca-file ca.crt --peer-client-cert-auth</code>，而etcd将执行相同的操作。</li>
+<li>默认值：”“</li>
+<li>环境变量：ETCD_PEER_CA_FILE</li>
+</ul>
+<p><strong>–peer-cert-file</strong></p>
+<ul>
+<li>对等服务器TLS证书文件的路径。 这是对等节点通信证书，在服务器和客户端都可以使用。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_CERT_FILE</li>
+</ul>
+<p><strong>–peer-key-file</strong></p>
+<ul>
+<li>对等服务器TLS秘钥文件的路径。 这是对等节点通信秘钥，在服务器和客户端都可以使用。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_KEY_FILE</li>
+</ul>
+<p><strong>–peer-client-cert-auth</strong></p>
+<ul>
+<li>启动节点客户端证书认证</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_PEER_CLIENT_CERT_AUTH</li>
+</ul>
+<p><strong>–peer-crl-file</strong></p>
+<ul>
+<li>节点被撤销的TLS证书文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_CRL_FILE</li>
+</ul>
+<p><strong>–peer-trusted-ca-file</strong></p>
+<ul>
+<li>节点受信任的TLS CA证书文件的路径</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_TRUSTED_CA_FILE</li>
+</ul>
+<p><strong>–peer-auto-tls</strong></p>
+<ul>
+<li>节点使用自动生成的证书</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_PEER_AUTO_TLS</li>
+</ul>
+<p><strong>–peer-cert-allowed-cn</strong></p>
+<ul>
+<li>允许使用CommonName进行对等身份验证。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_CERT_ALLOWED_CN</li>
+</ul>
+<p><strong>–peer-cert-allowed-hostname</strong></p>
+<ul>
+<li>允许的TLS证书名称用于对等身份验证。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_PEER_CERT_ALLOWED_HOSTNAME</li>
+</ul>
+<p><strong>–cipher-suites</strong></p>
+<ul>
+<li>以逗号分隔的服务器/客户端和对等方之间受支持的TLS密码套件列表。</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_CIPHER_SUITES</li>
+</ul>
+<h2 id="日志参数"><a href="#日志参数" class="headerlink" title="日志参数"></a>日志参数</h2><hr>
+<p><strong>–logger</strong></p>
+<p><strong>v3.4可以使用，警告：<code>--logger=capnslog</code>在v3.5被抛弃使用</strong></p>
+<ul>
+<li>指定“ zap”用于结构化日志记录或“ capnslog”。 </li>
+<li>默认值：capnslog</li>
+<li>环境变量：ETCD_LOGGER</li>
+</ul>
+<p><strong>–log-outputs</strong></p>
+<ul>
+<li>指定“ stdout”或“ stderr”以跳过日志记录，即使在systemd或逗号分隔的输出目标列表下运行时也是如此。</li>
+<li>默认值：defalut</li>
+<li>环境变量：ETCD_LOG_OUTPUTS</li>
+<li><code>default</code>在zap logger迁移期间对v3.4使用<code>stderr</code>配置</li>
+</ul>
+<p><strong>–log-level</strong><br><strong>v3.4可以使用</strong></p>
+<ul>
+<li>配置日志等级，仅支持<code>debug,info,warn,error,panic,fatal</code></li>
+<li>默认值：info</li>
+<li>环境变量：ETCD_LOG_LEVEL</li>
+<li><code>default</code>使用<code>info</code>.</li>
+</ul>
+<p><strong>–debug</strong><br><strong>警告：在v3.5被抛弃使用</strong></p>
+<ul>
+<li>将所有子程序包的默认日志级别降为DEBUG。</li>
+<li>默认值：false(所有的包使用INFO)</li>
+<li>环境变量：ETCD_DEBUG</li>
+</ul>
+<p><strong>–log-package-levels</strong><br><strong>警告：在v3.5被抛弃使用</strong></p>
+<ul>
+<li>将各个etcd子软件包设置为特定的日志级别。 一个例子是<code>etcdserver = WARNING，security = DEBUG</code></li>
+<li>默认值：””(所有的包使用INFO)</li>
+<li>环境变量：ETCD_LOG_PACKAGE_LEVELS</li>
+</ul>
+<h2 id="风险参数"><a href="#风险参数" class="headerlink" title="风险参数"></a>风险参数</h2><hr>
+<p>使用不安全标志时请小心，因为它将破坏共识协议提供的保证。 例如，如果群集中的其他成员仍然存在，可能会<code>panic</code>。 使用这些标志时，请遵循说明。<br><strong>–force-new-cluster</strong></p>
+<ul>
+<li>强制创建一个新的单成员群集。 它提交配置更改，以强制删除群集中的所有现有成员并添加自身，但是强烈建议不要这样做。 请查看<a href="">灾难恢复文档</a>以了解首选的v3恢复过程。</li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_FORCE_NEW_CLUSTER</li>
+</ul>
+<h2 id="杂项参数"><a href="#杂项参数" class="headerlink" title="杂项参数"></a>杂项参数</h2><hr>
+<p><strong>–version</strong></p>
+<ul>
+<li>打印版本并退出</li>
+<li>默认值：false</li>
+</ul>
+<p><strong>–config-file</strong></p>
+<ul>
+<li>从文件加载服务器配置。 请注意，如果提供了配置文件，则其他命令行标志和环境变量将被忽略。</li>
+<li>默认值：””</li>
+<li>示例：<a href="https://github.com/etcd-io/etcd/blob/master/etcd.conf.yml.sample" target="_blank" rel="noopener">配置文件示例</a></li>
+<li>环境变量：ETCD_CONFIG_FILE</li>
+</ul>
+<h2 id="分析参数"><a href="#分析参数" class="headerlink" title="分析参数"></a>分析参数</h2><hr>
+<p><strong>–enable-pprof</strong></p>
+<ul>
+<li>通过HTTP服务器启用运行时分析数据。地址位于客户端<code>URL+“/debug/pprof/”</code></li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_ENABLE_PPROF</li>
+</ul>
+<p><strong>–metrics</strong></p>
+<ul>
+<li>设置导出指标的详细程度，specify ‘extensive’ to include server side grpc histogram metrics.</li>
+<li>默认值：basic</li>
+<li>环境变量：ETCD_METRICS</li>
+</ul>
+<p><strong>–listen-metrics-urls</strong></p>
+<ul>
+<li>可以响应<code>/metrics</code>和<code>/health</code>端点的其他URL列表</li>
+<li>默认值：””</li>
+<li>环境变量：ETCD_LISTEN_METRICS_URLS</li>
+</ul>
+<h2 id="权限参数"><a href="#权限参数" class="headerlink" title="权限参数"></a>权限参数</h2><hr>
+<p><strong>–auth-token</strong></p>
+<ul>
+<li>指定令牌类型和特定于令牌的选项，特别是对于JWT,格式为<code>type,var1=val1,var2=val2,...</code>,可能的类型是<code>simple</code>或者<code>jwt</code>.对于具体的签名方法jwt可能的变量为<code>sign-method</code>（可能的值为<code>&#39;ES256&#39;, &#39;ES384&#39;, &#39;ES512&#39;, &#39;HS256&#39;, &#39;HS384&#39;, &#39;HS512&#39;, &#39;RS256&#39;, &#39;RS384&#39;, &#39;RS512&#39;, &#39;PS256&#39;, &#39;PS384&#39;,&#39;PS512&#39;</code>）</li>
+<li>对于非对称算法（“ RS”，“ PS”，“ ES”），公钥是可选的，因为私钥包含足够的信息来签名和验证令牌。<code>pub-key</code>用于指定用于验证jwt的公钥的路径,<code>priv-key</code>用于指定用于对jwt进行签名的私钥的路径，<code>ttl</code>用于指定jwt令牌的TTL。</li>
+<li>JWT的示例选项：<code>-auth-token jwt，pub-key=app.rsa.pub，privkey=app.rsasign-method = RS512，ttl = 10m</code></li>
+<li>默认值：”simple”</li>
+<li>环境变量：ETCD_AUTH_TOKEN</li>
+</ul>
+<p><strong>–bcrypt-cost</strong></p>
+<ul>
+<li>指定用于哈希认证密码的bcrypt算法的成本/强度。 有效值在4到31之间。</li>
+<li>默认值：10</li>
+<li>环境变量：(不支持)</li>
+</ul>
+<h2 id="实验参数"><a href="#实验参数" class="headerlink" title="实验参数"></a>实验参数</h2><hr>
+<p><strong>–experimental-corrupt-check-time</strong></p>
+<ul>
+<li>群集损坏检查通过之间的时间间隔</li>
+<li>默认值：0s</li>
+<li>环境变量：ETCD_EXPERIMENTAL_CORRUPT_CHECK_TIME</li>
+</ul>
+<p><strong>–experimental-compaction-batch-limit</strong></p>
+<ul>
+<li>设置每个压缩批处理中删除的最大修订。</li>
+<li>默认值：1000</li>
+<li>环境变量：ETCD_EXPERIMENTAL_COMPACTION_BATCH_LIMIT</li>
+</ul>
+<p><strong>–experimental-peer-skip-client-san-verification</strong></p>
+<ul>
+<li>跳过客户端证书中对等连接的SAN字段验证。 这可能是有帮助的，例如 如果群集成员在NAT后面的不同网络中运行。在这种情况下，请确保使用基于私有证书颁发机构的对等证书.<code>--peer-cert-file, --peer-key-file, --peer-trusted-ca-file</code></li>
+<li>默认值：false</li>
+<li>环境变量：ETCD_EXPERIMENTAL_PEER_SKIP_CLIENT_SAN_VERIFICATION</li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "配置参数&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
