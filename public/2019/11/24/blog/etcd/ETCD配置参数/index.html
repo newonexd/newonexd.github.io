@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -201,7 +201,7 @@
 </ul>
 <p><strong>–election-timeout</strong></p>
 <ul>
-<li>选举超时时间(毫秒为单位)，从<a href="">文档/tuning.md</a>发现更多细节</li>
+<li>选举超时时间(毫秒为单位)，从<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md" target="_blank" rel="noopener">文档/tuning.md</a>发现更多细节</li>
 <li>默认值：”1000”</li>
 <li>环境变量：ETCD_ELECTION_TIMEOUT</li>
 </ul>
@@ -296,7 +296,7 @@
 <li>环境变量：ETCD_GRPC_KEEPALIVE_TIMEOUT</li>
 </ul>
 <h2 id="集群参数"><a href="#集群参数" class="headerlink" title="集群参数"></a>集群参数</h2><hr>
-<p><code>--initial-advertise-peer-urls</code>,<code>--initial-cluster</code>,<code>--initial-cluster-state</code>,和<code>--initial-cluster-token</code>参数用于启动(<a href="">静态启动</a>,<a href="">发现服务启动</a>或者<a href="">运行时重新配置</a>)一个新成员，当重启已经存在的成员时将忽略。<br>前缀为<code>--discovery</code>的参数在使用<a href="">发现服务</a>时需要被设置。</p>
+<p><code>--initial-advertise-peer-urls</code>,<code>--initial-cluster</code>,<code>--initial-cluster-state</code>,和<code>--initial-cluster-token</code>参数用于启动(<a href="">静态启动</a>,<a href="">发现服务启动</a>或者<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>)一个新成员，当重启已经存在的成员时将忽略。<br>前缀为<code>--discovery</code>的参数在使用<a href="https://newonexd.github.io/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">发现服务</a>时需要被设置。</p>
 <p><strong>–initial-advertise-peer-urls</strong></p>
 <ul>
 <li>此成员的对等URL的列表，以通告到集群的其余部分。 这些地址用于在集群周围传送etcd数据。 所有集群成员必须至少有一个路由。 这些URL可以包含域名。</li>

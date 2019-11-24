@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<strong>集群</strong>部分。</p>
+            <h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">集群</a>部分。</p>
 <h3 id="本地单节点集群"><a href="#本地单节点集群" class="headerlink" title="本地单节点集群"></a>本地单节点集群</h3><h5 id="启动一个集群"><a href="#启动一个集群" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>运行以下命令来部署一个单节点的etcd集群:</p>
 <pre><code>$ ./etcd
 ...</code></pre><p>如果<code>etcd</code>二进制文件不在当前工作目录，那可能位于<code>$GOPATH/bin/etcd</code>或者是<code>/usr/local/bin/etcd</code>.合适地运行命令。<br>运行的<code>etcd</code>成员在<code>localhost:2379</code>监听客户端的请求。</p>
@@ -229,7 +229,7 @@ hello</code></pre></li>
 Error:  grpc: timed out trying to connect</code></pre></li>
 <li>重启停止的成员：<pre><code>$ goreman run restart etcd2</code></pre></li>
 <li>从重启的成员处获取键：<pre><code>$ etcdctl --endpoints=localhost:22379 get key
-hello</code></pre>重启的成员重新建立了连接.<code>etcdctl</code>将能够成功地从重启的成员处接受键,读<a href="与etcd进行交互.md">与etcd进行交互</a>部分学习更多关于与etcd交互的内容。</li>
+hello</code></pre>重启的成员重新建立了连接.<code>etcdctl</code>将能够成功地从重启的成员处接受键,读<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">与etcd进行交互</a>部分学习更多关于与etcd交互的内容。</li>
 </ol>
 
             <hr>

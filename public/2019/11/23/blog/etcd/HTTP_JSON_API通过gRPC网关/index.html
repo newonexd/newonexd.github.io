@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的<strong>Go客户端</strong>和一个命令行工具，<strong>etcdctl</strong>,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON <strong>gRPC网关</strong>，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。</p>
+            <p>etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的<a href="">Go客户端</a>和一个命令行工具，<a href="">etcdctl</a>,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON <a href="">gRPC网关</a>，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。</p>
 <h3 id="使用-gRPC网关"><a href="#使用-gRPC网关" class="headerlink" title="使用 gRPC网关"></a>使用 gRPC网关</h3><p>这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意<code>Key</code>和<code>Value</code>字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用<code>curl</code>,但是每个HTTP/JSON客户端的工作原理都和例子相同。<br><strong>注意</strong><br>gRPC网关节点从etcd v3.3发生变化：</p>
 <ul>
 <li>etcd v3.2以及之前版本只使用<code>[CLIENT-URL]/v3alpha/*</code>。</li>

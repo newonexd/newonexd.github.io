@@ -11,9 +11,9 @@
 # 全局
 # Site
 #---------------------------
-favicon: /img/favicon.png # 网站标签页的 icon
+favicon: /img/icon.jpg # 网站标签页的 icon
 
-apple_touch_icon: /img/apple-touch-icon.png # 用于苹果设备的 icon
+apple_touch_icon: /img/icon.jpg # 用于苹果设备的 icon
 
 title_join_string: ' ~ '  # 浏览器标签页中的标题分隔符，效果： 文章名 ~ 站点名
 
@@ -251,9 +251,9 @@ tag:
 #---------------------------
 about:  # 以下仅为页面顶部的基本信息，更多内容请在 ./pages/about.md 中编辑，支持 markdown 和 HTML
   md_path: ./pages/about.md  # 关于页文档的相对路径，可以按相对文档设置主题之外的路径，从而避免更新冲突
-  banner_img: /img/default.png
+  banner_img: /img/index1.png
   banner_img_height: 80  # available: 0 - 100
-  avatar: /img/avatar.png # 头像
+  avatar: /img/icon.jpg # 头像
   name: 任晓东
   introduce: 学生 / 学生 / 还是学生 # 支持 HTML
   icons: # 更多图标可从 https://fontawesome.com/icons 查找，并以 "图标名: url" 的格式添加在下方

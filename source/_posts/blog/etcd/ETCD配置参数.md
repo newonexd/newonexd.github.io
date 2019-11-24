@@ -53,7 +53,7 @@ etcd通过配置文件，多命令行参数和环境变量进行配置，
 
 **--election-timeout**
 
-* 选举超时时间(毫秒为单位)，从[文档/tuning.md]()发现更多细节
+* 选举超时时间(毫秒为单位)，从[文档/tuning.md](https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md)发现更多细节
 * 默认值："1000"
 * 环境变量：ETCD_ELECTION_TIMEOUT
 
@@ -159,8 +159,8 @@ etcd通过配置文件，多命令行参数和环境变量进行配置，
 ## 集群参数
 
 * * *
-`--initial-advertise-peer-urls`,`--initial-cluster`,`--initial-cluster-state`,和`--initial-cluster-token`参数用于启动([静态启动](),[发现服务启动]()或者[运行时重新配置]())一个新成员，当重启已经存在的成员时将忽略。
-前缀为`--discovery`的参数在使用[发现服务]()时需要被设置。
+`--initial-advertise-peer-urls`,`--initial-cluster`,`--initial-cluster-state`,和`--initial-cluster-token`参数用于启动([静态启动](),[发现服务启动]()或者[运行时重新配置](https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/))一个新成员，当重启已经存在的成员时将忽略。
+前缀为`--discovery`的参数在使用[发现服务](https://newonexd.github.io/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/)时需要被设置。
 
 **--initial-advertise-peer-urls**
 

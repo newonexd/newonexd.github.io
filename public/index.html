@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -129,6 +129,199 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/%E8%AF%8D%E6%B1%87%E8%A1%A8/">
+        <p class="h4 index-header">词汇表</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">本文档定义了etcd文档，命令行和源代码中使用的各种术语。
+Alarm
+每当集群需要操作员干预以保持可靠性时，etcd服务器都会发出警报。
+Authentication
+身份验证管理etcd资源的用户访问权限。
+Client
+客户端连接到etcd集群以发出服务请求，例如获取键值对，写入数据或监视更新。
+Cluster
+集群由几个成员组成。
+每个成员中的节点均遵循Raft共识协议来复制日志。 集群从成员那里接收提议，将它们提交并应用于本地存储。
+Compaction
+在给定修订之前，压缩会丢弃所有etcd事件历史记录和取代的密钥。 它用于回收etcd后端数据库中的存储空间。
+Election
+etcd集群在其成员之间举行选举，以选择一名领导人作为Raft共识协议的一部分。
+Endpoint
+指向etcd服务或资源的URL。
+Key
+用户定义的标识符，用于在etcd中存储和检索用户定义的值。
+Key range
+包含单个键，所有x的词法间隔（例如a &lt;x &lt;= b）或大于给定键的所有键的一组键。
+Keyspace
+etcd集群中所有键的集合。
+Lease
+短期可再生合同，在合同</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%86%85%E8%BF%90%E8%A1%8Cetcd%E9%9B%86%E7%BE%A4/">
+        <p class="h4 index-header">在容器中运行etcd集群</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">以下指南显示了如何使用静态引导过程在rkt和Docker上运行etcd。
+rkt
+运行单节点的etcd以下rkt run命令将在端口2379上公开etcd客户端API，并在端口2380上公开对等API。
+配置etcd时使用主机IP地址。
+export NODE1=192.168.1.21信任CoreOS App签名密钥。
+sudo rkt trust --prefix quay.io/coreos/etcd
+# gpg key fingerprint is: 18AD 5014 C99E F7E3 BA5F  6CE9 50BD D3E0 FC8A 365E运行etcd v3.2版本或指定其他发行版本。
+sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -advertise-client-urls=http://${NODE1}:2379 -initial-advertise-peer-urls=http://${NODE1}:2380 -listen-client-urls=h</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">
+        <p class="h4 index-header">etcd网关</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是etcd网关
+etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。网关是无状态且透明的； 它既不会检查客户端请求，也不会干扰群集响应。网关支持多个etcd服务器端点，并采用简单的循环策略。 它仅路由到可用端点，并向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
+什么时候使用etcd网关
+每个访问etcd的应用程序必须首先具有etcd集群客户端端点的地址。 如果同一服务器上的多个应用程序访问相同的etcd集群，则每个应用程序仍需要知道etcd集群的广播的客户端端点。 如果将etcd集群重新配置为具有不同的端点，则每个应用程序可能还需要更新其端点列表。 这种大规模的重新配置既乏味又容易出错。etcd网关通过充当稳定的本地端点来解决此问题。 典型的etcd网关配置是，每台计算机运行一台网关，侦听本地地址，并且每个etcd应用程序都连接到其本地网关。 结果只是网关需要更新其端点，而不是更新每个应用程序。总之，为了自动传播集群端点更改，etcd网关在为访问同一etcd集群的多个应用程序服务的每台机器上运行。
+什么时候不该使用etcd网关
+提升性能该网关不是为</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">
+        <p class="h4 index-header">gRPC代理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
+可扩展的监视 API
+gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。
+            +---</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/%E5%AE%9E%E9%AA%8C%E7%89%B9%E6%80%A7%E5%92%8CAPIs/">
+        <p class="h4 index-header">实验特性和APIs</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">大多数情况下，etcd项目是稳定的，但我们仍在快速发展！ 我们相信快速发布理念。 我们希望获得有关仍在开发和稳定中的功能的早期反馈。 因此，存在并且将会有更多的实验性功能和API。 我们计划根据社区的早期反馈来改进这些功能，如果兴趣不足，请在接下来的几个版本中放弃这些功能。 请不要在生产环境中依赖任何实验性功能或API。
+当前实验API/特性是：
+
+键值对排序包装器：当etcd客户端切换端点时，如果新端点落后于集群的其余部分，则对可序列化读取的响应可能推迟。排序包装器从响应标头缓存当前集群修订版。 如果响应修订版本小于缓存修订版本，则客户端选择另一个端点并重新发出读取。在grpcproxy中启动--experimental-serializable-ordering.
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
   <div class="row mb-4 mx-auto">
     
@@ -290,195 +483,6 @@ deb http://mirrors.aliyu</div>
 本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
 循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
 改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但需要权衡降低弹性。写入集群之前，会将其复制到集群的大多数</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">
-        <p class="h4 index-header">HTTP_JSON_API通过gRPC网关</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。
-使用 gRPC网关这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意Key和Value字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用curl,但是每个HTTP/JSON客户端的工作原理都和例子相同。注意gRPC网关节点从etcd v3.3发生变化：
-
-etcd v3.2以及之前版本只使用[CLIENT-URL]/v3alpha/*。
-etcd v3.3使用[CLIENT-URL]/v3beta/*保持[CLIENT-URL]/v3alpha/*使用。
-etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-URL]/v3beta/*使用。
-[CLIENT-URL]/v3alpha/*被抛弃使用。</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">
-        <p class="h4 index-header">gRPC命名与发现</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。通过go-grpc使用etcd发现服务
-
-etcd客户端提供一个gRPC解析器通过etcd后端解析gRPC主机,解析器通过etcd客户端初始化并指定了解析目标:
-import (
-        &quot;go.etcd.io/etcd/clientv3&quot;
-        etcdnaming &quot;go.etcd.io/etcd/clientv3/naming&quot;
-
-        &quot;google.golang.org/grpc&quot;
-)
-
-...
-
-cli, cerr := clientv3.NewFromURL(&quot;http://localhost:2379&quot;)
-r := &amp;etcdnaming.GRPCResolver{Client: cli}
-b := grpc.RoundRobin(r)
-conn, gerr := grpc.Dial(&quot;my-serv</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AE%BE%E8%AE%A1/">
-        <p class="h4 index-header">运行时重新配置设计</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.
-两阶段配置更新保证集群安全
-在etcd中，每一次运行时重新配置安全的原因是由于两阶段更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。
-
-阶段一 通知集群关于新的配置添加一个成员到etcd集群中，通过API调用请求将一个新成员添加到集群中。这是将新的成员添加到集群中唯一的方法。当集群同意配置的更新后将返回API的调用。
-阶段二 启动一个新的成员将一个新成员加入到存在的集群中，指定正确的initial-cluster和设置initial-cluster-state为existing.当成员启动后，它首先联系已存在的集群并验证当前集群配置是否和期望的initial-cluster匹配。当一个新的成员成功启动，集群将获得期望的配置。
-
-用户将过程分为两个阶段需要清楚了解集群成员关系的变化。实际上，这为用户提供了更大的灵活性，并使事情更容易。例如，如果试图添加一个与集群中现有的成员Id相同的新成员到集群中，操作将会立即失败由</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">
-        <p class="h4 index-header">与etcd进行交互</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">与etcd进行交互用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。用于与etcd交互的API版本可以通过环境变量ETCDCTL_API设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API etcdctl get获取V2 的Key将返回0并退出，这是预料之中的情况。
-export ETCDCTL_API=3发现版本使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。这里的命令可用于发现版本信息：
-$ etcdctl version
-etcdctl version:3.1.0-alpha.0+git
-API version:3.1写入一个KEY应用程序通过向etcd集群写入Keys来存储Keys，每次存储的Ke</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%AE%A2%E6%88%B7%E7%AB%AFv3/">
-        <p class="h4 index-header">客户端v3</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd/clientv3是v3版本的Go etcd官方客户端
-安装
-go get go.etcd.io/etcd/clientv3开始
-创建客户端使用clientv3.New:
-cli, err := clientv3.New(clientv3.Config{
-    Endpoints:   []string{&quot;localhost:2379&quot;, &quot;localhost:22379&quot;, &quot;localhost:32379&quot;},
-    DialTimeout: 5 * time.Second,
-})
-if err != nil {
-    // handle error!
-}
-defer cli.Close()etcd v3使用gRPC进行远程程序调用，并且clientv3使用grpc-go连接etcd。确保在使用完客户端后关闭它，如果客户端没有关闭，连接将会有泄漏的goroutines。指定超时时间，通过context.WithTimeout使用APIs:
-ctx, cancel := context.WithTimeout(</div>
         </div>
       </a>
 
