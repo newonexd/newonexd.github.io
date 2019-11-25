@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>etcd通过配置文件，多命令行参数和环境变量进行配置，</p>
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md" target="_blank" rel="noopener">Configuration flags</a><br>etcd通过配置文件，多命令行参数和环境变量进行配置，</p>
 <p>可重用的配置文件是YAML文件，其名称和值由一个或多个下面描述的命令行标志组成。为了使用此文件，请将文件路径指定为<code>--config-file</code>标志或<code>ETCD_CONFIG_FILE</code>环境变量的值。如果需要的话<a href="https://github.com/etcd-io/etcd/blob/master/etcd.conf.yml.sample" target="_blank" rel="noopener">配置文件示例</a>可以作为入口点创建新的配置文件。</p>
 <p>在命令行上设置的选项优先于环境中的选项。 如果提供了配置文件，则其他命令行标志和环境变量将被忽略。例如，<code>etcd --config-file etcd.conf.yml.sample --data-dir /tmp</code>将会忽略<code>--data-dir</code>参数。</p>
 <p>参数<code>--my-flag</code>的环境变量的格式为<code>ETCD_MY_FLAG</code>.它适用于所有参数。</p>

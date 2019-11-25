@@ -3,6 +3,7 @@ title: gRPC命名与发现
 date: 2019-11-23 12:32:31
 tags: etcd
 ---
+原文地址:[gRPC naming and discovery](https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/grpc_naming.md)
 etcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。
 通过go-grpc使用etcd发现服务
 

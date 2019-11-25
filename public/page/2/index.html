@@ -134,6 +134,40 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">
+        <p class="h4 index-header">运行时重新配置</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：runtime reconfigurationetcd带有增量运行时重新配置的支持。允许我们在集群运行的时候更新集群成员关系。仅当大多数集群成员都在运行时，才能处理重新配置请求，强烈建议在生产环境中集群的大小应该始终大于2。从两个成员的集群中移除一个成员是不安全的。两个成员的集群中大多数成员始终是2，如果在删除过程中出现故障，集群将很难继续运行需要重新从主要成员失败中重新启动集群。为了更好的理解运行时重新配置设计，请阅读运行时重新配置设计。
+重新配置使用案例
+本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
+循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
+改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">
         <p class="h4 index-header">HTTP_JSON_API通过gRPC网关</p>
         
@@ -141,13 +175,12 @@
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。
+          <div class="index-text mb-1">原文地址:HTTP JSON API through the gRPC gatewayetcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。
 使用 gRPC网关这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意Key和Value字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用curl,但是每个HTTP/JSON客户端的工作原理都和例子相同。注意gRPC网关节点从etcd v3.3发生变化：
 
 etcd v3.2以及之前版本只使用[CLIENT-URL]/v3alpha/*。
 etcd v3.3使用[CLIENT-URL]/v3beta/*保持[CLIENT-URL]/v3alpha/*使用。
-etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-URL]/v3beta/*使用。
-[CLIENT-URL]/v3alpha/*被抛弃使用。</div>
+etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-UR</div>
         </div>
       </a>
 
@@ -177,7 +210,7 @@ etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-URL]/v3beta/*使用。
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。通过go-grpc使用etcd发现服务
+          <div class="index-text mb-1">原文地址:gRPC naming and discoveryetcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。通过go-grpc使用etcd发现服务
 
 etcd客户端提供一个gRPC解析器通过etcd后端解析gRPC主机,解析器通过etcd客户端初始化并指定了解析目标:
 import (
@@ -192,7 +225,7 @@ import (
 cli, cerr := clientv3.NewFromURL(&quot;http://localhost:2379&quot;)
 r := &amp;etcdnaming.GRPCResolver{Client: cli}
 b := grpc.RoundRobin(r)
-conn, gerr := grpc.Dial(&quot;my-serv</div>
+conn, g</div>
         </div>
       </a>
 
@@ -222,14 +255,14 @@ conn, gerr := grpc.Dial(&quot;my-serv</div>
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.
+          <div class="index-text mb-1">原文地址:the runtime configuration design运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.
 两阶段配置更新保证集群安全
 在etcd中，每一次运行时重新配置安全的原因是由于两阶段更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。
 
 阶段一 通知集群关于新的配置添加一个成员到etcd集群中，通过API调用请求将一个新成员添加到集群中。这是将新的成员添加到集群中唯一的方法。当集群同意配置的更新后将返回API的调用。
 阶段二 启动一个新的成员将一个新成员加入到存在的集群中，指定正确的initial-cluster和设置initial-cluster-state为existing.当成员启动后，它首先联系已存在的集群并验证当前集群配置是否和期望的initial-cluster匹配。当一个新的成员成功启动，集群将获得期望的配置。
 
-用户将过程分为两个阶段需要清楚了解集群成员关系的变化。实际上，这为用户提供了更大的灵活性，并使事情更容易。例如，如果试图添加一个与集群中现有的成员Id相同的新成员到集群中，操作将会立即失败由</div>
+用户将过程分为两个阶段需要清楚了解集群成员关系的变化。实际上，这为用户提供了更大的灵活性，并使事情更容易。例如，如果</div>
         </div>
       </a>
 
@@ -259,11 +292,12 @@ conn, gerr := grpc.Dial(&quot;my-serv</div>
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">与etcd进行交互用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。用于与etcd交互的API版本可以通过环境变量ETCDCTL_API设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API etcdctl get获取V2 的Key将返回0并退出，这是预料之中的情况。
+          <div class="index-text mb-1">原文地址：Interacting with etcd
+与etcd进行交互用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。用于与etcd交互的API版本可以通过环境变量ETCDCTL_API设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API etcdctl get获取V2 的Key将返回0并退出，这是预料之中的情况。
 export ETCDCTL_API=3发现版本使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。这里的命令可用于发现版本信息：
 $ etcdctl version
 etcdctl version:3.1.0-alpha.0+git
-API version:3.1写入一个KEY应用程序通过向etcd集群写入Keys来存储Keys，每次存储的Ke</div>
+API version:3.1写入一个KEY应用程序通过向</div>
         </div>
       </a>
 
@@ -293,7 +327,7 @@ API version:3.1写入一个KEY应用程序通过向etcd集群写入Keys来存储
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">etcd/clientv3是v3版本的Go etcd官方客户端
+          <div class="index-text mb-1">原文地址：etcd/clientv3etcd/clientv3是v3版本的Go etcd官方客户端
 安装
 go get go.etcd.io/etcd/clientv3开始
 创建客户端使用clientv3.New:
@@ -305,7 +339,7 @@ if err != nil {
     // handle error!
 }
 defer cli.Close()etcd v3使用gRPC进行远程程序调用，并且clientv3使用grpc-go连接etcd。确保在使用完客户端后关闭它，如果客户端没有关闭，连接将会有泄漏的goroutines。指定超时时间，通过context.WithTimeout使用APIs:
-ctx, cancel := context.WithTimeout(</div>
+ctx, cancel := co</div>
         </div>
       </a>
 
@@ -335,7 +369,8 @@ ctx, cancel := context.WithTimeout(</div>
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">总览
+          <div class="index-text mb-1">原文地址:cluster on multiple machines
+总览
 启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。一旦etcd集群已经启动，添加或移除成员可以通过运行时重新配置。在运行时重新配置之前，为了更好地理解设计，我们建议读运行时重新配置设计文档。这篇引导etcd集群的启动将包括以下机制：
 
 静态
@@ -368,7 +403,7 @@ infra2.example.com
 
 
 静态集群的成员，在启动之前它们的地址和集群的大小，我们可以通过设置initial-cluster参数使用离线的启动配置。每一个机器将会通过以下的环境变量或命令行获得配置信息：
-ETCD_INITIAL_CLUSTER=&quot;infra0=http</div>
+ETCD</div>
         </div>
       </a>
 
@@ -398,7 +433,8 @@ ETCD_INITIAL_CLUSTER=&quot;infra0=http</div>
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。
+          <div class="index-text mb-1">原文地址：Setting up local clusters
+设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。
 本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群:
 $ ./etcd
 ...如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH/bin/etcd或者是/usr/local/bin/etcd.合适地运行命令。运行的etcd成员在localhost:2379监听客户端的请求。
@@ -407,8 +443,7 @@ $ ./etcdctl put foo bar
 OK如果OK被打印在控制台，说明已经成功存储Key-Value对。    2.     获取键foo对应的值：
 $ ./etcdctl get foo
 bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同。
-本地多节点集群启动一个集群在etcd的git仓库中存在一个Procfile文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群之前，将工作目录导向etcd的根目录并执行以下操作：
-1.  </div>
+本地多节点集群启动一个集群在etcd的git仓库中存在一个Procfile文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群</div>
         </div>
       </a>
 
@@ -438,7 +473,8 @@ bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同�
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">文档
+          <div class="index-text mb-1">原文地址：Documentation
+文档
 etcd是一个分布式键值对存储，被设计为可靠的，快速的保存并提供对关键数据的访问。通过分布式锁，领导选举和写屏障使能分布式一致性。一个etcd集群旨在实现高可用和持久性数据存储与检索。
 开始
 使用etcd进行开发
@@ -485,8 +521,7 @@ TLS
 维护
 失败模式
 容灾恢复
-更新学习资料要了解有关etcd的概念和内部知识的更多信息，请阅读以下页面：
-</div>
+更新学习资料要了解有关etcd的概念和</div>
         </div>
       </a>
 

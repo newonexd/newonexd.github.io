@@ -161,7 +161,8 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h2 id="与etcd进行交互"><a href="#与etcd进行交互" class="headerlink" title="与etcd进行交互"></a>与etcd进行交互</h2><p>用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。<br>用于与etcd交互的API版本可以通过环境变量<code>ETCDCTL_API</code>设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。<br>注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API <code>etcdctl get</code>获取V2 的Key将返回0并退出，这是预料之中的情况。</p>
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/interacting_v3.md" target="_blank" rel="noopener">Interacting with etcd</a></p>
+<h2 id="与etcd进行交互"><a href="#与etcd进行交互" class="headerlink" title="与etcd进行交互"></a>与etcd进行交互</h2><p>用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。<br>用于与etcd交互的API版本可以通过环境变量<code>ETCDCTL_API</code>设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。<br>注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API <code>etcdctl get</code>获取V2 的Key将返回0并退出，这是预料之中的情况。</p>
 <pre><code>export ETCDCTL_API=3</code></pre><h3 id="发现版本"><a href="#发现版本" class="headerlink" title="发现版本"></a>发现版本</h3><p>使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。<br>这里的命令可用于发现版本信息：</p>
 <pre><code>$ etcdctl version
 etcdctl version:3.1.0-alpha.0+git

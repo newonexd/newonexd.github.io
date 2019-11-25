@@ -3,6 +3,7 @@ title: 配置参数
 date: 2019-11-24 11:29:53
 tags: etcd
 ---
+原文地址：[Configuration flags](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md)
 etcd通过配置文件，多命令行参数和环境变量进行配置，
 
 可重用的配置文件是YAML文件，其名称和值由一个或多个下面描述的命令行标志组成。为了使用此文件，请将文件路径指定为`--config-file`标志或`ETCD_CONFIG_FILE`环境变量的值。如果需要的话[配置文件示例](https://github.com/etcd-io/etcd/blob/master/etcd.conf.yml.sample)可以作为入口点创建新的配置文件。

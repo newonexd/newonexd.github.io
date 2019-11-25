@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。<br>阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.</p>
+            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-reconf-design.md" target="_blank" rel="noopener">the runtime configuration design</a><br>运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。<br>阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.</p>
 <h3 id="两阶段配置更新保证集群安全"><a href="#两阶段配置更新保证集群安全" class="headerlink" title="两阶段配置更新保证集群安全"></a>两阶段配置更新保证集群安全</h3><hr>
 <p>在etcd中，每一次运行时重新配置安全的原因是由于两阶段更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。</p>
 <ol>

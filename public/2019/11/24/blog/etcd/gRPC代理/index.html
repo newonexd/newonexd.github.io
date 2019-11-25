@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。<br>gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。</p>
+            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/grpc_proxy.md" target="_blank" rel="noopener">gRPC proxy</a><br>gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。<br>gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。</p>
 <h2 id="可扩展的监视-API"><a href="#可扩展的监视-API" class="headerlink" title="可扩展的监视 API"></a>可扩展的监视 API</h2><hr>
 <p>gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。<br>假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。<br>在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。</p>
 <pre><code>            +-------------+

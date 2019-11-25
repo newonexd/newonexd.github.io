@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    781 字
+                    789 字
                   </span>&nbsp;
                 
 
@@ -161,7 +161,8 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">集群</a>部分。</p>
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/local_cluster.md" target="_blank" rel="noopener">Setting up local clusters</a></p>
+<h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">集群</a>部分。</p>
 <h3 id="本地单节点集群"><a href="#本地单节点集群" class="headerlink" title="本地单节点集群"></a>本地单节点集群</h3><h5 id="启动一个集群"><a href="#启动一个集群" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>运行以下命令来部署一个单节点的etcd集群:</p>
 <pre><code>$ ./etcd
 ...</code></pre><p>如果<code>etcd</code>二进制文件不在当前工作目录，那可能位于<code>$GOPATH/bin/etcd</code>或者是<code>/usr/local/bin/etcd</code>.合适地运行命令。<br>运行的<code>etcd</code>成员在<code>localhost:2379</code>监听客户端的请求。</p>

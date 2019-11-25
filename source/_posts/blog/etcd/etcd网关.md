@@ -3,6 +3,7 @@ title: etcd网关
 date: 2019-11-24 15:24:56
 tags: etcd
 ---
+原文地址:[L4 gateway](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/gateway.md)
 ## 什么是etcd网关
 * * *
 etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。网关是无状态且透明的； 它既不会检查客户端请求，也不会干扰群集响应。

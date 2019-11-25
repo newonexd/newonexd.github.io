@@ -3,6 +3,7 @@ title: 与etcd进行交互
 date: 2019-11-23 12:32:15
 tags: etcd
 ---
+原文地址：[Interacting with etcd](https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/interacting_v3.md)
 ## 与etcd进行交互
 用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。
 用于与etcd交互的API版本可以通过环境变量`ETCDCTL_API`设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。

@@ -3,6 +3,7 @@ title: HTTP_JSON_API通过gRPC网关
 date: 2019-11-23 12:32:38
 tags: etcd
 ---
+原文地址:[HTTP JSON API through the gRPC gateway](https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_grpc_gateway.md)
 etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的[Go客户端]()和一个命令行工具，[etcdctl](),通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON [gRPC网关]()，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。
 ### 使用 gRPC网关
 这个网关接受一个到etcd's buffer协议消息定义的JSON格式的映射,注意`Key`和`Value`字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用`curl`,但是每个HTTP/JSON客户端的工作原理都和例子相同。

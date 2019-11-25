@@ -161,7 +161,8 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><hr>
+            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/clustering.md" target="_blank" rel="noopener">cluster on multiple machines</a></p>
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><hr>
 <p>启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。<br>一旦etcd集群已经启动，添加或移除成员可以通过<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>。在运行时重新配置之前，为了更好地理解设计，我们建议读<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AE%BE%E8%AE%A1/">运行时重新配置设计文档</a>。<br>这篇引导etcd集群的启动将包括以下机制：</p>
 <ul>
 <li><strong>静态</strong></li>
