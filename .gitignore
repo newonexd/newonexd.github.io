@@ -3,3 +3,5 @@ node_modules
 .gitignore
 *.iml
 .idea
+
+deploy.sh

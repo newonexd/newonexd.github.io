@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    3.4k 字
+                    4.6k 字
                   </span>&nbsp;
                 
 
@@ -128,7 +128,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      16 分钟
+                      22 分钟
                   </span>&nbsp;
                 
 
@@ -348,7 +348,78 @@ exit 1</code></pre><p>警告<br>这里有一个严重的警告表明发现服务
   --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
   --advertise-client-urls http://10.0.1.10:2379 \
   --discovery https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de
-etcdserver: discovery token ignored since a cluster has already been initialized. Valid log found at /var/lib/etcd</code></pre><h3 id="DNS-发现服务"><a href="#DNS-发现服务" class="headerlink" title="DNS 发现服务"></a>DNS 发现服务</h3>
+etcdserver: discovery token ignored since a cluster has already been initialized. Valid log found at /var/lib/etcd</code></pre><h3 id="DNS-发现服务"><a href="#DNS-发现服务" class="headerlink" title="DNS 发现服务"></a>DNS 发现服务</h3><p>DNS <a href="http://www.ietf.org/rfc/rfc2052.txt" target="_blank" rel="noopener">SRV 记录</a>可以用来作为发现机制。<code>--discovery-srv</code>参数可用于设置可以找到发现SRV记录的DNS域名。 设置<code>--discovery-srv example.com</code>会导致DNS SRV记录按照列出的顺序进行查找：</p>
+<ul>
+<li>_etcd-server-ssl._tcp.example.com</li>
+<li>_etcd-server._tcp.example.com</li>
+</ul>
+<p>如果找到<code>_etcd-server-ssl._tcp.example.com</code>，则etcd将尝试通过TLS进行引导过程。<br>为了帮助客户端发现etcd集群，按照列出的顺序查找以下DNS SRV记录：</p>
+<ul>
+<li>_etcd-client._tcp.example.com</li>
+<li>_etcd-client-ssl._tcp.example.com</li>
+</ul>
+<p>如果找到了<code>_etcd-client-ssl._tcp.example.com</code>，则客户端将尝试通过SSL/TLS与etcd集群进行通信。<br>如果etcd使用TLS，则发现SRV记录（例如example.com）必须与主机名一起包含在SSL证书DNS SAN中，否则集群将失败，并显示以下日志消息：</p>
+<pre><code>[...] rejected connection from &quot;10.0.1.11:53162&quot; (error &quot;remote error: tls: bad certificate&quot;, ServerName &quot;example.com&quot;)</code></pre><p>如果etcd使用的是没有自定义证书颁发机构的TLS，则发现域（例如example.com）必须与SRV记录域（例如infra1.example.com）匹配。 这是为了缓解伪造SRV记录指向不同域的攻击。 该域将在PKI下拥有有效的证书，但由未知的第三方控制。<br><code>-discovery-srv-name</code>参数还为在发现期间查询的SRV名称配置了后缀。 使用此参数可以区分同一域下的多个etcd集群。 例如，如果设置了<code>Discovery-srv = example.com</code>和<code>-discovery-srv-name = foo</code>，则会进行以下DNS SRV查询：</p>
+<ul>
+<li>_etcd-server-ssl-foo._tcp.example.com</li>
+<li>_etcd-server-foo._tcp.example.com</li>
+</ul>
+<p><strong>创建DNS SRV记录</strong></p>
+<pre><code>$ dig +noall +answer SRV _etcd-server._tcp.example.com
+_etcd-server._tcp.example.com. 300 IN  SRV  0 0 2380 infra0.example.com.
+_etcd-server._tcp.example.com. 300 IN  SRV  0 0 2380 infra1.example.com.
+_etcd-server._tcp.example.com. 300 IN  SRV  0 0 2380 infra2.example.com.</code></pre><pre><code>$ dig +noall +answer SRV _etcd-client._tcp.example.com
+_etcd-client._tcp.example.com. 300 IN SRV 0 0 2379 infra0.example.com.
+_etcd-client._tcp.example.com. 300 IN SRV 0 0 2379 infra1.example.com.
+_etcd-client._tcp.example.com. 300 IN SRV 0 0 2379 infra2.example.com.</code></pre><pre><code>$ dig +noall +answer infra0.example.com infra1.example.com infra2.example.com
+infra0.example.com.  300  IN  A  10.0.1.10
+infra1.example.com.  300  IN  A  10.0.1.11
+infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引导etcd集群</strong><br>etcd群集成员可以公告域名或IP地址，引导过程将解析DNS A记录。 从3.2开始（3.1将显示警告），<code>--listen-peer-urls</code>和<code>--listen-client-urls</code>将拒绝网络接口绑定的域名。<br><code>--initial-advertise-peer-urls</code>中的解析地址必须与SRV目标中的解析地址之一匹配。 etcd成员读取解析的地址，以查找其是否属于SRV记录中定义的集群。</p>
+<pre><code>$ etcd --name infra0 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://infra0.example.com:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://infra0.example.com:2379 \
+--listen-client-urls http://0.0.0.0:2379 \
+--listen-peer-urls http://0.0.0.0:2380</code></pre><pre><code>$ etcd --name infra1 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://infra1.example.com:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://infra1.example.com:2379 \
+--listen-client-urls http://0.0.0.0:2379 \
+--listen-peer-urls http://0.0.0.0:2380</code></pre><pre><code>$ etcd --name infra2 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://infra2.example.com:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://infra2.example.com:2379 \
+--listen-client-urls http://0.0.0.0:2379 \
+--listen-peer-urls http://0.0.0.0:2380</code></pre><p>集群还可以使用IP地址而不是域名进行引导：</p>
+<pre><code>$ etcd --name infra0 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://10.0.1.10:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://10.0.1.10:2379 \
+--listen-client-urls http://10.0.1.10:2379 \
+--listen-peer-urls http://10.0.1.10:2380</code></pre><pre><code>$ etcd --name infra1 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://10.0.1.11:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://10.0.1.11:2379 \
+--listen-client-urls http://10.0.1.11:2379 \
+--listen-peer-urls http://10.0.1.11:2380</code></pre><pre><code>$ etcd --name infra2 \
+--discovery-srv example.com \
+--initial-advertise-peer-urls http://10.0.1.12:2380 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster-state new \
+--advertise-client-urls http://10.0.1.12:2379 \
+--listen-client-urls http://10.0.1.12:2379 \
+--listen-peer-urls http://10.0.1.12:2380</code></pre><p>自从v3.1.0（v3.2.9除外），因此在<code>etcd --discovery-srv = example.com</code>中配置了TLS时，服务器仅在提供的证书具有根域<code>example.com</code>作为<code>Subject Alternative</code>(SAN)字段中的条目时，对等方/客户端进行身份验证。请参阅<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md#notes-for-dns-srv" target="_blank" rel="noopener">DNS SRV的注释</a>。<br><strong>网关</strong><br>etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。 请阅读<a href="https://newonexd.github.io/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">网关指南</a>以获取更多信息。<br><strong>代理</strong><br>设置<code>--proxy</code>参数时，etcd以<a href="">代理模式</a>运行。 此代理模式仅支持etcd v2 API； 目前尚无计划支持v3 API。 相反，为了支持v3 API，etcd 3.0版本之后将提供具有增强功能的新代理。<br>要使用v2 API代理设置etcd集群，请阅读<a href="https://github.com/coreos/etcd/blob/release-2.3/Documentation/clustering.md" target="_blank" rel="noopener">etcd 2.3版本中的集群文档</a>。</p>
+
             <hr>
           </div>
           <br>
