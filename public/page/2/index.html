@@ -134,6 +134,44 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里深入解析Hyperledger Fabric启动的全过程。
+1.搭建Fabric的前置条件为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：
+#首先进行配置文件的备份
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+#编辑配置文件
+sudo vim /etc/apt/sources.list在配置文件中开头添加以下内容(阿里源)：
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyu</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/fabric/Fabric1.4%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2/">
         <p class="h4 index-header">Hyperledger Fabric多机部署</p>
         
@@ -492,89 +530,11 @@ bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同�
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E6%96%87%E6%A1%A3/">
-        <p class="h4 index-header">etcd文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：Documentation
-文档
-etcd是一个分布式键值对存储，被设计为可靠的，快速的保存并提供对关键数据的访问。通过分布式锁，领导选举和写屏障使能分布式一致性。一个etcd集群旨在实现高可用和持久性数据存储与检索。
-开始
-使用etcd进行开发
-一种简单的方式设置本地集群开始使用etcd作为分布式键值对存储
-
-设置本地集群
-与etcd进行交互
-gRPC etcd核心和etcd 并发API参考
-HTTP JSON API 通过gRPC网关
-gRPC命名和发现
-客户端和代理命名空间
-嵌入式etcd
-实验特性和APIs
-系统限制
-
-操作etcd集群
-对开发或者生产环境，管理员需要一个错误容忍etcd集群，从多机集群开始。
-设置etcd
-配置参数
-多成员集群
-gRPC代理
-L4网关
-
-系统配置
-支持的系统
-硬件配置建议
-性能基准测试
-调节
-
-平台引导
-亚马逊Web服务
-Linux容器，systemd
-RessBSD
-Docker容器
-rkt容器
-
-安全
-TLS
-基于角色的访问控制
-
-维护和故障排除
-常见问题
-监控方式
-维护
-失败模式
-容灾恢复
-更新学习资料要了解有关etcd的概念和</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
