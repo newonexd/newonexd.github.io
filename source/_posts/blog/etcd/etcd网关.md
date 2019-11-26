@@ -30,6 +30,7 @@ etcd网关通过充当稳定的本地端点来解决此问题。 典型的etcd�
 |infra0|10.0.1.10|infra0.example.com|
 |infra1|10.0.1.11|infra1.example.com|
 |infra2|10.0.1.12|infra2.example.com|
+
 通过以下命令使用静态端点启动etcd网关:
 ```
 $ etcd gateway start --endpoints=infra0.example.com,infra1.example.com,infra2.example.com

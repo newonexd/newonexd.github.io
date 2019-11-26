@@ -4,7 +4,7 @@ date: 2019-11-24 15:38:50
 tags: etcd
 ---
 原文地址：[Docker container](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/container.md#docker)
-以下指南显示了如何使用[静态引导过程]()在rkt和Docker上运行etcd。
+以下指南显示了如何使用[静态引导过程](https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/)在rkt和Docker上运行etcd。
 ## **rkt**
 * * *
 **运行单节点的etcd**
@@ -14,7 +14,7 @@ tags: etcd
 ```
 export NODE1=192.168.1.21
 ```
-信任CoreOS [App签名密钥]()。
+信任CoreOS [App签名密钥](https://coreos.com/security/app-signing-key/)。
 ```
 sudo rkt trust --prefix quay.io/coreos/etcd
 # gpg key fingerprint is: 18AD 5014 C99E F7E3 BA5F  6CE9 50BD D3E0 FC8A 365E
@@ -49,10 +49,10 @@ sudo rkt run --net=default:IP=${NODE3} quay.io/coreos/etcd:v3.2 -- -name=node3 -
 ETCDCTL_API=3 etcdctl --endpoints=http://172.16.28.21:2379,http://172.16.28.22:2379,http://172.16.28.23:2379 endpoint health
 ```
 ### DNS
-通过本地解析器已知的DNS名称引用对等方的生产群集必须安装[主机的DNS配置]()。
+通过本地解析器已知的DNS名称引用对等方的生产群集必须安装[主机的DNS配置](https://coreos.com/tectonic/docs/latest/tutorials/sandbox/index.html#customizing-rkt-options)。
 
 ## **Docker**
-为了向Docker主机外部的客户端公开etcd API，请使用容器的主机IP地址。 请参阅[docker inspect]()了解有关如何获取IP地址的更多详细信息。 或者，为`docker run`命令指定`--net = host`标志，以跳过将容器放置在单独的网络堆栈内的操作。
+为了向Docker主机外部的客户端公开etcd API，请使用容器的主机IP地址。 请参阅[docker inspect](https://docs.docker.com/engine/reference/commandline/inspect/)了解有关如何获取IP地址的更多详细信息。 或者，为`docker run`命令指定`--net = host`标志，以跳过将容器放置在单独的网络堆栈内的操作。
 **运行单节点的etcd**
 适用主机Ip地址配置etcd：
 ```
@@ -154,7 +154,7 @@ docker exec etcd /bin/sh -c "export ETCDCTL_API=3 && /usr/local/bin/etcdctl put 
 ```
 ## Bare Metal
 * * *
-要在裸机上配置3节点etcd集群，[裸机存储库]()中的示例可能会有用。
+要在裸机上配置3节点etcd集群，[裸机存储库](https://github.com/poseidon/matchbox/tree/master/examples)中的示例可能会有用。
 #### 挂载一个证书卷：
 etcd发布容器不包含默认的根证书。 要将HTTPS与受根权限信任的证书一起使用（例如，用于发现），请将证书目录安装到etcd容器中：
 ```

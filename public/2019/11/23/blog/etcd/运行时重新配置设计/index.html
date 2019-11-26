@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 
 
 
@@ -17,10 +17,10 @@
   <meta name="keywords" content="">
   <title>运行时重新配置设计 ~ 任晓东的博客</title>
 
-  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
-<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
-<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
-<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
 
 
@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/css/main.css"  >
 
 
-  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
 
 
 </head>
@@ -55,31 +55,31 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/">主页</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/archives/">Archives</a>
+            <a class="nav-link" href="/archives/">归档</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/categories/">Categories</a>
+            <a class="nav-link" href="/categories/">分类</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/tags/">Tags</a>
+            <a class="nav-link" href="/tags/">标签</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/about/">About</a>
+            <a class="nav-link" href="/about/">关于</a>
           </li>
         
         
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期六, 十一月 23日 2019, 12:32 下午
+                  Saturday, November 23rd 2019, 12:32 pm
                 </p>
               
 
@@ -163,7 +163,7 @@
           <div class="markdown-body">
             <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-reconf-design.md" target="_blank" rel="noopener">the runtime configuration design</a><br>运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。<br>阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.</p>
 <h3 id="两阶段配置更新保证集群安全"><a href="#两阶段配置更新保证集群安全" class="headerlink" title="两阶段配置更新保证集群安全"></a>两阶段配置更新保证集群安全</h3><hr>
-<p>在etcd中，每一次运行时重新配置安全的原因是由于两阶段更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。</p>
+<p>在etcd中，每一次运行时重新配置安全的原因是由于<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">两阶段</a>更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。</p>
 <ol>
 <li>阶段一 通知集群关于新的配置<br>添加一个成员到etcd集群中，通过API调用请求将一个新成员添加到集群中。这是将新的成员添加到集群中唯一的方法。当集群同意配置的更新后将返回API的调用。</li>
 <li>阶段二 启动一个新的成员<br>将一个新成员加入到存在的集群中，指定正确的<code>initial-cluster</code>和设置<code>initial-cluster-state</code>为<code>existing</code>.当成员启动后，它首先联系已存在的集群并验证当前集群配置是否和期望的<code>initial-cluster</code>匹配。当一个新的成员成功启动，集群将获得期望的配置。</li>
@@ -174,7 +174,7 @@
 <h3 id="永久性的丢失要求新的集群"><a href="#永久性的丢失要求新的集群" class="headerlink" title="永久性的丢失要求新的集群"></a>永久性的丢失要求新的集群</h3><hr>
 <p>如果一个集群永久丢失一些主要的集群成员，需要从原始的数据文件夹启动一个新的集群恢复先前的状态。</p>
 <p>完全有可能从已存在的集群中强制删除一个失败的成员并恢复。然而，我们决定不支持此方法因为他绕过了常规的共识提交阶段，这是不安全的。如果成员移除一个没有实际失败的成员或者是同一个集群中的不同成员，etcd将会最终得到具有相同集群Id的分散集群。这是非常危险的而且很难修复。</p>
-<p>通过正常的部署，永久性丢失的可能性非常的小。但是这是一个严重的问题值得特别注意。我们强烈建议阅读<a href="">灾难恢复文档</a>并且在将etcd部署到生产环境之前做充足的准备。</p>
+<p>通过正常的部署，永久性丢失的可能性非常的小。但是这是一个严重的问题值得特别注意。我们强烈建议阅读<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md" target="_blank" rel="noopener">灾难恢复文档</a>并且在将etcd部署到生产环境之前做充足的准备。</p>
 <h3 id="不要在运行时重新配置中使用公共的发现服务"><a href="#不要在运行时重新配置中使用公共的发现服务" class="headerlink" title="不要在运行时重新配置中使用公共的发现服务"></a>不要在运行时重新配置中使用公共的发现服务</h3><hr>
 <p>公共发现服务应该只在启动一个集群的时候使用。将一个成员加入已存在的集群，使用运行时配置API.</p>
 <p>发现服务被设计用来在云服务环境中启动一个在所有的成员无法提前知道Ip地址时的etcd集群。在成功启动一个集群时，所有的成员将会知道Ip地址。典型的，发现服务奖不再被需要。<br>看起来使用公共的发现服务进行运行时重新配置是一个便利的方法,毕竟所有的发现服务含有所有的集群配置信息。然而依赖公共发现服务将带来问题：</p>
@@ -210,7 +210,7 @@
     <div class="d-none d-lg-block col-lg-2 toc-container">
       
   <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
     <div id="tocbot"></div>
   </div>
 
@@ -228,6 +228,28 @@
       <br><br>
       
       
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
 
     
   </div>
@@ -248,7 +270,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -257,7 +279,7 @@
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+                 for="local-search-input">keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -296,10 +318,10 @@
 </footer>
 
 <!-- SCRIPTS -->
-<script src="/lib/jquery/jquery.min.js" ></script>
-<script src="/lib/popper/popper.min.js" ></script>
-<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
-<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
 <script src="/js/main.js" ></script>
 
 
@@ -308,13 +330,13 @@
 
 
   
-    <script src="/lib/tocbot/tocbot.min.js" ></script>
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
   
   <script src="/js/post.js" ></script>
 
 
 
-  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
 
 
 
@@ -337,7 +359,7 @@
 
 
 
-  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
   <script>
     $(document).ready(function () {
       $('pre').addClass('prettyprint  ');
@@ -347,7 +369,7 @@
 
 
 
-  <script src="/lib/typed/typed.min.js" ></script>
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -367,7 +389,7 @@
 
 
 
-  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -396,7 +418,7 @@
 
 
 
-  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
   <script>
     $("#post img:not(.no-zoom img, img[no-zoom])").each(
       function () {

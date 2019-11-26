@@ -65,11 +65,11 @@ smooth_scroll: # 平滑滚动效果
 navbar:
   blog_title:  # 导航栏左侧的标题，为空则按 hexo config.title 显示
   menu:  # 可自行增减，若想减去某个入口，可以将值留空
-    Home: /
-    Archives: /archives/
-    Categories: /categories/
-    Tags: /tags/
-    About: /about/
+    主页: /
+    归档: /archives/
+    分类: /categories/
+    标签: /tags/
+    关于: /about/
 
 search: # 搜索栏
   enable: true
@@ -154,7 +154,7 @@ post:
     content: '<img src="https://octodex.github.com/images/jetpacktocat.png" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">' # 自定义区域，支持 HTML，可自行插入赞赏码、公众号二维码等内容
   comments:  # 评论
     enable: true  # 开启评论
-    type: disqus  # 指定使用的评论模块  available: disqus | valine | gitalk | utterances
+    type: gitalk  # 指定使用的评论模块  available: disqus | valine | gitalk | utterances
   image_zoom:  # 文章图片可点击放大
     enable: true
   math:  # 数学公式，开启之前需要更换 Markdown 渲染器，否则复杂公式会有兼容问题，具体请见 https://fluid-dev.github.io/hexo-fluid-docs/guide/#数学公式
@@ -180,17 +180,17 @@ utterances:
 
 # Disqus
 disqus:
-  shortname: # your shortname
+  shortname: xd # your shortname
 
 # Gitalk
 # You can get yout ClientID and ClientSecret from https://github.com/settings/applications/new
 # More info available at https://github.com/gitalk/gitalk#options
 gitalk:
-  clientID:                     # GitHub Application Client ID
-  clientSecret:                 # GitHub Application Client Secret
-  repo:                         # The repo to store comments
-  owner:                        # GitHub repository owner. Can be personal user or organization.
-  admin:                        # GitHub repo owner and collaborators, only these guys can initialize github issues, should be like "['admin']" or "['admin1','admin2']"
+  clientID: 61f05c79f7a13c277323                     # GitHub Application Client ID
+  clientSecret: 3564592f28eec1ac00931de44f215d4c0ed0939b                # GitHub Application Client Secret
+  repo: newonexd.github.io                     # The repo to store comments
+  owner: newonexd                       # GitHub repository owner. Can be personal user or organization.
+  admin: newonexd                       # GitHub repo owner and collaborators, only these guys can initialize github issues, should be like "['admin']" or "['admin1','admin2']"
   id: location.pathname         # The unique id of the page. Length must less than 50.
   language: zh-CN               # Localization language key, en, zh-CN and zh-TW are currently available.
   labels: "['Gitalk']"          # GitHub issue labels.

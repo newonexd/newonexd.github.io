@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 
 
 
@@ -17,10 +17,10 @@
   <meta name="keywords" content="">
   <title>在容器中运行etcd集群 ~ 任晓东的博客</title>
 
-  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
-<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
-<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
-<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
 
 
@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/css/main.css"  >
 
 
-  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
 
 
 </head>
@@ -55,31 +55,31 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/">主页</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/archives/">Archives</a>
+            <a class="nav-link" href="/archives/">归档</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/categories/">Categories</a>
+            <a class="nav-link" href="/categories/">分类</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/tags/">Tags</a>
+            <a class="nav-link" href="/tags/">标签</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/about/">About</a>
+            <a class="nav-link" href="/about/">关于</a>
           </li>
         
         
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期日, 十一月 24日 2019, 3:38 下午
+                  Sunday, November 24th 2019, 3:38 pm
                 </p>
               
 
@@ -161,11 +161,11 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/container.md#docker" target="_blank" rel="noopener">Docker container</a><br>以下指南显示了如何使用<a href="">静态引导过程</a>在rkt和Docker上运行etcd。</p>
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/container.md#docker" target="_blank" rel="noopener">Docker container</a><br>以下指南显示了如何使用<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">静态引导过程</a>在rkt和Docker上运行etcd。</p>
 <h2 id="rkt"><a href="#rkt" class="headerlink" title="rkt"></a><strong>rkt</strong></h2><hr>
 <p><strong>运行单节点的etcd</strong><br>以下rkt run命令将在端口2379上公开etcd客户端API，并在端口2380上公开对等API。</p>
 <p>配置etcd时使用主机IP地址。</p>
-<pre><code>export NODE1=192.168.1.21</code></pre><p>信任CoreOS <a href="">App签名密钥</a>。</p>
+<pre><code>export NODE1=192.168.1.21</code></pre><p>信任CoreOS <a href="https://coreos.com/security/app-signing-key/" target="_blank" rel="noopener">App签名密钥</a>。</p>
 <pre><code>sudo rkt trust --prefix quay.io/coreos/etcd
 # gpg key fingerprint is: 18AD 5014 C99E F7E3 BA5F  6CE9 50BD D3E0 FC8A 365E</code></pre><p>运行etcd v3.2版本或指定其他发行版本。</p>
 <pre><code>sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -advertise-client-urls=http://${NODE1}:2379 -initial-advertise-peer-urls=http://${NODE1}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE1}:2380 -initial-cluster=node1=http://${NODE1}:2380</code></pre><p>列出集群成员：</p>
@@ -180,8 +180,8 @@ sudo rkt run --net=default:IP=${NODE2} quay.io/coreos/etcd:v3.2 -- -name=node2 -
 
 # node 3
 sudo rkt run --net=default:IP=${NODE3} quay.io/coreos/etcd:v3.2 -- -name=node3 -advertise-client-urls=http://${NODE3}:2379 -initial-advertise-peer-urls=http://${NODE3}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE3}:2380 -initial-cluster=node1=http://${NODE1}:2380,node2=http://${NODE2}:2380,node3=http://${NODE3}:2380</code></pre><p>验证集群是否健康并且可以访问。</p>
-<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://172.16.28.21:2379,http://172.16.28.22:2379,http://172.16.28.23:2379 endpoint health</code></pre><h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><p>通过本地解析器已知的DNS名称引用对等方的生产群集必须安装<a href="">主机的DNS配置</a>。</p>
-<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a><strong>Docker</strong></h2><p>为了向Docker主机外部的客户端公开etcd API，请使用容器的主机IP地址。 请参阅<a href="">docker inspect</a>了解有关如何获取IP地址的更多详细信息。 或者，为<code>docker run</code>命令指定<code>--net = host</code>标志，以跳过将容器放置在单独的网络堆栈内的操作。<br><strong>运行单节点的etcd</strong><br>适用主机Ip地址配置etcd：</p>
+<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://172.16.28.21:2379,http://172.16.28.22:2379,http://172.16.28.23:2379 endpoint health</code></pre><h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><p>通过本地解析器已知的DNS名称引用对等方的生产群集必须安装<a href="https://coreos.com/tectonic/docs/latest/tutorials/sandbox/index.html#customizing-rkt-options" target="_blank" rel="noopener">主机的DNS配置</a>。</p>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a><strong>Docker</strong></h2><p>为了向Docker主机外部的客户端公开etcd API，请使用容器的主机IP地址。 请参阅<a href="https://docs.docker.com/engine/reference/commandline/inspect/" target="_blank" rel="noopener">docker inspect</a>了解有关如何获取IP地址的更多详细信息。 或者，为<code>docker run</code>命令指定<code>--net = host</code>标志，以跳过将容器放置在单独的网络堆栈内的操作。<br><strong>运行单节点的etcd</strong><br>适用主机Ip地址配置etcd：</p>
 <pre><code>export NODE1=192.168.1.21</code></pre><p>配置Docker卷存储etcd数据:</p>
 <pre><code>docker volume create --name etcd-data
 export DATA_DIR=&quot;etcd-data&quot;</code></pre><p>运行最新版本的etcd：</p>
@@ -262,7 +262,7 @@ docker run \
   --initial-cluster ${CLUSTER} \
   --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}</code></pre><p>适用版本v3的<code>etcdctl</code>：</p>
 <pre><code>docker exec etcd /bin/sh -c &quot;export ETCDCTL_API=3 &amp;&amp; /usr/local/bin/etcdctl put foo bar&quot;</code></pre><h2 id="Bare-Metal"><a href="#Bare-Metal" class="headerlink" title="Bare Metal"></a>Bare Metal</h2><hr>
-<p>要在裸机上配置3节点etcd集群，<a href="">裸机存储库</a>中的示例可能会有用。</p>
+<p>要在裸机上配置3节点etcd集群，<a href="https://github.com/poseidon/matchbox/tree/master/examples" target="_blank" rel="noopener">裸机存储库</a>中的示例可能会有用。</p>
 <h4 id="挂载一个证书卷："><a href="#挂载一个证书卷：" class="headerlink" title="挂载一个证书卷："></a>挂载一个证书卷：</h4><p>etcd发布容器不包含默认的根证书。 要将HTTPS与受根权限信任的证书一起使用（例如，用于发现），请将证书目录安装到etcd容器中：</p>
 <pre><code>REGISTRY=quay.io/coreos/etcd
 # available from v3.2.5
@@ -313,7 +313,7 @@ docker run \
     <div class="d-none d-lg-block col-lg-2 toc-container">
       
   <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
     <div id="tocbot"></div>
   </div>
 
@@ -331,6 +331,28 @@ docker run \
       <br><br>
       
       
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
 
     
   </div>
@@ -351,7 +373,7 @@ docker run \
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -360,7 +382,7 @@ docker run \
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+                 for="local-search-input">keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -399,10 +421,10 @@ docker run \
 </footer>
 
 <!-- SCRIPTS -->
-<script src="/lib/jquery/jquery.min.js" ></script>
-<script src="/lib/popper/popper.min.js" ></script>
-<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
-<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
 <script src="/js/main.js" ></script>
 
 
@@ -411,13 +433,13 @@ docker run \
 
 
   
-    <script src="/lib/tocbot/tocbot.min.js" ></script>
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
   
   <script src="/js/post.js" ></script>
 
 
 
-  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
 
 
 
@@ -440,7 +462,7 @@ docker run \
 
 
 
-  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
   <script>
     $(document).ready(function () {
       $('pre').addClass('prettyprint  ');
@@ -450,7 +472,7 @@ docker run \
 
 
 
-  <script src="/lib/typed/typed.min.js" ></script>
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -470,7 +492,7 @@ docker run \
 
 
 
-  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -499,7 +521,7 @@ docker run \
 
 
 
-  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
   <script>
     $("#post img:not(.no-zoom img, img[no-zoom])").each(
       function () {

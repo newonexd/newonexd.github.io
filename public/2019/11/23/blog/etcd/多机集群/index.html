@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 
 
 
@@ -17,10 +17,10 @@
   <meta name="keywords" content="">
   <title>多机集群 ~ 任晓东的博客</title>
 
-  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
-<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
-<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
-<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
 
 
@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/css/main.css"  >
 
 
-  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
 
 
 </head>
@@ -55,31 +55,31 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/">主页</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/archives/">Archives</a>
+            <a class="nav-link" href="/archives/">归档</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/categories/">Categories</a>
+            <a class="nav-link" href="/categories/">分类</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/tags/">Tags</a>
+            <a class="nav-link" href="/tags/">标签</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/about/">About</a>
+            <a class="nav-link" href="/about/">关于</a>
           </li>
         
         
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期六, 十一月 23日 2019, 12:32 下午
+                  Saturday, November 23rd 2019, 12:32 pm
                 </p>
               
 
@@ -165,9 +165,9 @@
 <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><hr>
 <p>启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。<br>一旦etcd集群已经启动，添加或移除成员可以通过<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>。在运行时重新配置之前，为了更好地理解设计，我们建议读<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AE%BE%E8%AE%A1/">运行时重新配置设计文档</a>。<br>这篇引导etcd集群的启动将包括以下机制：</p>
 <ul>
-<li><strong>静态</strong></li>
-<li><strong>etcd发现</strong></li>
-<li><strong>DNS发现</strong></li>
+<li>静态</li>
+<li>etcd发现</li>
+<li>DNS发现</li>
 </ul>
 <p>每种引导机制都将用于创建具有以下详细信息的三台计算机etcd集群：</p>
 <table>
@@ -217,8 +217,8 @@ ETCD_INITIAL_CLUSTER_STATE=new</code></pre><pre><code>--initial-cluster infra0=h
   --initial-cluster-token etcd-cluster-1 \
   --initial-cluster infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380 \
   --initial-cluster-state new</code></pre><p>以<code>initial-cluster</code>开头的命令行参数将在etcd启动后被忽略。在初始化启动后可以自由删除环境变量或者命令行参数。如果配置信息在启动之后需要改变(例如在/从集群中添加或删除成员),看<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时配置</a>引导。</p>
-<h3 id="TLS"><a href="#TLS" class="headerlink" title="TLS"></a>TLS</h3><p>etcd支持通过TLS协议进行加密通信。TLS通道可以在集群内部通信使用，也可以在节点和客户端流量通信时使用。这一部分列举了为节点和客户端TLS通信的集群设置。添加的etcd的TLS支持信息细节可以在<strong>安全引导</strong>中发现。</p>
-<h4 id="自签名证书"><a href="#自签名证书" class="headerlink" title="自签名证书"></a>自签名证书</h4><p>一个集群使用自签名证书加密流量和连接权限。使用自签名证书启动一个集群，每一个集群成员都需要含有一个独一无二的由共享的集群CA证书(<code>ca.crt</code>)签名的秘钥对(<code>member.crt</code>,<code>member.key</code>)，用于节点连接和客户端连接。证书可以通过下面的etcd<strong>TLS设置</strong>例子中生成。<br>对于每一台机器，etcd应该通过这些参数启动：</p>
+<h3 id="TLS"><a href="#TLS" class="headerlink" title="TLS"></a>TLS</h3><p>etcd支持通过TLS协议进行加密通信。TLS通道可以在集群内部通信使用，也可以在节点和客户端流量通信时使用。这一部分列举了为节点和客户端TLS通信的集群设置。添加的etcd的TLS支持信息细节可以在<a href="https://newonexd.github.io/2019/11/25/blog/etcd/TLS/">安全引导</a>中发现。</p>
+<h4 id="自签名证书"><a href="#自签名证书" class="headerlink" title="自签名证书"></a>自签名证书</h4><p>一个集群使用自签名证书加密流量和连接权限。使用自签名证书启动一个集群，每一个集群成员都需要含有一个独一无二的由共享的集群CA证书(<code>ca.crt</code>)签名的秘钥对(<code>member.crt</code>,<code>member.key</code>)，用于节点连接和客户端连接。证书可以通过下面的etcd<a href="https://newonexd.github.io/2019/11/25/blog/etcd/TLS/">TLS设置</a>例子中生成。<br>对于每一台机器，etcd应该通过这些参数启动：</p>
 <pre><code>$ etcd --name infra0 --initial-advertise-peer-urls https://10.0.1.10:2380 \
   --listen-peer-urls https://10.0.1.10:2380 \
   --listen-client-urls https://10.0.1.10:2379,https://127.0.0.1:2379 \
@@ -304,7 +304,7 @@ exit 1</code></pre><h3 id="发现服务"><a href="#发现服务" class="headerli
 <li>etcd发现服务</li>
 <li>DNS SRV 记录</li>
 </ul>
-<h4 id="etcd-发现服务"><a href="#etcd-发现服务" class="headerlink" title="etcd 发现服务"></a>etcd 发现服务</h4><p>为了更好理解发现服务协议的设计，我们建议阅读发现服务协议<strong>文档</strong>.<br>** <strong>发现服务URL的生命周期</strong> **<br>一个发现URL标识一个独有的etcd集群而不是使用已有的发现URL。每一个etcd实例分享一个新的发现URL去启动新的集群。<br>此外，发现URL应该只在初始化启动集群的时候使用，如果需要改变已经启动的集群中的成员关系，看<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>引导.<br>** <strong>自定义etcd发现服务</strong> **<br>发现服务用于启动一个存在的集群，如果使用一个私有的etcd集群，像这样创建URL:</p>
+<h4 id="etcd-发现服务"><a href="#etcd-发现服务" class="headerlink" title="etcd 发现服务"></a>etcd 发现服务</h4><p>为了更好理解发现服务协议的设计，我们建议阅读发现服务协议<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-internal/discovery_protocol.md" target="_blank" rel="noopener">文档</a>.<br><strong>发现服务URL的生命周期</strong><br>一个发现URL标识一个独有的etcd集群而不是使用已有的发现URL。每一个etcd实例分享一个新的发现URL去启动新的集群。<br>此外，发现URL应该只在初始化启动集群的时候使用，如果需要改变已经启动的集群中的成员关系，看<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>引导.<br><strong>自定义etcd发现服务</strong><br>发现服务用于启动一个存在的集群，如果使用一个私有的etcd集群，像这样创建URL:</p>
 <pre><code>$ curl -X PUT https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83/_config/size -d value=3</code></pre><p>通过设置URL中Key的大小，创建发现URL的集群预期大小为3.<br>在这种情况下URL将会这样使用:</p>
 <pre><code>https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>当etcd成员启动时将使用</p>
 <pre><code>https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>文件夹进行注册。<br><strong>每一个成员必须含有一个不同的命名参数。<code>Hostname</code>或者<code>machine-id</code>将是一个好的选择。发现服务的失败通常由于重复的名字。</strong><br>现在我们通过这些参数启动etcd的每一个成员：</p>
@@ -320,7 +320,7 @@ exit 1</code></pre><h3 id="发现服务"><a href="#发现服务" class="headerli
   --listen-peer-urls http://10.0.1.12:2380 \
   --listen-client-urls http://10.0.1.12:2379,http://127.0.0.1:2379 \
   --advertise-client-urls http://10.0.1.12:2379 \
-  --discovery https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>一旦所有主机被注册后，每一个集群成员将会集群启动之前在自定义发现服务中注册自己。<br>** <strong>公共的etcd发现服务</strong> **<br>如果没有可以获得的集群，使用托管在<code>discovery.etcd.io</code>的公共发现服务。通过”new”主机,创建一个私有的发现URL,使用以下命令:</p>
+  --discovery https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83</code></pre><p>一旦所有主机被注册后，每一个集群成员将会集群启动之前在自定义发现服务中注册自己。<br><strong>公共的etcd发现服务</strong><br>如果没有可以获得的集群，使用托管在<code>discovery.etcd.io</code>的公共发现服务。通过”new”主机,创建一个私有的发现URL,使用以下命令:</p>
 <pre><code>$ curl https://discovery.etcd.io/new?size=3
 https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><p>将会创建一个初始化成员数量为3的集群,如果没有设置大小，将默认为3.</p>
 <pre><code>ETCD_DISCOVERY=https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><pre><code>--discovery https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><p>现在我们通过这些相关的参数启动每一个etcd成员：</p>
@@ -336,7 +336,7 @@ https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><
   --listen-peer-urls http://10.0.1.12:2380 \
   --listen-client-urls http://10.0.1.12:2379,http://127.0.0.1:2379 \
   --advertise-client-urls http://10.0.1.12:2379 \
-  --discovery https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><p>一旦所有主机被注册后，每一个集群成员将会集群启动之前在自定义发现服务中注册自己。<br>etcd使用环境变量<code>ETCD_DISCOVERY_PROXY</code>通过HTTP代理连接发现服务。<br>** <strong>错误和警告案例</strong> **<br>发现服务错误：</p>
+  --discovery https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de</code></pre><p>一旦所有主机被注册后，每一个集群成员将会集群启动之前在自定义发现服务中注册自己。<br>etcd使用环境变量<code>ETCD_DISCOVERY_PROXY</code>通过HTTP代理连接发现服务。<br><strong>错误和警告案例</strong><br>发现服务错误：</p>
 <pre><code>$ etcd --name infra0 --initial-advertise-peer-urls http://10.0.1.10:2380 \
   --listen-peer-urls http://10.0.1.10:2380 \
   --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
@@ -419,7 +419,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 --initial-cluster-state new \
 --advertise-client-urls http://10.0.1.12:2379 \
 --listen-client-urls http://10.0.1.12:2379 \
---listen-peer-urls http://10.0.1.12:2380</code></pre><p>自从v3.1.0（v3.2.9除外），因此在<code>etcd --discovery-srv = example.com</code>中配置了TLS时，服务器仅在提供的证书具有根域<code>example.com</code>作为<code>Subject Alternative</code>(SAN)字段中的条目时，对等方/客户端进行身份验证。请参阅<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md#notes-for-dns-srv" target="_blank" rel="noopener">DNS SRV的注释</a>。<br><strong>网关</strong><br>etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。 请阅读<a href="https://newonexd.github.io/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">网关指南</a>以获取更多信息。<br><strong>代理</strong><br>设置<code>--proxy</code>参数时，etcd以<a href="">代理模式</a>运行。 此代理模式仅支持etcd v2 API； 目前尚无计划支持v3 API。 相反，为了支持v3 API，etcd 3.0版本之后将提供具有增强功能的新代理。<br>要使用v2 API代理设置etcd集群，请阅读<a href="https://github.com/coreos/etcd/blob/release-2.3/Documentation/clustering.md" target="_blank" rel="noopener">etcd 2.3版本中的集群文档</a>。</p>
+--listen-peer-urls http://10.0.1.12:2380</code></pre><p>自从v3.1.0（v3.2.9除外），因此在<code>etcd --discovery-srv = example.com</code>中配置了TLS时，服务器仅在提供的证书具有根域<code>example.com</code>作为<code>Subject Alternative</code>(SAN)字段中的条目时，对等方/客户端进行身份验证。请参阅<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md#notes-for-dns-srv" target="_blank" rel="noopener">DNS SRV的注释</a>。<br><strong>网关</strong><br>etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。 请阅读<a href="https://newonexd.github.io/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">网关指南</a>以获取更多信息。<br><strong>代理</strong><br>设置<code>--proxy</code>参数时，etcd以<a href="https://newonexd.github.io/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">代理模式</a>运行。 此代理模式仅支持etcd v2 API； 目前尚无计划支持v3 API。 相反，为了支持v3 API，etcd 3.0版本之后将提供具有增强功能的新代理。<br>要使用v2 API代理设置etcd集群，请阅读<a href="https://github.com/coreos/etcd/blob/release-2.3/Documentation/clustering.md" target="_blank" rel="noopener">etcd 2.3版本中的集群文档</a>。</p>
 
             <hr>
           </div>
@@ -446,7 +446,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
     <div class="d-none d-lg-block col-lg-2 toc-container">
       
   <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
     <div id="tocbot"></div>
   </div>
 
@@ -464,6 +464,28 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
       <br><br>
       
       
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
 
     
   </div>
@@ -484,7 +506,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -493,7 +515,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+                 for="local-search-input">keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -532,10 +554,10 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 </footer>
 
 <!-- SCRIPTS -->
-<script src="/lib/jquery/jquery.min.js" ></script>
-<script src="/lib/popper/popper.min.js" ></script>
-<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
-<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
 <script src="/js/main.js" ></script>
 
 
@@ -544,13 +566,13 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 
 
   
-    <script src="/lib/tocbot/tocbot.min.js" ></script>
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
   
   <script src="/js/post.js" ></script>
 
 
 
-  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
 
 
 
@@ -573,7 +595,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 
 
 
-  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
   <script>
     $(document).ready(function () {
       $('pre').addClass('prettyprint  ');
@@ -583,7 +605,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 
 
 
-  <script src="/lib/typed/typed.min.js" ></script>
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -603,7 +625,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 
 
 
-  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -632,7 +654,7 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 
 
 
-  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
   <script>
     $("#post img:not(.no-zoom img, img[no-zoom])").each(
       function () {
