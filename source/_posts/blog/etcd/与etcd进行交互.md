@@ -2,6 +2,7 @@
 title: 与etcd进行交互
 date: 2019-11-23 12:32:15
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址：[Interacting with etcd](https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/interacting_v3.md)
 ## 与etcd进行交互

@@ -2,6 +2,7 @@
 title: TLS
 date: 2019-11-25 19:58:39
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址：[TLS](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md)
 etcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.

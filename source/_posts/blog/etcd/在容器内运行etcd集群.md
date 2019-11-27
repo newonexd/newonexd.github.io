@@ -2,6 +2,7 @@
 title: 在容器中运行etcd集群
 date: 2019-11-24 15:38:50
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址：[Docker container](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/container.md#docker)
 以下指南显示了如何使用[静态引导过程](https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/)在rkt和Docker上运行etcd。

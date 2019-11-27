@@ -15,7 +15,7 @@
   <meta name="description" content="">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="">
-  <title>etcd文档 ~ 任晓东的博客</title>
+  <title>Hyperledger Fabric 最简单的方式测试你的链码 ~ 任晓东的博客</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Saturday, November 23rd 2019, 12:31 pm
+                  Wednesday, November 27th 2019, 10:34 am
                 </p>
               
 
@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    377 字
+                    1.1k 字
                   </span>&nbsp;
                 
 
@@ -128,7 +128,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      1 分钟
+                      4 分钟
                   </span>&nbsp;
                 
 
@@ -161,66 +161,40 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>原文地址：<a href="https://github.com/etcd-io/etcd/tree/master/Documentation" target="_blank" rel="noopener">Documentation</a></p>
-<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><hr>
-<p>etcd是一个分布式键值对存储，被设计为可靠的，快速的保存并提供对关键数据的访问。通过分布式锁，领导选举和写屏障使能分布式一致性。一个etcd集群旨在实现高可用和持久性数据存储与检索。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><hr>
-<h3 id="使用etcd进行开发"><a href="#使用etcd进行开发" class="headerlink" title="使用etcd进行开发"></a>使用etcd进行开发</h3><hr>
-<p>一种简单的方式<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">设置本地集群</a>开始使用etcd作为分布式键值对存储</p>
+            <p>一直以来，写完链码进行测试都要先搭建一个Fabric环境，然后安装链码进行测试，实际上Fabric提供了最为简单的方式可以允许我们对编写的应用链码进行功能测试，不需要搭建一个完整的Fabeic环境。而且测试完直接停止网络也不会担心有残余的文件没有删除干净，以至于搭建正式环境的时候出现各种错误。<br>进入正题好了，Fabric提供了一个开发模式，是专门用来对链码进行测试用的。</p>
+<p><strong>其实，这些内容在Fabric官方文档中都是有的，但是一般我们都忽略掉了，所以简单说一下步骤</strong><br>官方文档地址：<a href="https://github.com/hyperledger/fabric-samples/blob/master/chaincode-docker-devmode/README.rst" target="_blank" rel="noopener">点这里</a></p>
+<h2 id="1-先决条件"><a href="#1-先决条件" class="headerlink" title="1.先决条件"></a>1.先决条件</h2><p>首先，也是需要一些先决条件，比如<code>Golang</code>环境，<code>Docker</code>容器,<code>docker-compose</code>工具，等等，这些不再说明，可以看<a href="https://newonexd.github.io/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">这里完成先决条件的安装</a>。</p>
+<h2 id="2-开始"><a href="#2-开始" class="headerlink" title="2.开始"></a>2.开始</h2><hr>
+<p>完成准备工作后，我们需要将<code>Fabric-sample</code>文件夹从<code>Github</code>上<code>pull</code>下来，地址在<a href="https://github.com/hyperledger/fabric-samples" target="_blank" rel="noopener">这里</a>,最简单的方式是直接下载压缩文件，然后到本地解压出来，但是推荐使用IDE工具通过<code>git</code>工具从<code>Github</code>上拉取下来，具体方法自行百度。<br>完成之后，会有一个<code>fabric-sample</code>文件夹，将该文件夹放在<code>$GOPATH/src/github.com/hyperledger/</code>路径下，路径不存在自行创建。</p>
+<h3 id="切换版本"><a href="#切换版本" class="headerlink" title="切换版本"></a>切换版本</h3><p>进入<code>fabric-samples</code>文件夹，执行以下命令，将Fabric版本切换至1.4，如果使用其他版本请下面部分下载二进制与Docker镜像的时候要对应。</p>
+<pre><code>git checkout -b release-1.4</code></pre><h3 id="3-二进制文件以及Docker镜像"><a href="#3-二进制文件以及Docker镜像" class="headerlink" title="3.二进制文件以及Docker镜像"></a>3.二进制文件以及Docker镜像</h3><hr>
+<p>下载二进制文件是比较容易出错的地方，因为容易因为版本不匹配导致网络启动失败，所以在下载二进制文件的时候一定要注意使用的版本。</p>
+<pre><code>curl -sS https://raw.githubusercontent.com/hyperledger/fabric/master/scripts/bootstrap.sh -o ./scripts/bootstrap.sh
+chmod +x ./scripts/bootstrap.sh
+## ./scripts/bootstrap.sh [version] [ca version] [thirdparty_version]</code></pre><p>这里需要输入三个版本号，第一个是Fabric的版本号，第二个是Ca的版本号(在这里我们用不到），第三个是第三方工具的版本号。<br>我们之前是使用了1.4的Fabric，所以我们直接指定好版本就好了。</p>
 <ul>
-<li><a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">设置本地集群</a></li>
-<li><a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">与etcd进行交互</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md" target="_blank" rel="noopener">gRPC etcd核心</a>和<a href="">etcd并发</a>API参考</li>
-<li><a href="https://newonexd.github.io/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">HTTP JSON API 通过gRPC网关</a></li>
-<li><a href="https://newonexd.github.io/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">gRPC命名和发现</a></li>
-<li><a href="https://godoc.org/github.com/etcd-io/etcd/clientv3/namespace" target="_blank" rel="noopener">客户端</a>和<a href="https://newonexd.github.io/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">代理</a>命名空间</li>
-<li><a href="https://godoc.org/github.com/etcd-io/etcd/embed" target="_blank" rel="noopener">嵌入etcd</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/%E5%AE%9E%E9%AA%8C%E7%89%B9%E6%80%A7%E5%92%8CAPIs/">实验特性和APIs</a></li>
-<li><a href="https://newonexd.github.io/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">系统限制</a></li>
+<li>Fabric &gt;&gt; 1.4.3(只要前缀是1.4就可以)</li>
+<li>CA    &gt;&gt;  1.4.3</li>
+<li>ThirdParty &gt;&gt; 0.4.15</li>
 </ul>
-<h3 id="操作etcd集群"><a href="#操作etcd集群" class="headerlink" title="操作etcd集群"></a>操作etcd集群</h3><hr>
-<p>对开发或者生产环境，管理员需要一个错误容忍etcd集群，从<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">多机集群</a>开始。</p>
-<h4 id="设置etcd"><a href="#设置etcd" class="headerlink" title="设置etcd"></a>设置etcd</h4><ul>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/ETCD%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">配置参数</a></li>
-<li><a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">多成员集群</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">gRPC代理</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">L4网关</a></li>
-</ul>
-<h4 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h4><ul>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/supported-platform.md" target="_blank" rel="noopener">支持的系统</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/hardware.md" target="_blank" rel="noopener">硬件配置建议</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/performance.md" target="_blank" rel="noopener">性能基准测试</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md" target="_blank" rel="noopener">调节</a></li>
-</ul>
-<h4 id="平台引导"><a href="#平台引导" class="headerlink" title="平台引导"></a>平台引导</h4><ul>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/platforms/aws.md" target="_blank" rel="noopener">亚马逊Web服务</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/platforms/container-linux-systemd.md" target="_blank" rel="noopener">Linux容器，systemd</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/platforms/freebsd.md" target="_blank" rel="noopener">RessBSD</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%86%85%E8%BF%90%E8%A1%8Cetcd%E9%9B%86%E7%BE%A4/">Docker容器</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%86%85%E8%BF%90%E8%A1%8Cetcd%E9%9B%86%E7%BE%A4/">rkt容器</a></li>
-</ul>
-<h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><ul>
-<li><a href="https://newonexd.github.io/2019/11/25/blog/etcd/TLS/">TLS</a></li>
-<li><a href="https://newonexd.github.io/2019/11/25/blog/etcd/%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6/">基于角色的访问控制</a></li>
-</ul>
-<h4 id="维护和故障排除"><a href="#维护和故障排除" class="headerlink" title="维护和故障排除"></a>维护和故障排除</h4><ul>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/faq.md" target="_blank" rel="noopener">常见问题</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/monitoring.md" target="_blank" rel="noopener">监控方式</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/maintenance.md" target="_blank" rel="noopener">维护</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/failures.md" target="_blank" rel="noopener">失败模式</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md" target="_blank" rel="noopener">容灾恢复</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/upgrades/upgrading-etcd.md" target="_blank" rel="noopener">更新</a><h4 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h4>要了解有关etcd的概念和内部知识的更多信息，请阅读以下页面：</li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/why.md" target="_blank" rel="noopener">什么是etcd</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/data_model.md" target="_blank" rel="noopener">理解数据模式</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/api.md" target="_blank" rel="noopener">理解APIs</a></li>
-<li><a href="https://newonexd.github.io/2019/11/24/blog/etcd/%E8%AF%8D%E6%B1%87%E8%A1%A8/">词汇表</a></li>
-<li>设计<ul>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/design-auth-v3.md" target="_blank" rel="noopener">权限子系统</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/design-client.md" target="_blank" rel="noopener">客户端</a></li>
-<li><a href="https://github.com/etcd-io/etcd/blob/master/Documentation/learning/design-learner.md" target="_blank" rel="noopener">学习者</a></li>
-</ul>
-</li>
-</ul>
+<p>完整的命令为:</p>
+<pre><code>#记得要在bootstrap.sh文件的上一级目录进行执行。
+./scripts/bootstrap.sh 1.4.3 1.4.3 0.4.15</code></pre><p>或者直接将版本号在文件中修改：<br>打开刚下载的<code>bootstrap.sh</code>文件，前面几行就是指定版本号的，自行修改就好，修改完直接使用命令进行下载就好了。</p>
+<pre><code>./scripts/bootstrap.sh</code></pre><h2 id="4-测试链码"><a href="#4-测试链码" class="headerlink" title="4.测试链码"></a>4.测试链码</h2><p>前面几部没有出现问题的话，到这里我们就可以对链码进行测试了，进入<code>fabric-sample/chaincode-docker-devmode</code>文件夹下,执行以下命令：</p>
+<pre><code>docker-compose -f docker-compose-simple.yaml up</code></pre><p>如果没有错误的话，我们的开发环境已经准备好了，接下来是对链码进行测试的步骤：</p>
+<ol>
+<li>将编写的链码放到<code>fabric-sample/chaincode/</code>文件夹下<pre><code># 打开第二个终端执行：
+docker exec -it chaincode sh</code></pre>如果已经将链码放到<code>fabric-sample/chaincode/</code>文件夹内，执行以下命令应该可以看到自己的链码：<pre><code>ls</code></pre></li>
+<li>编译链码,以官方的例子为例：<pre><code>cd chaincode_example02/go
+go build -o chaincode_example02
+CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=mycc:0 ./chaincode_example02</code></pre></li>
+</ol>
+<p>3.<strong>安装与实例化</strong>：<br>打开第三个终端执行：</p>
+<pre><code>docker exec -it cli bash
+# 以下命令按照自己的链码内容自行修改
+peer chaincode install -p chaincodedev/chaincode/chaincode_example02/go -n mycc -v 0
+peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[&quot;init&quot;,&quot;a&quot;,&quot;100&quot;,&quot;b&quot;,&quot;200&quot;]}&#39; -C myc</code></pre><p>4 测试<br>如果以上步骤没有报错的话，准备工作已经全部完成，剩下的就是测试自己的链码了。如果链码需要更新的话，只需要关闭网络：</p>
+<pre><code>docker-compose -f docker-compose-simple.yaml down --volumes</code></pre><p>重新启动网络并进行测试就好了。</p>
 
             <hr>
           </div>
@@ -231,7 +205,7 @@
               <span>
                 <i class="iconfont icon-inbox"></i>
                 
-                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
                   &nbsp;
                 
               </span>&nbsp;&nbsp;
@@ -240,7 +214,7 @@
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
                 
               </span>
             
@@ -419,7 +393,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "etcd文档&nbsp;",
+        "Hyperledger Fabric 最简单的方式测试你的链码&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

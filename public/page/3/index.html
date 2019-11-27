@@ -134,6 +134,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">
+        <p class="h4 index-header">单机集群</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：Setting up local clusters
+设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。
+本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群:
+$ ./etcd
+...如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH/bin/etcd或者是/usr/local/bin/etcd.合适地运行命令。运行的etcd成员在localhost:2379监听客户端的请求。
+与集群进行交互使用etcdctl与运行中的集群进行交互操作    1.     例子：在集群中存储一个键值对：
+$ ./etcdctl put foo bar
+OK如果OK被打印在控制台，说明已经成功存储Key-Value对。    2.     获取键foo对应的值：
+$ ./etcdctl get foo
+bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同。
+本地多节点集群启动一个集群在etcd的git仓库中存在一个Procfile文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/etcd/%E6%96%87%E6%A1%A3/">
         <p class="h4 index-header">etcd文档</p>
         
@@ -197,6 +242,11 @@ TLS
         
           <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
         
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
         
         
           <i class="iconfont icon-tag"></i>

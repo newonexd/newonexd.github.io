@@ -2,6 +2,7 @@
 title: Hyperledger Fabric环境搭建
 date: 2019-11-23 18:44:49
 tags: fabric
+categories: fabric应用
 ---
 简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。
 本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里[深入解析Hyperledger Fabric启动的全过程]()

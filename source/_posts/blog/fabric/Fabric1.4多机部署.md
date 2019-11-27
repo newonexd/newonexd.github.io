@@ -2,6 +2,7 @@
 title: Hyperledger Fabric多机部署
 date: 2019-11-23 18:38:53
 tags: fabric
+categories: fabric应用
 ---
 之前的文章[深入解析Hyperledger Fabric启动的全过程]()主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
 ###1 搭建环境

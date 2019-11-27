@@ -2,6 +2,7 @@
 title: gRPC代理
 date: 2019-11-24 14:35:15
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址:[gRPC proxy](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/grpc_proxy.md)
 gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。

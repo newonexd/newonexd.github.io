@@ -2,6 +2,7 @@
 title: 配置参数
 date: 2019-11-24 11:29:53
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址：[Configuration flags](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md)
 etcd通过配置文件，多命令行参数和环境变量进行配置，

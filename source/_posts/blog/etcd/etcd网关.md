@@ -2,6 +2,7 @@
 title: etcd网关
 date: 2019-11-24 15:24:56
 tags: etcd
+categories: etcd文档翻译
 ---
 原文地址:[L4 gateway](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/gateway.md)
 ## 什么是etcd网关

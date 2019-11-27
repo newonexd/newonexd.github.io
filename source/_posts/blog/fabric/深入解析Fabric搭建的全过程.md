@@ -2,6 +2,7 @@
 title: 深入解析Hyperledger Fabric搭建的全过程
 date: 2019-11-23 18:46:49
 tags: fabric
+categories: fabric应用
 ---
 在这篇文章中，使用``fabric-samples/first-network``中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。
 至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章[Hyperledger Fabric环境搭建过程]()
