@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="任晓东">
+
+
+    <meta name="subtitle" content="如果你交给某人一个程序,你将折磨他一整天；如果你教某人如何编写程序,你将折磨他一辈子。">
+
+
+
+
+<title>分类 | 任晓东的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">触不可及</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">触不可及</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            
+
+
+
+    <div class="container">
+        <div class="post-wrap categories">
+            <h2 class="post-title">-&nbsp;Categories&nbsp;-</h2>
+            <div class="categories-card">
+                
+                    
+                    <div class="card-item">
+                        <div class="categories">
+                            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/">
+                                <h3>
+                                    <i class="iconfont icon-category" style="padding-right:3px"></i>
+                                    etcd文档翻译
+                                </h3>
+                            </a>
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/24/blog/etcd/ETCD%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">配置参数</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">gRPC代理</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/25/blog/etcd/TLS/">TLS</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">与etcd进行交互</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">gRPC命名与发现</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                                
+                                
+                            
+                            
+                                <a class="more-post-link" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/">More >></a>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    <div class="card-item">
+                        <div class="categories">
+                            <a href="/categories/fabric%E5%BA%94%E7%94%A8/">
+                                <h3>
+                                    <i class="iconfont icon-category" style="padding-right:3px"></i>
+                                    fabric应用
+                                </h3>
+                            </a>
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/23/blog/fabric/Fabric1.4%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2/">Hyperledger Fabric多机部署</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Hyperledger Fabric环境搭建</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">深入解析Hyperledger Fabric搭建的全过程</a>
+                                    </article>
+                                
+                            
+                                
+                                
+                                    <article class="archive-item">
+                                        <a class="archive-item-link"
+                                           href="/2019/11/27/blog/fabric/%E9%93%BE%E7%A0%81%E6%B5%8B%E8%AF%95/">Hyperledger Fabric 最简单的方式测试你的链码</a>
+                                    </article>
+                                
+                            
+                            
+                        </div>
+                    </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 任晓东 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> | </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

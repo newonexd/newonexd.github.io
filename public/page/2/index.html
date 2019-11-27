@@ -1,775 +1,163 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-
-
-
-
-
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
-  <link rel="icon" type="image/png" href="/img/icon.jpg">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="description" content="">
-  <meta name="author" content="任晓东">
-  <meta name="keywords" content="">
-  <title>任晓东的博客</title>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+    <meta name="author" content="任晓东">
 
 
-  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
-
-<link rel="stylesheet" href="/css/main.css"  >
+    <meta name="subtitle" content="如果你交给某人一个程序,你将折磨他一整天；如果你教某人如何编写程序,你将折磨他一辈子。">
 
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<title>任晓东的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
 
 
 </head>
-
-
 <body>
-  <header style="height: 100vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>任晓东的博客</strong>&nbsp;</a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/">主页</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">归档</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/categories/">分类</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">标签</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">关于</a>
-          </li>
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-
-</nav>
-
-    <div class="view intro-2" id="background"
-         style="background: url('/img/index1.png')no-repeat center center;
-           background-size: cover;
-           background-attachment: fixed;">
-      <div class="full-bg-img">
-        <div class="mask rgba-black-light flex-center">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-          </div>
-
-          
-            <div class="scroll-down-bar">
-              <i class="fas fa-angle-down scroll-down-arrow"></i>
-            </div>
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">触不可及</a></div>
+            <div class="menu navbar-right">
                 
-
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
-        <p class="h4 index-header">深入解析Hyperledger Fabric搭建的全过程</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">在这篇文章中，使用fabric-samples/first-network中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章Hyperledger Fabric环境搭建过程fabric网络：单机，solo类型，两个组织，分别有两个节点首先看一下该文件夹内有哪些文件：
-base                  connection-org2.json    docker-compose-cli.yaml           docker-compose-org3.yaml
-byfn.sh               connection-org2.yaml    docker-compose-couch-org3.yaml    eyfn.sh
-channel-artifacts     connection-org3.json    docker-compose-couch.yaml         org3-artifacts
-configtx.yaml         connect</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-        <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里深入解析Hyperledger Fabric启动的全过程。
-1.搭建Fabric的前置条件为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：
-#首先进行配置文件的备份
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#编辑配置文件
-sudo vim /etc/apt/sources.list在配置文件中开头添加以下内容(阿里源)：
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyu</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/Fabric1.4%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2/">
-        <p class="h4 index-header">Hyperledger Fabric多机部署</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前的文章深入解析Hyperledger Fabric启动的全过程主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。###1 搭建环境 本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。| 域名|ip地址||:—-|:—-||orderer.example.com|10.65.182.150||peer0.org1.example.com|10.65.26.64||peer1.org1.example.com|10.65.26.140||peer0.org2.example.com|10.65.200.182||peer1.org2.example.com|10.65.200.44|Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger Fabric环境搭建过</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">
-        <p class="h4 index-header">运行时重新配置</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：runtime reconfigurationetcd带有增量运行时重新配置的支持。允许我们在集群运行的时候更新集群成员关系。仅当大多数集群成员都在运行时，才能处理重新配置请求，强烈建议在生产环境中集群的大小应该始终大于2。从两个成员的集群中移除一个成员是不安全的。两个成员的集群中大多数成员始终是2，如果在删除过程中出现故障，集群将很难继续运行需要重新从主要成员失败中重新启动集群。为了更好的理解运行时重新配置设计，请阅读运行时重新配置设计。
-重新配置使用案例
-本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
-循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
-改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/HTTP_JSON_API%E9%80%9A%E8%BF%87gRPC%E7%BD%91%E5%85%B3/">
-        <p class="h4 index-header">HTTP_JSON_API通过gRPC网关</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:HTTP JSON API through the gRPC gatewayetcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的Go客户端和一个命令行工具，etcdctl,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON gRPC网关，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。
-使用 gRPC网关这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意Key和Value字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用curl,但是每个HTTP/JSON客户端的工作原理都和例子相同。注意gRPC网关节点从etcd v3.3发生变化：
-
-etcd v3.2以及之前版本只使用[CLIENT-URL]/v3alpha/*。
-etcd v3.3使用[CLIENT-URL]/v3beta/*保持[CLIENT-URL]/v3alpha/*使用。
-etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-UR</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">
-        <p class="h4 index-header">gRPC命名与发现</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:gRPC naming and discoveryetcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。通过go-grpc使用etcd发现服务
-
-etcd客户端提供一个gRPC解析器通过etcd后端解析gRPC主机,解析器通过etcd客户端初始化并指定了解析目标:
-import (
-        &quot;go.etcd.io/etcd/clientv3&quot;
-        etcdnaming &quot;go.etcd.io/etcd/clientv3/naming&quot;
-
-        &quot;google.golang.org/grpc&quot;
-)
-
-...
-
-cli, cerr := clientv3.NewFromURL(&quot;http://localhost:2379&quot;)
-r := &amp;etcdnaming.GRPCResolver{Client: cli}
-b := grpc.RoundRobin(r)
-conn, g</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AE%BE%E8%AE%A1/">
-        <p class="h4 index-header">运行时重新配置设计</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:the runtime configuration design运行时重新配置是分布式系统中最难，最容易出错的部分，尤其是在基于共识(像etcd)的系统中。阅读并学习关于etcd的运行时重新配置命令设计和如何追溯这些错误.
-两阶段配置更新保证集群安全
-在etcd中，每一次运行时重新配置安全的原因是由于两阶段更新。例如，添加一个成员，首先将新配置通知集群后启动新的成员。
-
-阶段一 通知集群关于新的配置添加一个成员到etcd集群中，通过API调用请求将一个新成员添加到集群中。这是将新的成员添加到集群中唯一的方法。当集群同意配置的更新后将返回API的调用。
-阶段二 启动一个新的成员将一个新成员加入到存在的集群中，指定正确的initial-cluster和设置initial-cluster-state为existing.当成员启动后，它首先联系已存在的集群并验证当前集群配置是否和期望的initial-cluster匹配。当一个新的成员成功启动，集群将获得期望的配置。
-
-用户将过程分为两个阶段需要清楚了解集群成员关系的变化。实际上，这为用户提供了更大的灵活性，并使事情更容易。例如，如果</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">
-        <p class="h4 index-header">与etcd进行交互</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：Interacting with etcd
-与etcd进行交互用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。用于与etcd交互的API版本可以通过环境变量ETCDCTL_API设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API etcdctl get获取V2 的Key将返回0并退出，这是预料之中的情况。
-export ETCDCTL_API=3发现版本使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。这里的命令可用于发现版本信息：
-$ etcdctl version
-etcdctl version:3.1.0-alpha.0+git
-API version:3.1写入一个KEY应用程序通过向</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%AE%A2%E6%88%B7%E7%AB%AFv3/">
-        <p class="h4 index-header">客户端v3</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：etcd/clientv3etcd/clientv3是v3版本的Go etcd官方客户端
-安装
-go get go.etcd.io/etcd/clientv3开始
-创建客户端使用clientv3.New:
-cli, err := clientv3.New(clientv3.Config{
-    Endpoints:   []string{&quot;localhost:2379&quot;, &quot;localhost:22379&quot;, &quot;localhost:32379&quot;},
-    DialTimeout: 5 * time.Second,
-})
-if err != nil {
-    // handle error!
-}
-defer cli.Close()etcd v3使用gRPC进行远程程序调用，并且clientv3使用grpc-go连接etcd。确保在使用完客户端后关闭它，如果客户端没有关闭，连接将会有泄漏的goroutines。指定超时时间，通过context.WithTimeout使用APIs:
-ctx, cancel := co</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">多机集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:cluster on multiple machines
-总览
-启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。一旦etcd集群已经启动，添加或移除成员可以通过运行时重新配置。在运行时重新配置之前，为了更好地理解设计，我们建议读运行时重新配置设计文档。这篇引导etcd集群的启动将包括以下机制：
-
-静态
-etcd发现
-DNS发现
-
-每种引导机制都将用于创建具有以下详细信息的三台计算机etcd集群：
-
-
-
-Name
-Address
-Hostname
-
-
-
-infra0
-10.0.1.10
-infra0.example.com
-
-
-infra1
-10.0.1.11
-infra1.example.com
-
-
-infra2
-10.0.1.12
-infra2.example.com
-
-
-静态集群的成员，在启动之前它们的地址和集群的大小，我们可以通过设置initial-cluster参数使用离线的启动配置。每一个机器将会通过以下的环境变量或命令行获得配置信息：
-ETCD</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-
-
-  <nav aria-label="index posts navigation">
-    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-double-right"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
-      ele.href += '#board';
-    }
-  </script>
-
-
-
-              </div>
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
             </div>
-          </div>
+
         </div>
-      </div>
+    </nav>
+
     
-  </main>
-
-  
-    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
-      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">触不可及</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            
+    <div class="container">
+    <div class="intro">
+        <div class="avatar">
+            <a href="/"><img src="/image/icon.jpg"></a>
+        </div>
+        <div class="nickname">任晓东</div>
+        <div class="description"><p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> <br>Fusce eget urna vitae velit <em>eleifend interdum at ac</em> nisi.</p>
 </div>
-  
+        <div class="links">
+            
+                
+                    <a class="link-item" title="Blog" href="/archives">
+                        
+                        
+                            <i class="iconfont icon-blog"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="WeChat" href="/image/wechat.png">
+                        
+                        
+                            <i class="iconfont icon-wechat"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Github" href="https://github.com/newonexd" target="_blank" rel="noopener">
+                        
+                        
+                            <i class="iconfont icon-github"></i>
+                        
+                    </a>
+                
+            
+        </div>
+    </div>
+</div>
 
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
-    <i class="iconfont icon-love"></i>
-    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
-    <br>
 
-    
-  
-    <!-- 不蒜子统计PV -->
-    
-    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
-          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
-  
-  
-    <!-- 不蒜子统计UV -->
-    
-    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
-            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
-  
-  <br>
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 任晓东 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> | </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-
-
-    
-
-  </div>
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    </div>
 </footer>
 
-<!-- SCRIPTS -->
-<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
-<script src="/js/main.js" ></script>
-
-
-  <script src="/js/lazyload.js" ></script>
-
-
-
-
-
-  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
-
-
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-<!-- Plugins -->
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      $('pre').addClass('prettyprint  ');
-      prettyPrint();
-    })
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "如果你交给某人一个程序,你将折磨他一整天；如果你教某人如何编写程序,你将折磨他一辈子。&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "false",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
-
-
-  <script src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      getSearchFile(path);
-      this.onclick = null
-    }
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <script>
-    $("#post img:not(.no-zoom img, img[no-zoom])").each(
-      function () {
-        var element = document.createElement("a");
-        $(element).attr("data-fancybox", "images");
-        $(element).attr("href", $(this).attr("src"));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
+    </div>
 </body>
 </html>

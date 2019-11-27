@@ -1,166 +1,206 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-
-
-
-
-
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
-  <link rel="icon" type="image/png" href="/img/icon.jpg">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="description" content="">
-  <meta name="author" content="任晓东">
-  <meta name="keywords" content="">
-  <title>多机集群 ~ 任晓东的博客</title>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
-<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+    <meta name="author" content="任晓东">
 
 
-  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
-
-<link rel="stylesheet" href="/css/main.css"  >
+    <meta name="subtitle" content="如果你交给某人一个程序,你将折磨他一整天；如果你教某人如何编写程序,你将折磨他一辈子。">
 
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<title>多机集群 | 任晓东的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
 
 
 </head>
-
-
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>任晓东的博客</strong>&nbsp;</a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/">主页</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">归档</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/categories/">分类</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">标签</a>
-          </li>
-        
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">关于</a>
-          </li>
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-
-</nav>
-
-    <div class="view intro-2" id="background"
-         style="background: url('/img/default.png')no-repeat center center;
-           background-size: cover;
-           background-attachment: fixed;">
-      <div class="full-bg-img">
-        <div class="mask rgba-black-light flex-center">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              <br>
-              
-                <p class="mt-3">
-                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Saturday, November 23rd 2019, 12:32 pm
-                </p>
-              
-
-              <p>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">触不可及</a></div>
+            <div class="menu navbar-right">
                 
-                  
-                  &nbsp;<i class="far fa-chart-bar"></i>
-                  <span class="post-count">
-                    4.6k 字
-                  </span>&nbsp;
+                    <a class="menu-item" href="/archives">归档</a>
                 
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
 
-                
-                  
-                  &nbsp;<i class="far fa-clock"></i>
-                  <span class="post-count">
-                      22 分钟
-                  </span>&nbsp;
-                
-
-                
-                  <!-- 不蒜子统计文章PV -->
-                  
-                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
-                  <span id="busuanzi_container_page_pv">
-                    <span id="busuanzi_value_page_pv"></span> 次
-                  </span>&nbsp;
-                
-              </p>
-            
-          </div>
-
-          
         </div>
-      </div>
-    </div>
-  </header>
+    </nav>
 
-  <main>
     
-      
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">触不可及</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="py-5 z-depth-3" id="board">
-        <div class="post-content mx-auto" id="post">
-          <div class="markdown-body">
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">多机集群</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">任晓东</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 23, 2019&nbsp;&nbsp;12:32:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/">etcd文档翻译</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
             <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/clustering.md" target="_blank" rel="noopener">cluster on multiple machines</a></p>
 <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><hr>
 <p>启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。<br>一旦etcd集群已经启动，添加或移除成员可以通过<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">运行时重新配置</a>。在运行时重新配置之前，为了更好地理解设计，我们建议读<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AE%BE%E8%AE%A1/">运行时重新配置设计文档</a>。<br>这篇引导etcd集群的启动将包括以下机制：</p>
@@ -421,57 +461,68 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
 --listen-client-urls http://10.0.1.12:2379 \
 --listen-peer-urls http://10.0.1.12:2380</code></pre><p>自从v3.1.0（v3.2.9除外），因此在<code>etcd --discovery-srv = example.com</code>中配置了TLS时，服务器仅在提供的证书具有根域<code>example.com</code>作为<code>Subject Alternative</code>(SAN)字段中的条目时，对等方/客户端进行身份验证。请参阅<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md#notes-for-dns-srv" target="_blank" rel="noopener">DNS SRV的注释</a>。<br><strong>网关</strong><br>etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。 请阅读<a href="https://newonexd.github.io/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">网关指南</a>以获取更多信息。<br><strong>代理</strong><br>设置<code>--proxy</code>参数时，etcd以<a href="https://newonexd.github.io/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">代理模式</a>运行。 此代理模式仅支持etcd v2 API； 目前尚无计划支持v3 API。 相反，为了支持v3 API，etcd 3.0版本之后将提供具有增强功能的新代理。<br>要使用v2 API代理设置etcd集群，请阅读<a href="https://github.com/coreos/etcd/blob/release-2.3/Documentation/clustering.md" target="_blank" rel="noopener">etcd 2.3版本中的集群文档</a>。</p>
 
-            <hr>
-          </div>
-          <br>
-          <div>
-            <p>
-            
-              <span>
-                <i class="iconfont icon-inbox"></i>
-                
-                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
-                  &nbsp;
-                
-              </span>&nbsp;&nbsp;
-            
-            
-              <span>
-                <i class="iconfont icon-tag"></i>
-                
-                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
-                
-              </span>
-            
-            </p>
-            
-              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
-            
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="d-none d-lg-block col-lg-2 toc-container">
-      
-  <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
-    <div id="tocbot"></div>
-  </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- custom -->
 
 
-<!-- Comments -->
-<div class="col-lg-7 mx-auto nopadding-md">
-  <div class="container comments mx-auto" id="comments">
-    
-      <br><br>
-      
-      
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>任晓东</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/etcd/"># etcd</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();" target="_blank" rel="noopener">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/23/blog/etcd/%E5%AE%A2%E6%88%B7%E7%AB%AFv3/">客户端v3</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">单机集群</a>
+            
+        </section>
+
+
+        <!-- Comments -->
+        <div class="col-lg-7 mx-auto nopadding-md">
+          <div class="container comments mx-auto" id="comments">
+            
+              <br><br>
+              
+              
   <div id="gitalk-container"></div>
   <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
   <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
@@ -490,195 +541,26 @@ infra2.example.com.  300  IN  A  10.0.1.12</code></pre><p><strong>使用DNS引�
       createIssueManually: 'true',
       distractionFreeMode: 'false'
     });
-
     gitalk.render('gitalk-container')
   </script>
 
-
-    
-  </div>
+            
+          </div>
+     </article>
 </div>
 
-    
-  </main>
-
-  
-    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
-      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 任晓东 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> | </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
     </div>
-  </div>
-</div>
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
-    <i class="iconfont icon-love"></i>
-    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
-    <br>
-
-    
-  
-    <!-- 不蒜子统计PV -->
-    
-    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
-          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
-  
-  
-    <!-- 不蒜子统计UV -->
-    
-    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
-            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
-  
-  <br>
-
-
-
-    
-
-  </div>
 </footer>
 
-<!-- SCRIPTS -->
-<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
-<script src="/js/main.js" ></script>
-
-
-  <script src="/js/lazyload.js" ></script>
-
-
-
-  
-    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
-  
-  <script src="/js/post.js" ></script>
-
-
-
-  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
-
-
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-<!-- Plugins -->
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      $('pre').addClass('prettyprint  ');
-      prettyPrint();
-    })
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "多机集群&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "false",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
-
-
-  <script src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      getSearchFile(path);
-      this.onclick = null
-    }
-  </script>
-
-
-
-  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <script>
-    $("#post img:not(.no-zoom img, img[no-zoom])").each(
-      function () {
-        var element = document.createElement("a");
-        $(element).attr("data-fancybox", "images");
-        $(element).attr("href", $(this).attr("src"));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
+    </div>
 </body>
 </html>
