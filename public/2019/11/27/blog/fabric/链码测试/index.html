@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 
 
 
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Wednesday, November 27th 2019, 10:34 am
+                  星期三, 十一月 27日 2019, 10:34 上午
                 </p>
               
 
@@ -167,7 +167,7 @@
 <h2 id="2-开始"><a href="#2-开始" class="headerlink" title="2.开始"></a>2.开始</h2><hr>
 <p>完成准备工作后，我们需要将<code>Fabric-sample</code>文件夹从<code>Github</code>上<code>pull</code>下来，地址在<a href="https://github.com/hyperledger/fabric-samples" target="_blank" rel="noopener">这里</a>,最简单的方式是直接下载压缩文件，然后到本地解压出来，但是推荐使用IDE工具通过<code>git</code>工具从<code>Github</code>上拉取下来，具体方法自行百度。<br>完成之后，会有一个<code>fabric-sample</code>文件夹，将该文件夹放在<code>$GOPATH/src/github.com/hyperledger/</code>路径下，路径不存在自行创建。</p>
 <h3 id="切换版本"><a href="#切换版本" class="headerlink" title="切换版本"></a>切换版本</h3><p>进入<code>fabric-samples</code>文件夹，执行以下命令，将Fabric版本切换至1.4，如果使用其他版本请下面部分下载二进制与Docker镜像的时候要对应。</p>
-<pre><code>git checkout -b release-1.4</code></pre><h3 id="3-二进制文件以及Docker镜像"><a href="#3-二进制文件以及Docker镜像" class="headerlink" title="3.二进制文件以及Docker镜像"></a>3.二进制文件以及Docker镜像</h3><hr>
+<pre><code>git checkout release-1.4</code></pre><h3 id="3-二进制文件以及Docker镜像"><a href="#3-二进制文件以及Docker镜像" class="headerlink" title="3.二进制文件以及Docker镜像"></a>3.二进制文件以及Docker镜像</h3><hr>
 <p>下载二进制文件是比较容易出错的地方，因为容易因为版本不匹配导致网络启动失败，所以在下载二进制文件的时候一定要注意使用的版本。</p>
 <pre><code>curl -sS https://raw.githubusercontent.com/hyperledger/fabric/master/scripts/bootstrap.sh -o ./scripts/bootstrap.sh
 chmod +x ./scripts/bootstrap.sh
@@ -229,7 +229,7 @@ peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[&quot;init&qu
     <div class="d-none d-lg-block col-lg-2 toc-container">
       
   <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
     <div id="tocbot"></div>
   </div>
 
@@ -289,7 +289,7 @@ peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[&quot;init&qu
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -298,7 +298,7 @@ peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[&quot;init&qu
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
+                 for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
