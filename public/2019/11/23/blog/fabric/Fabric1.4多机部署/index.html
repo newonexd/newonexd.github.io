@@ -190,31 +190,9 @@
 <td align="left">peer1.org2.example.com</td>
 <td align="left">10.65.200.44</td>
 </tr>
-<tr>
-<td align="left">Fabric的环境搭建过程不再详解，可以参考这一篇文章<a href="">Hyperledger Fabric环境搭建过程</a></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">## 2.多机环境搭建</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">按照<a href="">Hyperledger Fabric环境搭建过程</a>在五台机子上搭建Fabric完成后，</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用<code>first-network</code>这个文件夹内的配置文件来修改为自己所需要的配置文件。</td>
-<td align="left"></td>
-</tr>
 </tbody></table>
+<p>Fabric的环境搭建过程不再详解，可以参考这一篇文章<a href="">Hyperledger Fabric环境搭建过程</a></p>
+<h2 id="2-多机环境搭建"><a href="#2-多机环境搭建" class="headerlink" title="2.多机环境搭建"></a>2.多机环境搭建</h2><p>如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。<br>按照<a href="">Hyperledger Fabric环境搭建过程</a>在五台机子上搭建Fabric完成后，<br>就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。<br>在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用<code>first-network</code>这个文件夹内的配置文件来修改为自己所需要的配置文件。</p>
 <p><strong>本文以orderer节点为例，在<code>10.65.182.150</code>这台服务器上进行操作。</strong></p>
 <h3 id="2-1准备配置文件"><a href="#2-1准备配置文件" class="headerlink" title="2.1准备配置文件"></a>2.1准备配置文件</h3><pre><code>#step1 进入到first-network文件夹的上一级目录
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/

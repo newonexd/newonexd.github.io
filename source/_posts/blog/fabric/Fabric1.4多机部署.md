@@ -15,6 +15,7 @@ categories: fabric应用
 |peer1.org1.example.com|10.65.26.140|
 |peer0.org2.example.com|10.65.200.182|
 |peer1.org2.example.com|10.65.200.44|
+
 Fabric的环境搭建过程不再详解，可以参考这一篇文章[Hyperledger Fabric环境搭建过程]()
 ## 2.多机环境搭建
 如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。

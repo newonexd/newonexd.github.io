@@ -30,7 +30,7 @@ connection-org1.yaml  docker-compose-ca.yaml  docker-compose-kafka.yaml
 ├── docker-compose-e2e-template.yaml
 
 ```
-##1.证书的生成
+## 1.证书的生成
 在Fabric网络环境中，第一步需要生成各个节点的证书文件，所用到的配置文件为``crypto-config.yaml``，说明一下文件内各字段的意义：
 ```
 OrdererOrgs:    #定义一个Order组织
@@ -69,9 +69,9 @@ cryptogen generate --config=./crypto-config.yaml
 #执行完毕后，当前文件夹下会出现一个新的文件夹：crypto-config，在该文件夹下就是刚刚生成的证书.
 ```
 文件夹内证书不再详解，会在另一篇文章中专门解释Fabric-ca的内容。
-##2 生成创世区块，通道配置，锚节点配置文件
+## 2 生成创世区块，通道配置，锚节点配置文件
 在这里需要用到``configtxgen``这个二进制文件。
-####2.1生成创世区块 
+#### 2.1生成创世区块 
 ```
 #首先进入文件夹
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/  
@@ -80,13 +80,13 @@ configtxgen -profile TwoOrgsOrdererGenesis -channelID mychannel -outputBlock ./c
 #如果没有channel-artifacts这个文件夹，则需要手动去创建
 ```
 如果没有出现错误的话，在``channel-artifacts``文件夹中可以看至生成的``genesis.block``文件。
-####2.2生成通道配置信息
+#### 2.2生成通道配置信息
 ```
 #执行命令生成通道配置信息
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
 ```
 同样，在``channel-artifacts``文件夹中可以看至生成的``channel.tx``文件。
-####2.3生成锚节点配置文件 
+#### 2.3生成锚节点配置文件 
 ```
 #首先生成Org1的锚节点配置文件
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
@@ -98,7 +98,7 @@ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts
 channel.tx  genesis.block  Org1MSPanchors.tx  Org2MSPanchors.tx
 ```
 [启动网络]:##3启动网络
-##3启动网络
+## 3启动网络
 到了这一步，可以启动网络了。
 ```
 #首先进入``fabric-samples/first-network``文件夹。
@@ -118,7 +118,7 @@ e2795ea9d43b        hyperledger/fabric-peer:latest      "peer node start"   57 s
 ad4af3309e8c        hyperledger/fabric-peer:latest      "peer node start"   57 seconds ago      Up 31 seconds       0.0.0.0:8051->8051/tcp     peer1.org1.example.com
 f6d25896b517        hyperledger/fabric-peer:latest      "peer node start"   58 seconds ago      Up 40 seconds       0.0.0.0:7051->7051/tcp     peer0.org1.example.com
 ```
-####3.1创建通道
+#### 3.1创建通道
 创建通道需要进入cli容器：
 ```
 sudo docker exec -it cli bash
@@ -138,7 +138,7 @@ peer channel create -o orderer.example.com:7050 -c mychannel -f ./channel-artifa
 #将生成的文件移动到channel-artifacts文件夹中
 mv mychannel.block channel-artifacts/
 ```
-####3.2加入通道
+#### 3.2加入通道
 ```
 #因为当前cli容器使用的是peer0的配置，所以可以直接将peer0加入通道 
  peer channel join -b channel-artifacts/mychannel.block
@@ -157,7 +157,7 @@ peer channel join -b channel-artifacts/mychannel.block
 #退出容器
 exit
 ```
-####3.3更新锚节点 
+#### 3.3更新锚节点 
 ```
 #重新进入容器
 sudo docker exec -it cli bash
@@ -170,7 +170,7 @@ peer channel update -o orderer.example.com:7050 -c mychannel -f ./channel-artifa
 #退出容器
 exit
 ```
-####3.4安装链码
+#### 3.4安装链码
 ```
 #链码的安装仍然需要在所有节点上进行操作
 #进入容器
@@ -187,7 +187,7 @@ peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/
 peer chaincode instantiate -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR      ('Org1MSP.member','Org2MSP.member')"
 #这一步执行完毕后可以在其他节点上也安装链码，具体环境变量配置见本文中4.2
 ```
-####3.5调用链码
+#### 3.5调用链码
 ```
 #以peer0.org1为例
 #首先进入cli容器
@@ -212,5 +212,5 @@ sudo docker-compose -f docker-compose-cli.yaml down --volumes
 #删除生成的文件，下次启动网络需要重新生成
 sudo rm -r channel-artifacts crypto-config
 ```
-##4总结
+## 4总结
 本文并没有使用CouchDb作为fabric网络的数据库，准备放到下一篇多机搭建Fabric网络中一起讲解。到这里，整个网络的手动搭建过程已经完成，希望大家能够有所收获。
