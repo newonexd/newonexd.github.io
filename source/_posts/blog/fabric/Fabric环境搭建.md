@@ -34,7 +34,7 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 sudo apt-get update
 sudo apt-get upgrade
 ```
-###1.1安装GOLANG
+### 1.1安装GOLANG
 首先需要安装一些必要的依赖：
 ```
 sudo apt install libtool libltdl-dev
@@ -67,7 +67,7 @@ source ~/.profile
 go version
 ```
 如果可以看到GO的版本信息，说明GO已经安装完成。
-###1.2安装Docker
+### 1.2安装Docker
 在这里，我们可以使用阿里云的镜像地址安装Docker。
 **如果Ubuntu系统中有旧版本的Docker，需要卸载后重新安装。**可以使用以下命令进行卸载：
 ```
@@ -126,7 +126,7 @@ docker -v
 Registry Mirrors:
    https://registry.docker-cn.com/
 ```
-###1.3 安装Docker-Compose
+### 1.3 安装Docker-Compose
 首先需要安装Python pip：
 ```
 sudo apt-get install python-pip
@@ -144,7 +144,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose -v
 ```
 如果以上步骤可以顺利完成的话，接下来就可以进入正题了：
-#2.Fabric的环境搭建
+# 2.Fabric的环境搭建
 首先创建文件夹
 ```
 cd $HOME

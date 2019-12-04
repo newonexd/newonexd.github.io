@@ -5,8 +5,9 @@ tags: fabric
 categories: fabric应用
 ---
 之前的文章[深入解析Hyperledger Fabric启动的全过程]()主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
-###1 搭建环境
+### 1搭建环境
  **本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb**，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。
+
 | 域名|ip地址|
 |:----|:----|
 |orderer.example.com|10.65.182.150|
@@ -15,14 +16,14 @@ categories: fabric应用
 |peer0.org2.example.com|10.65.200.182|
 |peer1.org2.example.com|10.65.200.44|
 Fabric的环境搭建过程不再详解，可以参考这一篇文章[Hyperledger Fabric环境搭建过程]()
-##2.多机环境搭建
+## 2.多机环境搭建
 如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。
 按照[Hyperledger Fabric环境搭建过程]()在五台机子上搭建Fabric完成后，
 就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。
 在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用``first-network``这个文件夹内的配置文件来修改为自己所需要的配置文件。
 
 **本文以orderer节点为例，在``10.65.182.150``这台服务器上进行操作。**
-###2.1准备配置文件
+### 2.1准备配置文件
 ```
 #step1 进入到first-network文件夹的上一级目录
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/
@@ -43,7 +44,7 @@ cd first
 ```
 本文就对以上文件进行修改搭建自己的Fabric多机网络
 由于官方的``first-network``中的配置文件中使用的就是4+1的架构，所以我们可以直接生成所需要的证书文件，创世区块，通道配置文件。
-###2.2生成相关配置文件
+### 2.2生成相关配置文件
 ```
 #step1 生成证书文件
 cryptogen generate --config=./crypto-config.yaml
@@ -59,8 +60,8 @@ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts
 ```
 所有需要的配置文件全部建立完成，在``channel-artifacts``中应该有以下几个文件。
 ``channel.tx、genesis.block、Org1MSPanchors.tx、Org2MSPanchors.tx``
-###2.3修改节点配置文件
-####2.3.1``base/docker-compose-base.yaml``
+### 2.3修改节点配置文件
+#### 2.3.1``base/docker-compose-base.yaml``
 这个文件中配置了所有节点的一些基本信息，我们需要修改的地方有
 ```
 peer0.org1.example.com:
@@ -111,7 +112,7 @@ peer0.org1.example.com:
 #以下全部需要修改   8051/9051/10051修改为7051     8052/9052/10052修改为7052
 #其余地方不需要修改
 ```
-####2.3.2 ``docker-compose-cli.yaml``
+#### 2.3.2 ``docker-compose-cli.yaml``
 本文需要使用该文件启动节点，我们将该文件复制一份，**以orderer节点为例**：
 ```
 #复制该文件，并命名为docker-compose-orderer.yaml
@@ -223,7 +224,7 @@ services:
 
 ```
 此外，因为本文中Fabric数据库使用了CouchDb，所以需要对CouchDb进行相关配置,CouchDb配置文件为``docker-compose-couch.yaml``。
-####2.3.3 ``docker-compose-couch.yaml``
+#### 2.3.3 ``docker-compose-couch.yaml``
 同样，我们复制一份该文件，命名为``docker-compose-peer0-Org1-couch.yaml``
 ```
 cp docker-compose-couch.yaml docker-compose-peer0-Org1-couch.yaml
@@ -277,7 +278,7 @@ sudo docker-compose -f docker-compose-peer0-Org1.yaml -f docker-compose-peer0-Or
 整个过程中可能会遇到各种各样的坑，不过大部分问题都是由于配置文件某一地方没有修改好，或者就是yaml文件的格式错误，还是比较好解决的。
 
 最后关闭网络需要清空所有数据，不然再次启动网络会出错。
-##3 关闭网络
+## 3 关闭网络
 对于Order节点,关闭网络的命令：
 ```
 sudo docker-compose -f docker-compose-orderer.yaml down --volumes

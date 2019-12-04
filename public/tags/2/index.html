@@ -237,7 +237,38 @@ deb http://mirrors.aliyu</div>
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">之前的文章深入解析Hyperledger Fabric启动的全过程主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。###1 搭建环境 本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。| 域名|ip地址||:—-|:—-||orderer.example.com|10.65.182.150||peer0.org1.example.com|10.65.26.64||peer1.org1.example.com|10.65.26.140||peer0.org2.example.com|10.65.200.182||peer1.org2.example.com|10.65.200.44|Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger Fabric环境搭建过</div>
+          <div class="index-text mb-1">之前的文章深入解析Hyperledger Fabric启动的全过程主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
+1搭建环境 本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。
+
+
+
+域名
+ip地址
+
+
+
+orderer.example.com
+10.65.182.150
+
+
+peer0.org1.example.com
+10.65.26.64
+
+
+peer1.org1.example.com
+10.65.26.140
+
+
+peer0.org2.example.com
+10.65.200.182
+
+
+peer1.org2.example.com
+10.65.200.44
+
+
+Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger Fabric环境搭建过程
+</div>
         </div>
       </a>
 
