@@ -214,7 +214,7 @@ cryptogen generate --config=./crypto-config.yaml
 <h4 id="2-1生成创世区块"><a href="#2-1生成创世区块" class="headerlink" title="2.1生成创世区块"></a>2.1生成创世区块</h4><pre><code>#首先进入文件夹
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/  
 #执行命令生成创世区块 
-configtxgen -profile TwoOrgsOrdererGenesis -channelID mychannel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile TwoOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
 #如果没有channel-artifacts这个文件夹，则需要手动去创建</code></pre><p>如果没有出现错误的话，在<code>channel-artifacts</code>文件夹中可以看至生成的<code>genesis.block</code>文件。</p>
 <h4 id="2-2生成通道配置信息"><a href="#2-2生成通道配置信息" class="headerlink" title="2.2生成通道配置信息"></a>2.2生成通道配置信息</h4><pre><code>#执行命令生成通道配置信息
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel</code></pre><p>同样，在<code>channel-artifacts</code>文件夹中可以看至生成的<code>channel.tx</code>文件。</p>

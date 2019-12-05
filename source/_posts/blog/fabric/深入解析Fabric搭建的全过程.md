@@ -76,7 +76,7 @@ cryptogen generate --config=./crypto-config.yaml
 #首先进入文件夹
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/  
 #执行命令生成创世区块 
-configtxgen -profile TwoOrgsOrdererGenesis -channelID mychannel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile TwoOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
 #如果没有channel-artifacts这个文件夹，则需要手动去创建
 ```
 如果没有出现错误的话，在``channel-artifacts``文件夹中可以看至生成的``genesis.block``文件。
