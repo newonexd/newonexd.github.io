@@ -342,6 +342,7 @@ cd $GOPATH/src/github.com/caDemo/
 #### 3.1.4 启动peer节点
 到这里，已经配置好了一个节点，所以我们就可以启动这个节点了，当然在之后和`orderer`节点一起启动也可以，不过忙活了这么多，还是应该提前看到一下所做的工作的成果的！
 附上`peer1`节点的容器配置信息：
+
 ```
   peer1-org1:
     container_name: peer1-org1
@@ -370,7 +371,6 @@ cd $GOPATH/src/github.com/caDemo/
       - fabric-ca
       
 ```
-
 启动它！！
 
 ```
@@ -481,6 +481,7 @@ cd $GOPATH/src/github.com/caDemo/
 ```
 #### 3.2.4 启动peer节点
 附上`peer1`节点的容器配置信息：
+
 ```
   peer1-org2:
     container_name: peer1-org2
