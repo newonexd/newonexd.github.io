@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="">
+  <title>Hyperledger Fabric-CA ~ 任晓东的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>任晓东的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十二月 8日 2019, 8:21 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>Fabric—Ca的概念不再解释了，这里只说明使用方法:</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>Go语言1.10+版本</li>
+<li>GOPATH环境变量正确设置</li>
+<li>已安装<code>libtool</code>和<code>libtdhl-dev</code>包</li>
+</ul>
+<h4 id="Ubuntu系统"><a href="#Ubuntu系统" class="headerlink" title="Ubuntu系统"></a>Ubuntu系统</h4><p>通过以下命令安装<code>libtool</code>和<code>libtdhl-dev</code>包：</p>
+<pre><code>sudo apt install libtool libltdl-dev</code></pre><h4 id="MacOs-系统"><a href="#MacOs-系统" class="headerlink" title="MacOs 系统"></a>MacOs 系统</h4><p>Mac系统通过以下命令安装：</p>
+<pre><code>brew install libtool</code></pre><h2 id="Fabric-Ca安装"><a href="#Fabric-Ca安装" class="headerlink" title="Fabric-Ca安装"></a>Fabric-Ca安装</h2><p>可以通过以下两种途径进行安装：</p>
+<ol>
+<li>直接下载二进制文件：<pre><code>go get -u github.com/hyperledger/fabric-ca/cmd/...</code></pre>如果使用这种方式安装，安装成功的话直接在命令行输入(前提是GOPATH正确配置):<pre><code>fabric-ca-server version</code></pre>即可打印出安装的Ca版本。</li>
+<li>从源码编译安装：<br>首先在系统中建立以下路径:<pre><code>mkdir -p $GOPATH/src/github.com/hyperledger/
+cd $GOPATH/src/github.com/hyperledger/</code></pre>从Github上面将Fabric-Ca仓库克隆到本地：<pre><code>git clone https://github.com/hyperledger/fabric-ca.git
+cd fabric-ca</code></pre>进行源码编译：<pre><code>make fabric-ca-server
+make fabric-ca-client</code></pre>如果没有报错的话，当前文件下会编译出一个<code>bin</code>文件夹，最后一步将该文件夹添加到环境变量，安装完成！</li>
+</ol>
+<h4 id="编译Ca的Docker镜像"><a href="#编译Ca的Docker镜像" class="headerlink" title="编译Ca的Docker镜像"></a>编译Ca的Docker镜像</h4><p>直接在<code>fabric-ca</code>文件夹内执行以下命令：</p>
+<pre><code>make docker</code></pre><h2 id="Fabric-Ca服务器简单使用"><a href="#Fabric-Ca服务器简单使用" class="headerlink" title="Fabric-Ca服务器简单使用"></a>Fabric-Ca服务器简单使用</h2><hr>
+<h3 id="设置Fabric-Ca服务器的Home文件夹"><a href="#设置Fabric-Ca服务器的Home文件夹" class="headerlink" title="设置Fabric Ca服务器的Home文件夹"></a>设置Fabric Ca服务器的<code>Home</code>文件夹</h3><p>启动Fabric Ca 服务器的第一步是需要对Fabric Ca服务器进行初始化操作，初始化操作将会生成一些默认的配置文件，所以我们首先需要指定一个文件夹作为服务器的主文件夹用来放生成的配置文件。<br>可以通过以下几种方式设置Fabric-Ca服务器的主文件夹，优先级由高到低排序：</p>
+<ol>
+<li>通过命令行设置参数<code>--home</code>设置。</li>
+<li>如果设置了<code>FABRIC_CA_SERVER_HOME</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果设置了<code>FABRIC_CA_HOME</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果设置了<code>CA_CFG_PATH</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果以上方法都没有设置，则将当前工作目录作为主文件夹。</li>
+</ol>
+<p>官方建议是通过设置<code>FABRIC_CA_HOME</code>为<code>$HOME/fabric-ca/server</code>作为服务器的主文件夹。</p>
+<h3 id="初始化服务器"><a href="#初始化服务器" class="headerlink" title="初始化服务器"></a>初始化服务器</h3><p>上一步骤完成后，就可以对Fabric Ca进行初始化了，执行以下命令：</p>
+<pre><code>fabric-ca-server init -b admin:adminpw</code></pre><p>通过<code>-b</code>参数指定管理员的账号和密码对服务器进行初始化。将会生成一个自签名的证书。</p>
+<ul>
+<li>admin:相当于管理员账号</li>
+<li>adminpw:相当于管理员密码</li>
+</ul>
+<p><code>admin:adminpw</code>可以自行设置。<br>或者服务器的初始化也可以通过<code>-u</code>参数指定服务器的上一级服务器，也就是父服务器。格式为:<code>-u &lt;parent-fabric-ca-server-URL</code>,其中这里的<code>URL</code>必须使用<code>&lt;协议&gt;://&lt;enrollmentId&gt;:&lt;secret&gt;@&lt;host&gt;:&lt;port&gt;</code>的格式。<br>初始化之后将会生成几个文件：</p>
+<pre><code>IssuerPublicKey      #与零知识证明相关文件，暂不解释
+IssuerRevocationPublicKey #与零知识证明相关文件，暂不解释
+ca-cert.pem             #证书文件
+fabric-ca-server-config.yaml   #默认配置文件,对Ca服务器进行配置时可以用到
+fabric-ca-server.db  #Ca服务器数据库，存储注册的用户，组织，证书等信息。可以通过sqlite3 命令进去查看
+msp/</code></pre><h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><p>初始化之后可以直接启动服务器：</p>
+<pre><code>fabric-ca-server start -b &lt;admin&gt;:&lt;adminpw&gt;</code></pre><p>服务器将会监听在7054端口。如果需要服务器监听在<code>https</code>上而不是<code>http</code>上，需要将<code>tls.enabled</code>设置为<code>true</code>。</p>
+<p>启动完之后，即可以通过<code>fabric-ca-client</code>工具或者是SDK对Ca服务器进行操作了。</p>
+<h2 id="Fabric-Ca-客户端"><a href="#Fabric-Ca-客户端" class="headerlink" title="Fabric Ca 客户端"></a>Fabric Ca 客户端</h2><p>这一部分说明命令行工具<code>fabric-ca-client</code>的简单使用。</p>
+<h3 id="设置Fabric-Ca客户端的Home文件夹"><a href="#设置Fabric-Ca客户端的Home文件夹" class="headerlink" title="设置Fabric Ca客户端的Home文件夹"></a>设置Fabric Ca客户端的<code>Home</code>文件夹</h3><p>与服务器相同，客户端也具有自己的主文件夹，用来保存客户端的证书秘钥等等。<br>可以通过以下几种方式设置Fabric-Ca客户端的主文件夹，优先级由高到低排序：</p>
+<ol>
+<li>通过命令行设置参数<code>--home</code>设置。</li>
+<li>如果设置了<code>FABRIC_CA_CLIENT_HOME</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果设置了<code>FABRIC_CA_HOME</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果设置了<code>CA_CFG_PATH</code>环境变量,则使用该环境变量作为主文件夹。</li>
+<li>如果以上方法都没有设置，则<code>$HOME/.fabric-ca-client</code>将作为主文件夹。</li>
+</ol>
+<p>官方例子：<code>export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin</code></p>
+<h3 id="用户登陆"><a href="#用户登陆" class="headerlink" title="用户登陆"></a>用户登陆</h3><p>设置完之后，我们使用命令行工具登陆管理员用户:</p>
+<pre><code>fabric-ca-client enroll -u http://admin:adminpw@localhost:7054</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric-ca">fabric-ca</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric-CA&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

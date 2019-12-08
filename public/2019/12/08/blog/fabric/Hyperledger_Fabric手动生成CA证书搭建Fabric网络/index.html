@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="">
+  <title>Hyperledger Fabric手动生成CA证书搭建Fabric网络 ~ 任晓东的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>任晓东的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十二月 8日 2019, 5:14 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    7.6k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      35 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具<code>cryptogen</code>直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。<br>所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。<br>正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。<br>在这里贴出<a href="https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html" target="_blank" rel="noopener">官方文档</a>地址.</p>
+<h2 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h2><hr>
+<p>架构图直接贴过来好了：<br><img src="/img/blog/arth.png" srcset="undefined" alt="系统架构"></p>
+<p>官方文档采用的是多机环境，这里简洁化一点，所有的操作都在<strong>一台机器</strong>上进行，至于多机环境，以后再补充好了。<br>介绍一下本文所采用的整体架构：</p>
+<ol>
+<li>三个组织<ol>
+<li>Org0  -&gt; 组织0   </li>
+<li>Org1  -&gt; 组织1   </li>
+<li>Org2  -&gt; 组织2   </li>
+</ol>
+</li>
+<li>组织中的成员<ol>
+<li>Org0   一个Orderer节点，一个Org0的Admin节点</li>
+<li>Org1   两个Peer节点，一个Org1的Admin节点，一个Org1的User节点</li>
+<li>Org2   两个Peer节点，一个Org2的Admin节点，一个Org2的User节点</li>
+</ol>
+</li>
+<li>共有四台CA服务器<ol>
+<li>TLS服务器   -&gt;  为网络中所有节点颁发TLS证书，用于通信的加密</li>
+<li>Org1的CA服务器 -&gt; 为组织1中所有用户颁发证书</li>
+<li>Org2的Ca服务器 -&gt; 为组织2中所有用户颁发证书</li>
+<li>Org0的CA服务器 -&gt; 为组织0中所有用户颁发证书</li>
+</ol>
+</li>
+</ol>
+<p>这里的四台CA服务器都是根服务器。<strong>彼此之间都是独立的存在，没有任何关系。</strong>，也就是说每一个CA服务器生成的证书在其他CA服务器都是不能用的。<br>介绍完之后，可以进入正题了。</p>
+<h3 id="1-1Fabric，Fabric-Ca安装"><a href="#1-1Fabric，Fabric-Ca安装" class="headerlink" title="1.1Fabric，Fabric-Ca安装"></a>1.1Fabric，Fabric-Ca安装</h3><p>本文默认读者都是对Fabric有一定的了解的，所以一些安装过程这里就没有重复说明。<br>第一步是安装Fabric-Ca环境，可以参考<a href="">这里</a>,这篇文章还没有写完，以后慢慢补，不过环境的安装已经有说明。<br>还有就是Fabric的环境安装，可以参考<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">这里</a>。</p>
+<p>完成环境搭建后，我们还需要一个<code>HOME</code>文件夹，用于存放我们生成的证书文件与<code>fabric</code>配置相关的文件。<br>本文设置<code>HOME</code>文件夹路径为:</p>
+<pre><code>$GOPATH/src/github.com/caDemo/</code></pre><p>请读者自行创建，一般不要用太复杂的路径,也不要用中文路径，会为之后的操作带来很多麻烦。在下文中简单称<code>HOME</code>文件夹为<strong>工作目录</strong>,<strong>除非特殊说明，一般命令的执行都是在工作目录进行</strong>。</p>
+<h2 id="2-CA服务器配置"><a href="#2-CA服务器配置" class="headerlink" title="2 CA服务器配置"></a>2 CA服务器配置</h2><hr>
+<h3 id="2-1启动TLS-CA服务器"><a href="#2-1启动TLS-CA服务器" class="headerlink" title="2.1启动TLS CA服务器"></a>2.1启动TLS CA服务器</h3><p>前期工作准备好之后，我们开始启动第一台CA服务器。本文中使用<code>Docker</code>容器启动。<br>首先在工作目录创建<code>docker-compose.yaml</code>文件：</p>
+<pre><code>touch docker-compose.yaml</code></pre><p>并在文件内添加以下内容(tips:内容格式不要乱掉)：</p>
+<pre><code>version: &#39;2&#39;
+
+networks:
+  fabric-ca:
+
+services:
+
+  ca-tls:
+    container_name: ca-tls
+    image: hyperledger/fabric-ca
+    command: sh -c &#39;fabric-ca-server start -d -b tls-ca-admin:tls-ca-adminpw --port 7052&#39;
+    environment:
+      - FABRIC_CA_SERVER_HOME=/ca/tls
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_CSR_CN=ca-tls
+      - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      - FABRIC_CA_SERVER_DEBUG=true
+    volumes:
+      - $GOPATH/src/github.com/caDemo:/ca  ##重要！！！记得修改这里的路径为自己的工作目录
+    networks:
+      - fabric-ca
+    ports:
+      - 7052:7052
+</code></pre><p>启动该<code>docker</code>容器：</p>
+<pre><code>docker-compose -f docker-compose.yaml up ca-tls</code></pre><p>如果命令行出现以下内容则说明启动成功：</p>
+<pre><code>[INFO] Listening on https://0.0.0.0:7052</code></pre><p>同时工作目录下会出现一个<code>tls</code>的文件夹。文件夹中的内容暂先不解释，留着在另一篇文章中说明。不过有一个文件需要解释一下，因为之后会用到。<br>在<code>$GOPATH/src/github.com/caDemo/tls/</code>路径下的<code>ca-cert.pem</code>文件。这是<code>TLS CA</code>服务器签名的根证书，目的是用来对<code>CA</code>的<code>TLS</code>证书进行验证，同时也需要持有这个证书才可以进行证书的颁发。在多机环境下，我们需要将它复制到每一台机器上，不过本文采用的是单机环境，所以省略掉了这一步。</p>
+<h3 id="2-2-TLS-CA服务器注册用户"><a href="#2-2-TLS-CA服务器注册用户" class="headerlink" title="2.2 TLS CA服务器注册用户"></a>2.2 TLS CA服务器注册用户</h3><p>第一步是在TLS CA服务器中注册用户，经过注册的用户才拥有TLS证书，本文中由于只在各节点之间进行TLS加密通信，所以只将<code>orderer</code>和<code>peer</code>节点的身份注册到TLS服务器。<br>打开一个新的终端输入以下命令：</p>
+<pre><code>#设置环境变量指定根证书的路径(如果工作目录不同的话记得指定自己的工作目录,以下不再重复说明)
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem
+#设置环境变量指定CA客户端的HOME文件夹
+export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/tls/admin
+#登录管理员用户用于之后的节点身份注册
+fabric-ca-client enroll -d -u https://tls-ca-admin:tls-ca-adminpw@0.0.0.0:7052</code></pre><p>登录成功在工作目录下的<code>tls</code>文件夹下将出现一个<code>admin</code>文件夹，这里面是<code>admin</code>的相关证书文件.<br>并且只有登录了<code>admin</code>，才具有权限进行用户的注册,因为该用户具有CA的全部权限，相当于CA服务器的<code>root</code>用户。<br>接下来对各个节点进行注册。</p>
+<pre><code>fabric-ca-client register -d --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://0.0.0.0:7052
+fabric-ca-client register -d --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://0.0.0.0:7052
+fabric-ca-client register -d --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://0.0.0.0:7052
+fabric-ca-client register -d --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://0.0.0.0:7052
+fabric-ca-client register -d --id.name orderer-org0 --id.secret ordererPW --id.type orderer -u https://0.0.0.0:7052</code></pre><p>这里将三个组织中的节点都进行了注册。</p>
+<ul>
+<li>不过<code>-d</code>这个参数并没有找到相关资料 </li>
+<li><code>id.name</code>是指定用户的名称</li>
+<li><code>--id.secert</code>是指定密码</li>
+<li><code>--id.type</code>是指定用户类型，用户类型默认为<code>client</code>,主要包括<code>peer</code>,<code>app</code>,<code>user</code>,<code>orderer</code>.</li>
+<li><code>-u</code>则是指定请求CA服务器的URL。</li>
+</ul>
+<p>这里我们为各个节点注册TLS证书，之后Fabric网络的通信则需要通过这一步骤注册过的用户的TLS证书来进行TLS加密通信。<br>到这里我们只是注册了各个节点的身份，还没有获取到他们的证书。证书可以通过登录获取，不过暂时不着急获取他们的TLS证书。<br>接下来，我们对其他几个CA服务器进行配置。</p>
+<h3 id="2-3配置Org0的CA服务器"><a href="#2-3配置Org0的CA服务器" class="headerlink" title="2.3配置Org0的CA服务器"></a>2.3配置Org0的CA服务器</h3><p>再强调一下，本文中的几个CA服务器都是根服务器，彼此之间没有任何关系，所以上一步骤的TLS CA服务器在这一部分并没有用到。<br>同样，本文使用Docker容器启动CA服务器。配置文件如下，只需要添加进之前的<code>docker-compose.yaml</code>文件中就好：</p>
+<pre><code>  org0:
+    container_name: org0
+    image: hyperledger/fabric-ca
+    command: /bin/bash -c &#39;fabric-ca-server start -d -b org0-admin:org0-adminpw --port 7053&#39;
+    environment:
+      - FABRIC_CA_SERVER_HOME=/ca/org0/crypto
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_CSR_CN=org0
+      - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      - FABRIC_CA_SERVER_DEBUG=true
+    volumes:
+      - $GOPATH/src/github.com/caDemo:/ca
+    networks:
+      - fabric-ca
+    ports:
+      - 7053:7053
+</code></pre><p>添加完之后启动它：</p>
+<pre><code>docker-compose -f docker-compose.yaml up org0</code></pre><p>打开另一个终端，接下来注册org0的用户：</p>
+<pre><code>#首先指定环境变量，这里的TLS证书不是之前的TLS CA服务器的根证书，而是本组织CA服务器启动时生成的TLS根证书
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org0/crypto/ca-cert.pem
+#指定本组织的CA客户端工作目录
+export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org0/admin</code></pre><p>登录<code>org0</code>的CA服务器管理员身份用于注册本组织的用户：</p>
+<pre><code>fabric-ca-client enroll -d -u https://org0-admin:org0-adminpw@0.0.0.0:7053</code></pre><p>在本组织中共有两个用户：<code>orderer</code>节点和<code>admin</code>用户(这里的admin和管理员是不同的。)<br>将他们注册到org0的CA服务器：</p>
+<pre><code>fabric-ca-client register -d --id.name orderer-org0 --id.secret ordererpw --id.type orderer -u https://0.0.0.0:7053
+fabric-ca-client register -d --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs &quot;hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert&quot; -u https://0.0.0.0:7053</code></pre><p>命令执行完之后，将会注册一个Orderer节点的身份和一个Admin的身份。同时在工作目录下的<code>org0</code>子文件夹中会有两个文件夹：<code>crypto</code>和<code>admin</code>。<code>crypto</code>中是CA服务器的配置信息，<code>admin</code>是服务器管理员的身份信息。</p>
+<h3 id="2-4配置Org1的CA服务器"><a href="#2-4配置Org1的CA服务器" class="headerlink" title="2.4配置Org1的CA服务器"></a>2.4配置Org1的CA服务器</h3><p>同样的步骤，对org1组织的CA服务器进行配置：</p>
+<pre><code>  org1:
+    container_name: org1
+    image: hyperledger/fabric-ca
+    command: /bin/bash -c &#39;fabric-ca-server start -d -b org1-admin:org1-adminpw&#39;
+    environment:
+      - FABRIC_CA_SERVER_HOME=/ca/org1/crypto
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_CSR_CN=org1
+      - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      - FABRIC_CA_SERVER_DEBUG=true
+    volumes:
+      - $GOPATH/src/github.com/caDemo:/ca
+    networks:
+      - fabric-ca
+    ports:
+      - 7054:7054
+</code></pre><p>启动服务器：</p>
+<pre><code>docker-compose -f docker-compose.yaml up org1</code></pre><p>打开新的终端，配置环境变量：</p>
+<pre><code>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org1/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org1/admin</code></pre><p>登录CA服务器管理员身份：</p>
+<pre><code>fabric-ca-client enroll -d -u https://org1-admin:org1-adminpw@0.0.0.0:7054</code></pre><p>组织一种共有四个用户：<code>peer1</code>,<code>peer2</code>,<code>admin</code>,<code>user</code>,分别注册他们：</p>
+<pre><code>fabric-ca-client register -d --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://0.0.0.0:7054
+fabric-ca-client register -d --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://0.0.0.0:7054
+fabric-ca-client register -d --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://0.0.0.0:7054
+fabric-ca-client register -d --id.name user-org1 --id.secret org1UserPW --id.type user -u https://0.0.0.0:7054</code></pre><h3 id="2-5配置Org2的CA服务器"><a href="#2-5配置Org2的CA服务器" class="headerlink" title="2.5配置Org2的CA服务器"></a>2.5配置Org2的CA服务器</h3><p>和上一部分相同，这里只列举需要的命令：<br>CA服务器配置文件：</p>
+<pre><code>  org2:
+    container_name: org2
+    image: hyperledger/fabric-ca
+    command: /bin/bash -c &#39;fabric-ca-server start -d -b org2-admin:org2-adminpw --port 7055&#39;
+    environment:
+      - FABRIC_CA_SERVER_HOME=/ca/org2/crypto
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_CSR_CN=org2
+      - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      - FABRIC_CA_SERVER_DEBUG=true
+    volumes:
+      - $GOPATH/src/github.com/caDemo:/ca
+    networks:
+      - fabric-ca
+    ports:
+      - 7055:7055
+</code></pre><p>启动服务器：</p>
+<pre><code>docker-compose -f docker-compose.yaml up org2</code></pre><p>打开新的终端，配置环境变量：</p>
+<pre><code>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org2/crypto/ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org2/admin</code></pre><p>登录CA服务器管理员身份：</p>
+<pre><code>fabric-ca-client enroll -d -u https://org2-admin:org2-adminpw@0.0.0.0:7055</code></pre><p>组织一种共有四个用户：<code>peer1</code>,<code>peer2</code>,<code>admin</code>,<code>user</code>,分别注册他们：</p>
+<pre><code>fabric-ca-client register -d --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://0.0.0.0:7055
+fabric-ca-client register -d --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://0.0.0.0:7055
+fabric-ca-client register -d --id.name admin-org2 --id.secret org1AdminPW --id.type user -u https://0.0.0.0:7055
+fabric-ca-client register -d --id.name user-org2 --id.secret org1UserPW --id.type user -u https://0.0.0.0:7055</code></pre><h2 id="3-生成证书并配置TLS"><a href="#3-生成证书并配置TLS" class="headerlink" title="3.生成证书并配置TLS"></a>3.生成证书并配置TLS</h2><hr>
+<p>到目前为止，所有的用户我们都注册完毕，接下来就是为每一个用户生成证书并配置TLS证书。<br>其中证书分为两部分，分别是本组织的MSP证书，以及组织之间进行加密通信的TLS证书。<br>所以本文需要对两部分证书进行分别生成与配置。<br>从组织一开始：</p>
+<h3 id="3-1-组织一节点配置"><a href="#3-1-组织一节点配置" class="headerlink" title="3.1 组织一节点配置"></a>3.1 组织一节点配置</h3><h4 id="3-1-1-peer1"><a href="#3-1-1-peer1" class="headerlink" title="3.1.1 peer1"></a>3.1.1 peer1</h4><p>首先是本组织的<code>MSP</code>证书：</p>
+<ul>
+<li>配置环境变量<pre><code>#指定peer1节点的HOME目录
+export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org1/peer1
+#指定**本**组织的TLS根证书
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org1/crypto/ca-cert.pem</code></pre></li>
+<li>登录<code>peer1</code>节点到<code>org1 CA</code>服务器上：<pre><code>fabric-ca-client enroll -d -u https://peer1-org1:peer1PW@0.0.0.0:7054</code></pre>这一步完成后，在<code>$GOPATH/src/github.com/caDemo/org1/peer1</code>下会出现一个<code>msp</code>文件夹，这是<code>peer1</code>节点的<code>MSP</code>证书。<br>接下来是<code>TLS</code>证书：</li>
+<li>配置环境变量<pre><code>#指定TLS CA服务器生成的TLS根证书
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem
+#指定TLS证书的HOME目录
+export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org1/peer1/tls-msp</code></pre></li>
+<li>登录<code>peer1</code>节点到<code>TLS CA</code>服务器上：<pre><code>fabric-ca-client enroll -d -u https://peer1-org1:peer1PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer1-org1</code></pre>这一步完成后，在<code>$GOPATH/src/github.com/caDemo/org1/peer1</code>下会出现一个<code>tls-msp</code>文件夹，这是<code>peer1</code>节点的<code>TLS</code>证书。</li>
+<li>修改秘钥文件名<br>为什么要修改呢，进入这个文件夹看一下就知道了,由服务器生成的秘钥文件名是一长串无规则的字符串，后期我们使用的时候难道要一个字符一个字符地输入？<pre><code>cd $GOPATH/src/github.com/caDemo/org1/peer1/tls-msp/keystore/
+mv *_sk key.pem
+#修改完回到工作目录
+cd $GOPATH/src/github.com/caDemo</code></pre><h4 id="3-1-2-peer2"><a href="#3-1-2-peer2" class="headerlink" title="3.1.2 peer2"></a>3.1.2 peer2</h4><code>peer2</code>节点和上面步骤相同：<br>这里就直接放需要的命令了：</li>
+<li>生成<code>MSP</code>证书<pre><code>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org1/peer2
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org1/crypto/ca-cert.pem
+fabric-ca-client enroll -d -u https://peer2-org1:peer2PW@0.0.0.0:7054</code></pre></li>
+<li>生成<code>TLS</code>证书<pre><code>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org1/peer2/tls-msp
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem
+fabric-ca-client enroll -d -u https://peer2-org1:peer2PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer2-org1
+cd $GOPATH/src/github.com/caDemo/org1/peer2/tls-msp/keystore/
+mv *_sk key.pem</code></pre><h4 id="3-1-3-admin"><a href="#3-1-3-admin" class="headerlink" title="3.1.3 admin"></a>3.1.3 admin</h4>接下来是<code>admin</code>用户，这个用户有什么作用呢，实际上，安装和实例化链码都需要<code>admin</code>的证书，所以才需要注册一个<code>admin</code>用户，还要它的证书。</li>
+<li>配置环境变量<pre><code>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org1/adminuser
+export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org1/crypto/ca-cert.pem
+#这里多了一个环境变量，是指定admin用户的msp证书文件夹的
+export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org1/adminuser/msp</code></pre></li>
+<li>登录<code>admin</code>用户获取<code>MSP</code>证书:<pre><code>fabric-ca-client enroll -d -u https://admin-org1:org1AdminPW@0.0.0.0:7054</code></pre>因为我们生成这个用户的证书主要就是为了之后链码的安装和实例化，所以配不配置他的<code>TLS</code>证书也无关紧要了(关键是我们之前也没有将这个用户注册到<code>tls</code>服务器中)</li>
+<li>复制证书到<code>admincerts</code>文件夹:<br>去看Fabric官方的例子，每一个<code>peer</code>节点的<code>MSP</code>文件夹下都有<code>admincerts</code>这个子文件夹的，而且是需要我们手动创建的。<pre><code>mkdir -p $GOPATH/src/github.com/caDemo/org1/peer1/msp/admincerts
+#将签名证书拷贝过去
+cp $GOPATH/src/github.com/caDemo/org1/adminuser/msp/signcerts/cert.pem $GOPATH/src/github.com/caDemo/org1/peer1/msp/admincerts/org1-admin-cert.pem
+#回到工作目录
+cd $GOPATH/src/github.com/caDemo/</code></pre><h4 id="3-1-4-启动peer节点"><a href="#3-1-4-启动peer节点" class="headerlink" title="3.1.4 启动peer节点"></a>3.1.4 启动peer节点</h4>到这里，已经配置好了一个节点，所以我们就可以启动这个节点了，当然在之后和<code>orderer</code>节点一起启动也可以，不过忙活了这么多，还是应该提前看到一下所做的工作的成果的！<br>附上<code>peer1</code>节点的容器配置信息：<pre><code>peer1-org1:
+  container_name: peer1-org1
+  image: hyperledger/fabric-peer
+  environment:
+    - CORE_PEER_ID=peer1-org1
+    - CORE_PEER_ADDRESS=peer1-org1:7051
+    - CORE_PEER_LOCALMSPID=org1MSP
+    - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp
+    - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+    - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca
+    - FABRIC_LOGGING_SPEC=debug
+    - CORE_PEER_TLS_ENABLED=true
+    - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem
+    - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem
+    - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+    - CORE_PEER_GOSSIP_USELEADERELECTION=true
+    - CORE_PEER_GOSSIP_ORGLEADER=false
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org1:7051
+    - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
+  working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer1
+  volumes:
+    - /var/run:/host/var/run
+    - $GOPATH/src/github.com/caDemo/org1/peer1:/tmp/hyperledger/org1/peer1
+  networks:
+    - fabric-ca
+</code></pre></li>
+</ul>
+<pre><code>
+启动它！！
+</code></pre><p>docker-compose -f docker-compose.yaml up peer1-org1</p>
+<pre><code>如果没有报错的话，说明之前配置的没有什么问题，如果出错的话，则需要返回去检查一下了。。。
+`peer2`节点的容器配置信息：
+</code></pre><p>  peer2-org1:<br>    container_name: peer2-org1<br>    image: hyperledger/fabric-peer<br>    environment:<br>      - CORE_PEER_ID=peer2-org1<br>      - CORE_PEER_ADDRESS=peer2-org1:8051<br>      - CORE_PEER_LOCALMSPID=org1MSP<br>      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer2/msp<br>      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock<br>      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca<br>      - FABRIC_LOGGING_SPEC=debug<br>      - CORE_PEER_TLS_ENABLED=true<br>      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer2/tls-msp/signcerts/cert.pem<br>      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org1/peer2/tls-msp/keystore/key.pem<br>      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem<br>      - CORE_PEER_GOSSIP_USELEADERELECTION=true<br>      - CORE_PEER_GOSSIP_ORGLEADER=false<br>      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org1:7051<br>      - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true<br>    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer2<br>    volumes:<br>      - /var/run:/host/var/run<br>      - $GOPATH/src/github.com/caDemo/org1/peer2:/tmp/hyperledger/org1/peer2<br>    networks:<br>      - fabric-ca</p>
+<pre><code>启动它！！</code></pre><p>docker-compose -f docker-compose.yaml up peer2-org1</p>
+<pre><code>### 3.2 组织二节点配置
+和之前一样的步骤，所以没什么好解释的了：
+#### 3.2.1 peer1
+* 配置环境变量</code></pre><p>#指定peer2节点的HOME目录<br>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org2/peer1<br>#指定本组织的TLS根证书<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org2/crypto/ca-cert.pem</p>
+<pre><code>* 登录`peer1`节点到`org2 CA `服务器上：</code></pre><p>fabric-ca-client enroll -d -u <a href="https://peer1-org2:peer1PW@0.0.0.0:7055" target="_blank" rel="noopener">https://peer1-org2:peer1PW@0.0.0.0:7055</a></p>
+<pre><code>接下来是`TLS`证书：
+* 配置环境变量</code></pre><p>#指定TLS CA服务器生成的TLS根证书<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem<br>#指定TLS证书的HOME目录<br>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org2/peer1/tls-msp</p>
+<pre><code>* 登录`peer1`节点到`TLS CA`服务器上：</code></pre><p>fabric-ca-client enroll -d -u <a href="https://peer1-org2:peer1PW@0.0.0.0:7052" target="_blank" rel="noopener">https://peer1-org2:peer1PW@0.0.0.0:7052</a> –enrollment.profile tls –csr.hosts peer1-org2</p>
+<pre><code>* 修改秘钥文件名</code></pre><p>cd $GOPATH/src/github.com/caDemo/org2/peer1/tls-msp/keystore/<br>mv *_sk key.pem<br>#修改完回到工作目录<br>cd $GOPATH/src/github.com/caDemo</p>
+<pre><code>#### 3.2.2 peer2
+* 生成`MSP`证书</code></pre><p>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org2/peer2<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org2/crypto/ca-cert.pem<br>fabric-ca-client enroll -d -u <a href="https://peer2-org2:peer2PW@0.0.0.0:7055" target="_blank" rel="noopener">https://peer2-org2:peer2PW@0.0.0.0:7055</a></p>
+<pre><code>* 生成`TLS`证书</code></pre><p>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org2/peer2/tls-msp<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem<br>fabric-ca-client enroll -d -u <a href="https://peer2-org2:peer2PW@0.0.0.0:7052" target="_blank" rel="noopener">https://peer2-org2:peer2PW@0.0.0.0:7052</a> –enrollment.profile tls –csr.hosts peer2-org2<br>cd $GOPATH/src/github.com/caDemo/org2/peer2/tls-msp/keystore/<br>mv *_sk key.pem</p>
+<pre><code>#### 3.2.3 admin
+* 配置环境变量</code></pre><p>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org2/adminuser<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org2/crypto/ca-cert.pem<br>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org2/adminuser/msp</p>
+<pre><code>* 登录`admin`用户获取`MSP`证书:</code></pre><p>fabric-ca-client enroll -d -u <a href="https://admin-org2:org2AdminPW@0.0.0.0:7055" target="_blank" rel="noopener">https://admin-org2:org2AdminPW@0.0.0.0:7055</a></p>
+<pre><code>* 复制证书到`admincerts`文件夹:
+去看Fabric官方的例子，每一个`peer`节点的`MSP`文件夹下都有`admincerts`这个子文件夹的，而且是需要我们手动创建的。</code></pre><p>mkdir -p $GOPATH/src/github.com/caDemo/org2/peer1/msp/admincerts<br>#将签名证书拷贝过去<br>cp $GOPATH/src/github.com/caDemo/org2/adminuser/msp/signcerts/cert.pem $GOPATH/src/github.com/caDemo/org2/peer1/msp/admincerts/org2-admin-cert.pem<br>#回到工作目录<br>cd $GOPATH/src/github.com/caDemo/</p>
+<pre><code>#### 3.2.4 启动peer节点
+附上`peer1`节点的容器配置信息：</code></pre><p>  peer1-org2:<br>    container_name: peer1-org2<br>    image: hyperledger/fabric-peer<br>    environment:<br>      - CORE_PEER_ID=peer1-org2<br>      - CORE_PEER_ADDRESS=peer1-org2:9051<br>      - CORE_PEER_LOCALMSPID=org2MSP<br>      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/peer1/msp<br>      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock<br>      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca<br>      - FABRIC_LOGGING_SPEC=debug<br>      - CORE_PEER_TLS_ENABLED=true<br>      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem<br>      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org2/peer1/tls-msp/keystore/key.pem<br>      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem<br>      - CORE_PEER_GOSSIP_USELEADERELECTION=true<br>      - CORE_PEER_GOSSIP_ORGLEADER=false<br>      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org2:9051<br>      - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true<br>    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2/peer1<br>    volumes:<br>      - /var/run:/host/var/run<br>      - $GOPATH/src/github.com/caDemo/org2/peer1:/tmp/hyperledger/org2/peer1<br>    networks:<br>      - fabric-ca</p>
+<pre><code>启动它.</code></pre><p>docker-compose -f docker-compose.yaml up peer1-org2</p>
+<pre><code>`peer2`节点的容器配置信息：</code></pre><p>  peer2-org2:<br>    container_name: peer2-org2<br>    image: hyperledger/fabric-peer<br>    environment:<br>      - CORE_PEER_ID=peer2-org2<br>      - CORE_PEER_ADDRESS=peer2-org2:10051<br>      - CORE_PEER_LOCALMSPID=org2MSP<br>      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/peer2/msp<br>      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock<br>      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca<br>      - FABRIC_LOGGING_SPEC=debug<br>      - CORE_PEER_TLS_ENABLED=true<br>      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org2/peer2/tls-msp/signcerts/cert.pem<br>      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org2/peer2/tls-msp/keystore/key.pem<br>      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org2/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem<br>      - CORE_PEER_GOSSIP_USELEADERELECTION=true<br>      - CORE_PEER_GOSSIP_ORGLEADER=false<br>      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org2:9051<br>      - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true<br>    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2/peer2<br>    volumes:<br>      - /var/run:/host/var/run<br>      - $GOPATH/src/github.com/caDemo/org2/peer2:/tmp/hyperledger/org2/peer2<br>    networks:<br>      - fabric-ca</p>
+<pre><code>启动它.</code></pre><p>docker-compose -f docker-compose.yaml up peer2-org2</p>
+<pre><code>### 3.3 排序节点配置
+接下来是排序节点的配置，为什么放在最后面呢，因为排序节点的启动需要提前生成创世区块，而创世区块的生成涉及到另一个配置文件，所以就先配置简单的`peer`节点。
+#### 3.3.1 orderer
+* 配置环境变量</code></pre><p>#指定order节点的HOME目录<br>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org0/orderer<br>#指定本组织的TLS根证书<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org0/crypto/ca-cert.pem</p>
+<pre><code>* 登录`order`节点到`org0 CA `服务器上：</code></pre><p>fabric-ca-client enroll -d -u <a href="https://orderer-org0:ordererpw@0.0.0.0:7053" target="_blank" rel="noopener">https://orderer-org0:ordererpw@0.0.0.0:7053</a></p>
+<pre><code>接下来是`TLS`证书：
+*  配置环境变量</code></pre><p>#指定TLS CA服务器生成的TLS根证书<br>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org0/orderer/tls-msp<br>#指定TLS根证书<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/tls/ca-cert.pem</p>
+<pre><code>* 登录`orderer`节点到`TLS CA`服务器上：</code></pre><p>fabric-ca-client enroll -d -u <a href="https://orderer-org0:ordererPW@0.0.0.0:7052" target="_blank" rel="noopener">https://orderer-org0:ordererPW@0.0.0.0:7052</a> –enrollment.profile tls –csr.hosts orderer-org0</p>
+<pre><code>* 修改秘钥文件名</code></pre><p>cd $GOPATH/src/github.com/caDemo/org0/orderer/tls-msp/keystore/<br>mv *_sk key.pem<br>#修改完回到工作目录<br>cd $GOPATH/src/github.com/caDemo</p>
+<pre><code>#### 3.3.2 admin
+* 配置环境变量</code></pre><p>export FABRIC_CA_CLIENT_HOME=$GOPATH/src/github.com/caDemo/org0/adminuser<br>export FABRIC_CA_CLIENT_TLS_CERTFILES=$GOPATH/src/github.com/caDemo/org0/crypto/ca-cert.pem<br>export FABRIC_CA_CLIENT_MSPDIR=$GOPATH/src/github.com/caDemo/org0/adminuser/msp</p>
+<pre><code>* 登录`admin`用户获取`MSP`证书:</code></pre><p>fabric-ca-client enroll -d -u <a href="https://admin-org0:org0adminpw@0.0.0.0:7053" target="_blank" rel="noopener">https://admin-org0:org0adminpw@0.0.0.0:7053</a></p>
+<pre><code>* 复制证书到`admincerts`文件夹:</code></pre><p>mkdir $GOPATH/src/github.com/caDemo/org0/orderer/msp/admincerts<br>#将签名证书拷贝过去<br>cp $GOPATH/src/github.com/caDemo/org0/adminuser/msp/signcerts/cert.pem $GOPATH/src/github.com/caDemo/org0/orderer/msp/admincerts/orderer-admin-cert.pem<br>#回到工作目录<br>cd $GOPATH/src/github.com/caDemo/</p>
+<pre><code>## 4.Fabric网络配置
+
+* * *
+
+接下来到重头戏了，证书都生成好了，即将要启动网络了。不过在启动网络之前还是有很多准备工作需要做。其实到这里，官方文档已经好多没有交代清楚的了，所以一下好多内容都是笔者自己摸索出来的，如有错误欢迎批评指正。
+### 4.1 configtx.yaml文件配置
+在下一个步骤的生成创世区块和通道配置信息需要一个文件：`configtx.yaml`文件。笔者根据官方的例子按照本文内容修改了一下，直接放在工作目录:</code></pre><p>Organizations:</p>
+<ul>
+<li><p>&amp;orderer-org0<br>Name: orderer-org0<br>ID: org0MSP<br>MSPDir: ./org0/msp</p>
+<h1 id="Policies"><a href="#Policies" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Readers"><a href="#Readers" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-Signature"><a href="#Type-Signature" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘orderer-org0MSP-member’-”"><a href="#Rule-“OR-‘orderer-org0MSP-member’-”" class="headerlink" title="Rule: “OR(‘orderer-org0MSP.member’)”"></a>Rule: “OR(‘orderer-org0MSP.member’)”</h1><h1 id="Writers"><a href="#Writers" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-Signature-1"><a href="#Type-Signature-1" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘orderer-org0MSP-member’-”-1"><a href="#Rule-“OR-‘orderer-org0MSP-member’-”-1" class="headerlink" title="Rule: “OR(‘orderer-org0MSP.member’)”"></a>Rule: “OR(‘orderer-org0MSP.member’)”</h1><h1 id="Admins"><a href="#Admins" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-Signature-2"><a href="#Type-Signature-2" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘orderer-org0MSP-admin’-”"><a href="#Rule-“OR-‘orderer-org0MSP-admin’-”" class="headerlink" title="Rule: “OR(‘orderer-org0MSP.admin’)”"></a>Rule: “OR(‘orderer-org0MSP.admin’)”</h1></li>
+<li><p>&amp;org1<br>Name: org1MSP<br>ID: org1MSP</p>
+<p>MSPDir: ./org1/msp</p>
+<h1 id="Policies-1"><a href="#Policies-1" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Readers-1"><a href="#Readers-1" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-Signature-3"><a href="#Type-Signature-3" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org1MSP-admin’-‘org1MSP-peer’-‘org1MSP-client’-”"><a href="#Rule-“OR-‘org1MSP-admin’-‘org1MSP-peer’-‘org1MSP-client’-”" class="headerlink" title="Rule: “OR(‘org1MSP.admin’, ‘org1MSP.peer’, ‘org1MSP.client’)”"></a>Rule: “OR(‘org1MSP.admin’, ‘org1MSP.peer’, ‘org1MSP.client’)”</h1><h1 id="Writers-1"><a href="#Writers-1" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-Signature-4"><a href="#Type-Signature-4" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org1MSP-admin’-‘org1MSP-client’-”"><a href="#Rule-“OR-‘org1MSP-admin’-‘org1MSP-client’-”" class="headerlink" title="Rule: “OR(‘org1MSP.admin’, ‘org1MSP.client’)”"></a>Rule: “OR(‘org1MSP.admin’, ‘org1MSP.client’)”</h1><h1 id="Admins-1"><a href="#Admins-1" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-Signature-5"><a href="#Type-Signature-5" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org1MSP-admin’-”"><a href="#Rule-“OR-‘org1MSP-admin’-”" class="headerlink" title="Rule: “OR(‘org1MSP.admin’)”"></a>Rule: “OR(‘org1MSP.admin’)”</h1><p>AnchorPeers:</p>
+<ul>
+<li>Host: peer1-org1<br>Port: 7051</li>
+</ul>
+</li>
+<li><p>&amp;org2<br>Name: org2MSP<br>ID: org2MSP<br>MSPDir: ./org2/msp</p>
+<h1 id="Policies-2"><a href="#Policies-2" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Readers-2"><a href="#Readers-2" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-Signature-6"><a href="#Type-Signature-6" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org2MSP-admin’-‘org2MSP-peer’-‘org2MSP-client’-”"><a href="#Rule-“OR-‘org2MSP-admin’-‘org2MSP-peer’-‘org2MSP-client’-”" class="headerlink" title="Rule: “OR(‘org2MSP.admin’, ‘org2MSP.peer’, ‘org2MSP.client’)”"></a>Rule: “OR(‘org2MSP.admin’, ‘org2MSP.peer’, ‘org2MSP.client’)”</h1><h1 id="Writers-2"><a href="#Writers-2" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-Signature-7"><a href="#Type-Signature-7" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org2MSP-admin’-‘org2MSP-client’-”"><a href="#Rule-“OR-‘org2MSP-admin’-‘org2MSP-client’-”" class="headerlink" title="Rule: “OR(‘org2MSP.admin’, ‘org2MSP.client’)”"></a>Rule: “OR(‘org2MSP.admin’, ‘org2MSP.client’)”</h1><h1 id="Admins-2"><a href="#Admins-2" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-Signature-8"><a href="#Type-Signature-8" class="headerlink" title="Type: Signature"></a>Type: Signature</h1><h1 id="Rule-“OR-‘org2MSP-admin’-”"><a href="#Rule-“OR-‘org2MSP-admin’-”" class="headerlink" title="Rule: “OR(‘org2MSP.admin’)”"></a>Rule: “OR(‘org2MSP.admin’)”</h1><p>AnchorPeers:</p>
+<ul>
+<li>Host: peer1-org2<br>Port: 9051</li>
+</ul>
+</li>
+</ul>
+<p>Capabilities:<br>  Channel: &amp;ChannelCapabilities<br>    V1_4_3: true<br>    V1_3: false<br>    V1_1: false<br>  Orderer: &amp;OrdererCapabilities<br>    V1_4_2: true<br>    V1_1: false<br>  Application: &amp;ApplicationCapabilities<br>    V1_4_2: true<br>    V1_3: false<br>    V1_2: false<br>    V1_1: false</p>
+<p>Application: &amp;ApplicationDefaults<br>  Organizations:</p>
+<h1 id="Policies-3"><a href="#Policies-3" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Readers-3"><a href="#Readers-3" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-ImplicitMeta"><a href="#Type-ImplicitMeta" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Readers”"><a href="#Rule-“ANY-Readers”" class="headerlink" title="Rule: “ANY Readers”"></a>Rule: “ANY Readers”</h1><h1 id="Writers-3"><a href="#Writers-3" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-ImplicitMeta-1"><a href="#Type-ImplicitMeta-1" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Writers”"><a href="#Rule-“ANY-Writers”" class="headerlink" title="Rule: “ANY Writers”"></a>Rule: “ANY Writers”</h1><h1 id="Admins-3"><a href="#Admins-3" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-ImplicitMeta-2"><a href="#Type-ImplicitMeta-2" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“MAJORITY-Admins”"><a href="#Rule-“MAJORITY-Admins”" class="headerlink" title="Rule: “MAJORITY Admins”"></a>Rule: “MAJORITY Admins”</h1><p>  Capabilities:<br>    &lt;&lt;: *ApplicationCapabilities</p>
+<p>Orderer: &amp;OrdererDefaults<br>  OrdererType: solo</p>
+<p>  Addresses:<br>    - orderer-org0:7050<br>  BatchTimeout: 2s<br>  BatchSize:<br>    MaxMessageCount: 10<br>    AbsoluteMaxBytes: 99 MB<br>    PreferredMaxBytes: 512 KB<br>  Organizations:</p>
+<h1 id="Policies-4"><a href="#Policies-4" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Readers-4"><a href="#Readers-4" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-ImplicitMeta-3"><a href="#Type-ImplicitMeta-3" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Readers”-1"><a href="#Rule-“ANY-Readers”-1" class="headerlink" title="Rule: “ANY Readers”"></a>Rule: “ANY Readers”</h1><h1 id="Writers-4"><a href="#Writers-4" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-ImplicitMeta-4"><a href="#Type-ImplicitMeta-4" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Writers”-1"><a href="#Rule-“ANY-Writers”-1" class="headerlink" title="Rule: “ANY Writers”"></a>Rule: “ANY Writers”</h1><h1 id="Admins-4"><a href="#Admins-4" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-ImplicitMeta-5"><a href="#Type-ImplicitMeta-5" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“MAJORITY-Admins”-1"><a href="#Rule-“MAJORITY-Admins”-1" class="headerlink" title="Rule: “MAJORITY Admins”"></a>Rule: “MAJORITY Admins”</h1><h1 id="BlockValidation-specifies-what-signatures-must-be-included-in-the-block"><a href="#BlockValidation-specifies-what-signatures-must-be-included-in-the-block" class="headerlink" title="# BlockValidation specifies what signatures must be included in the block"></a># BlockValidation specifies what signatures must be included in the block</h1><h1 id="from-the-orderer-for-the-peer-to-validate-it"><a href="#from-the-orderer-for-the-peer-to-validate-it" class="headerlink" title="# from the orderer for the peer to validate it."></a># from the orderer for the peer to validate it.</h1><h1 id="BlockValidation"><a href="#BlockValidation" class="headerlink" title="BlockValidation:"></a>BlockValidation:</h1><h1 id="Type-ImplicitMeta-6"><a href="#Type-ImplicitMeta-6" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Writers”-2"><a href="#Rule-“ANY-Writers”-2" class="headerlink" title="Rule: “ANY Writers”"></a>Rule: “ANY Writers”</h1><p>Channel: &amp;ChannelDefaults</p>
+<h1 id="Policies-5"><a href="#Policies-5" class="headerlink" title="Policies:"></a>Policies:</h1><h1 id="Who-may-invoke-the-‘Deliver’-API"><a href="#Who-may-invoke-the-‘Deliver’-API" class="headerlink" title="# Who may invoke the ‘Deliver’ API"></a># Who may invoke the ‘Deliver’ API</h1><h1 id="Readers-5"><a href="#Readers-5" class="headerlink" title="Readers:"></a>Readers:</h1><h1 id="Type-ImplicitMeta-7"><a href="#Type-ImplicitMeta-7" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Readers”-2"><a href="#Rule-“ANY-Readers”-2" class="headerlink" title="Rule: “ANY Readers”"></a>Rule: “ANY Readers”</h1><h1 id="Who-may-invoke-the-‘Broadcast’-API"><a href="#Who-may-invoke-the-‘Broadcast’-API" class="headerlink" title="# Who may invoke the ‘Broadcast’ API"></a># Who may invoke the ‘Broadcast’ API</h1><h1 id="Writers-5"><a href="#Writers-5" class="headerlink" title="Writers:"></a>Writers:</h1><h1 id="Type-ImplicitMeta-8"><a href="#Type-ImplicitMeta-8" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“ANY-Writers”-3"><a href="#Rule-“ANY-Writers”-3" class="headerlink" title="Rule: “ANY Writers”"></a>Rule: “ANY Writers”</h1><h1 id="By-default-who-may-modify-elements-at-this-config-level"><a href="#By-default-who-may-modify-elements-at-this-config-level" class="headerlink" title="# By default, who may modify elements at this config level"></a># By default, who may modify elements at this config level</h1><h1 id="Admins-5"><a href="#Admins-5" class="headerlink" title="Admins:"></a>Admins:</h1><h1 id="Type-ImplicitMeta-9"><a href="#Type-ImplicitMeta-9" class="headerlink" title="Type: ImplicitMeta"></a>Type: ImplicitMeta</h1><h1 id="Rule-“MAJORITY-Admins”-2"><a href="#Rule-“MAJORITY-Admins”-2" class="headerlink" title="Rule: “MAJORITY Admins”"></a>Rule: “MAJORITY Admins”</h1><p>  Capabilities:<br>    &lt;&lt;: *ChannelCapabilities</p>
+<p>Profiles:</p>
+<p>  TwoOrgsOrdererGenesis:<br>    &lt;&lt;: *ChannelDefaults<br>    Orderer:<br>      &lt;&lt;: *OrdererDefaults<br>      Organizations:<br>        - *orderer-org0<br>      Capabilities:<br>        &lt;&lt;: *OrdererCapabilities<br>    Consortiums:<br>      SampleConsortium:<br>        Organizations:<br>          - *org1<br>          - *org2<br>  TwoOrgsChannel:<br>    Consortium: SampleConsortium<br>    &lt;&lt;: *ChannelDefaults<br>    Application:<br>      &lt;&lt;: *ApplicationDefaults<br>      Organizations:<br>        - *org1<br>        - *org2<br>      Capabilities:<br>        &lt;&lt;: *ApplicationCapabilities</p>
+<pre><code>
+注释掉的部分是策略部分，笔者还没有完全搞懂，所以索性就先注释掉了，以后搞懂了再添加进去。
+还有一部分`msp`需要配置，就是`configtx.yaml`文件中第一部分指定的`MSPDir`,很简单，按照一下命令复制一下就好了：</code></pre><p>#进入工作目录<br>cd $GOPATH/src/github.com/caDemo<br>############################################<br>#org0<br>mkdir org0/msp &amp;&amp;  cd org0/msp<br>mkdir admincerts &amp;&amp; mkdir cacerts &amp;&amp; mkdir tlscacerts<br>cd $GOPATH/src/github.com/caDemo<br>cp adminuser/msp/signcerts/cert.pem msp/admincerts/ca-cert.pem<br>cp crypto/ca-cert.pem msp/cacerts/ca-cert.pem<br>cp ../tls/ca-cert.pem msp/tlscacerts/ca-cert.pem<br>############################################<br>#org1<br>cd $GOPATH/src/github.com/caDemo<br>mkdir org1/msp/  &amp;&amp; cd org1/msp/<br>mkdir admincerts &amp;&amp; mkdir cacerts &amp;&amp; mkdir tlscacerts<br>cd $GOPATH/src/github.com/caDemo<br>cp adminuser/msp/signcerts/cert.pem msp/admincerts/ca-cert.pem<br>cp crypto/ca-cert.pem msp/cacerts/ca-cert.pem<br>cp ../tls/ca-cert.pem msp/tlscacerts/ca-cert.pem<br>############################################<br>#org2<br>cd $GOPATH/src/github.com/caDemo<br>mkdir org1/msp/  &amp;&amp; cd org1/msp/<br>mkdir admincerts &amp;&amp; mkdir cacerts &amp;&amp; mkdir tlscacerts<br>cd $GOPATH/src/github.com/caDemo<br>cp adminuser/msp/signcerts/cert.pem msp/admincerts/ca-cert.pem<br>cp crypto/ca-cert.pem msp/cacerts/ca-cert.pem<br>cp ../tls/ca-cert.pem msp/tlscacerts/ca-cert.pem</p>
+<pre><code>### 4.2 生成创世区块和通道配置信息
+可以了，所有的前期工作都已经完成，接下来就是手动启动网络了，第一步，生成创世区块和通道配置信息：</code></pre><p>cd $GOPATH/src/github.com/caDemo<br>export FABRIC_CFG_PATH=$PWD<br>#生成创世区块<br>configtxgen -profile TwoOrgsOrdererGenesis -outputBlock $GOPATH/src/github.com/caDemo/genesis.block<br>#生成通道配置信息<br>configtxgen -profile TwoOrgsChannel -outputCreateChannelTx $GOPATH/src/github.com/caDemo/channel.tx -channelID mychannel</p>
+<pre><code>### 4.3 启动Orderer节点
+`orderer`容器配置文件：</code></pre><p>  orderer-org0:<br>    container_name: orderer-org0<br>    image: hyperledger/fabric-orderer<br>    environment:<br>      - ORDERER_HOME=/tmp/hyperledger/orderer<br>      - ORDERER_HOST=orderer-org0<br>      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0<br>      - ORDERER_GENERAL_GENESISMETHOD=file<br>      - ORDERER_GENERAL_GENESISFILE=/tmp/hyperledger/genesis.block<br>      - ORDERER_GENERAL_LOCALMSPID=org0MSP<br>      - ORDERER_GENERAL_LOCALMSPDIR=/tmp/hyperledger/org0/orderer/msp<br>      - ORDERER_GENERAL_TLS_ENABLED=true<br>      - ORDERER_GENERAL_TLS_CERTIFICATE=/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem<br>      - ORDERER_GENERAL_TLS_PRIVATEKEY=/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem<br>      - ORDERER_GENERAL_TLS_ROOTCAS=[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem]<br>      - ORDERER_GENERAL_LOGLEVEL=debug<br>      - ORDERER_DEBUG_BROADCASTTRACEDIR=data/logs<br>    volumes:<br>      - $GOPATH/src/github.com/caDemo/org0/orderer:/tmp/hyperledger/org0/orderer/<br>      - $GOPATH/src/github.com/caDemo:/tmp/hyperledger/<br>    networks:<br>      - fabric-ca</p>
+<pre><code>关键部分到了，只要这一步没有出现错误，整个网络就启动成功了。</code></pre><p>docker-compose -f docker-compose.yaml up orderer-org0</p>
+<pre><code>### 4.4 启动组织一的cli容器
+`cli`容器内容,我们需要这个容器对组织1进行链码的交互：</code></pre><p>  cli-org1:<br>    container_name: cli-org1<br>    image: hyperledger/fabric-tools<br>    tty: true<br>    stdin_open: true<br>    environment:<br>      - SYS_CHANNEL=testchainid<br>      - GOPATH=/opt/gopath<br>      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock<br>      - FABRIC_LOGGING_SPEC=DEBUG<br>      - CORE_PEER_ID=cli-org1<br>      - CORE_PEER_ADDRESS=peer1-org1:7051<br>      - CORE_PEER_LOCALMSPID=org1MSP<br>      - CORE_PEER_TLS_ENABLED=true<br>      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem<br>      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem<br>      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem<br>      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp<br>    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1<br>    command: /bin/bash<br>    volumes:<br>      - $GOPATH/src/github.com/caDemo/org1/peer1:/tmp/hyperledger/org1/peer1<br>      - $GOPATH/src/github.com/caDemo/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode<br>      - $GOPATH/src/github.com/caDemo/org1/adminuser:/tmp/hyperledger/org1/adminuser<br>      - $GOPATH/src/github.com/caDemo:/tmp/hyperledger/<br>    networks:<br>      - fabric-ca<br>    depends_on:<br>      - peer1-org1</p>
+<pre><code>启动该容器：</code></pre><p>docker-compose -f docker-compose.yaml up cli-org1</p>
+<pre><code>### 4.5 启动组织二的cli容器
+`cli`容器内容,我们需要这个容器对组织2进行链码的交互：</code></pre><p>  cli-org2:<br>    container_name: cli-org2<br>    image: hyperledger/fabric-tools<br>    tty: true<br>    stdin_open: true<br>    environment:<br>      - SYS_CHANNEL=testchainid<br>      - GOPATH=/opt/gopath<br>      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock<br>      - FABRIC_LOGGING_SPEC=DEBUG<br>      - CORE_PEER_ID=cli-org2<br>      - CORE_PEER_ADDRESS=peer1-org2:9051<br>      - CORE_PEER_LOCALMSPID=org2MSP<br>      - CORE_PEER_TLS_ENABLED=true<br>      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem<br>      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem<br>      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org2/peer1/tls-msp/keystore/key.pem<br>      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/peer1/msp<br>    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2<br>    command: /bin/bash<br>    volumes:<br>      - $GOPATH/src/github.com/caDemo/org2/peer1:/tmp/hyperledger/org2/peer1<br>      - $GOPATH/src/github.com/caDemo/org2/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode<br>      - $GOPATH/src/github.com/caDemo/org2/adminuser:/tmp/hyperledger/org2/adminuser<br>      - $GOPATH/src/github.com/caDemo:/tmp/hyperledger/<br>    networks:<br>      - fabric-ca<br>    depends_on:<br>      - peer1-org2</p>
+<pre><code>启动该容器：</code></pre><p>docker-compose -f docker-compose.yaml up cli-org2</p>
+<pre><code>## 5.网络测试
+
+* * *
+
+所有工作准备完成，接下来让我们测试整个网络能不能正常运行吧：
+### 5.1 创建与加入通道
+以**组织1**为例：
+* 首先进入`cli`容器：</code></pre><p>docker exec -it cli bash<br>#配置环境变量<br>export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/adminuser/msp</p>
+<pre><code>* 创建通道</code></pre><p>peer channel create -c mychannel -f /tmp/hyperledger/channel.tx -o orderer-org0:7050 –outputBlock /tmp/hyperledger/mychannel.block –tls –cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem</p>
+<pre><code>* 将`peer1-org1`加入通道：</code></pre><p>export CORE_PEER_ADDRESS=peer1-org1:7051<br>peer channel join -b /tmp/hyperledger/mychannel.block</p>
+<pre><code>* 将`peer2-org1`加入通道：</code></pre><p>export CORE_PEER_ADDRESS=peer2-org1:8051<br>peer channel join -b /tmp/hyperledger/mychannel.block</p>
+<pre><code>组织二步骤是相同的，唯一不同的就是不需要创建通道了，所以就不再说明了。
+### 5.2 安装和实例化链码
+以**组织1**为例：
+* 首先进入`cli`容器：</code></pre><p>docker exec -it cli bash<br>#配置环境变量<br>export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/adminuser/msp<br>export CORE_PEER_ADDRESS=peer1-org1:7051</p>
+<pre><code>* 安装链码
+**记得提前将链码放到**`$GOPATH/src/github.com/caDemo/org1/peer1/assets/chaincode`**路径下。**,本文使用的是`fabric-samples/chaincode/chaincode_example02`官方示例链码。</code></pre><p>peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric-samples/chaincode/chaincode_example02/go/</p>
+<pre><code>* 实例化链码</code></pre><p>peer chaincode instantiate -C mychannel -n mycc -v 1.0 -c ‘{“Args”:[“init”,”a”,”100”,”b”,”200”]}’  -o orderer-org0:7050 –tls –cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem</p>
+<pre><code>
+* 这一步在高版本的Fabric网络是会出错的，因为少了一个文件`config.yaml`:
+</code></pre><p>NodeOUs:<br>  Enable: true<br>  ClientOUIdentifier:<br>    Certificate: cacerts/ca.example.com-cert.pem  #这里需要修改<br>    OrganizationalUnitIdentifier: client<br>  PeerOUIdentifier:<br>    Certificate: cacerts/ca.example.com-cert.pem  #这里需要修改<br>    OrganizationalUnitIdentifier: peer<br>  AdminOUIdentifier:<br>    Certificate: cacerts/ca.example.com-cert.pem  #这里需要修改<br>    OrganizationalUnitIdentifier: admin<br>  OrdererOUIdentifier:<br>    Certificate: cacerts/ca.example.com-cert.pem  #这里需要修改<br>    OrganizationalUnitIdentifier: orderer</p>
+<pre><code>因为高版本的Fabric把节点类型区分开了，所以需要我们手动配置。
+将该文件复制到`$GOPATH/src/github.com/caDemo/org1/adminuser/msp`文件夹内，同时修改上面指定的位置的文件名(与对应文件夹内的文件名对应就好了)。
+
+* 实例化部分出错的可能性是最高的，很多都是因为网络模式指定错误导致链码容器启动失败，解决方案：</code></pre><p>#终端执行命令<br>docker network ls</p>
+<pre><code>找到以`fabric-ca`为后缀的一条如`cademo_fabric-ca`,修改之前的所有`peer`节点容器配置文件的环境变量：</code></pre><ul>
+<li>CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca<br>```<br>修改完成重启节点容器，再次执行以上的命令(需要重新配置环境变量，加入通道这两个操作)。<br>终于，实例化成功了。<h3 id="5-3-调用和查询链码"><a href="#5-3-调用和查询链码" class="headerlink" title="5.3 调用和查询链码"></a>5.3 调用和查询链码</h3>最后测试一下链码功能能不能正常使用了：</li>
+</ul>
+<ul>
+<li><p>还是组织一的<code>cli</code>容器：</p>
+<pre><code>docker exec -it cli bash
+export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/adminuser/msp
+export CORE_PEER_ADDRESS=peer1-org1:7051</code></pre></li>
+<li><p>执行查询功能：</p>
+<pre><code>peer chaincode query -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]}&#39;</code></pre><p>命令行应该打印出:</p>
+<pre><code>100</code></pre></li>
+<li><p>执行调用功能：</p>
+<pre><code>peer chaincode invoke -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;10&quot;]}&#39; --tls --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem</code></pre></li>
+<li><p>再次查询：</p>
+<pre><code>peer chaincode query -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]}&#39;</code></pre><p>命令行应该打印出:</p>
+<pre><code>90</code></pre><p>至于其他节点操作方法也是一样的，就不再操作了。<br>到此为止，从零开始的手动生成证书一直到成功搭建Fabric网络全部步骤已经完成！！接下来还有更新锚节点等等就不再演示了，请各位读者自行操作。整个步骤是不容易的，而且BUG百出，不过成功搭建完成确实涨了不少知识。<br>码字不易，还望各位看官支持一下：</p>
+<img src="/img/blog/zfb.png" srcset="undefined" width = "300" height = "300" alt="支付宝" align=center />
+
+</li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric-ca">fabric-ca</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric手动生成CA证书搭建Fabric网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
