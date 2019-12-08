@@ -36,7 +36,7 @@ tags: fabric-ca
 介绍完之后，可以进入正题了。
 ### 1.1Fabric，Fabric-Ca安装
 本文默认读者都是对Fabric有一定的了解的，所以一些安装过程这里就没有重复说明。
-第一步是安装Fabric-Ca环境，可以参考[这里](),这篇文章还没有写完，以后慢慢补，不过环境的安装已经有说明。
+第一步是安装Fabric-Ca环境，可以参考[这里](https://ifican.top/2019/12/08/blog/fabric/Hyperledger_Fabric_CA/),这篇文章还没有写完，以后慢慢补，不过环境的安装已经有说明。
 还有就是Fabric的环境安装，可以参考[这里](https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/)。
 
 完成环境搭建后，我们还需要一个`HOME`文件夹，用于存放我们生成的证书文件与`fabric`配置相关的文件。

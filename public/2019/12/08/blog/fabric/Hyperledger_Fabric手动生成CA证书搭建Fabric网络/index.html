@@ -187,7 +187,7 @@
 </li>
 </ol>
 <p>这里的四台CA服务器都是根服务器。<strong>彼此之间都是独立的存在，没有任何关系。</strong>，也就是说每一个CA服务器生成的证书在其他CA服务器都是不能用的。<br>介绍完之后，可以进入正题了。</p>
-<h3 id="1-1Fabric，Fabric-Ca安装"><a href="#1-1Fabric，Fabric-Ca安装" class="headerlink" title="1.1Fabric，Fabric-Ca安装"></a>1.1Fabric，Fabric-Ca安装</h3><p>本文默认读者都是对Fabric有一定的了解的，所以一些安装过程这里就没有重复说明。<br>第一步是安装Fabric-Ca环境，可以参考<a href="">这里</a>,这篇文章还没有写完，以后慢慢补，不过环境的安装已经有说明。<br>还有就是Fabric的环境安装，可以参考<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="1-1Fabric，Fabric-Ca安装"><a href="#1-1Fabric，Fabric-Ca安装" class="headerlink" title="1.1Fabric，Fabric-Ca安装"></a>1.1Fabric，Fabric-Ca安装</h3><p>本文默认读者都是对Fabric有一定的了解的，所以一些安装过程这里就没有重复说明。<br>第一步是安装Fabric-Ca环境，可以参考<a href="https://ifican.top/2019/12/08/blog/fabric/Hyperledger_Fabric_CA/" target="_blank" rel="noopener">这里</a>,这篇文章还没有写完，以后慢慢补，不过环境的安装已经有说明。<br>还有就是Fabric的环境安装，可以参考<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">这里</a>。</p>
 <p>完成环境搭建后，我们还需要一个<code>HOME</code>文件夹，用于存放我们生成的证书文件与<code>fabric</code>配置相关的文件。<br>本文设置<code>HOME</code>文件夹路径为:</p>
 <pre><code>$GOPATH/src/github.com/caDemo/</code></pre><p>请读者自行创建，一般不要用太复杂的路径,也不要用中文路径，会为之后的操作带来很多麻烦。在下文中简单称<code>HOME</code>文件夹为<strong>工作目录</strong>,<strong>除非特殊说明，一般命令的执行都是在工作目录进行</strong>。</p>
 <h2 id="2-CA服务器配置"><a href="#2-CA服务器配置" class="headerlink" title="2 CA服务器配置"></a>2 CA服务器配置</h2><hr>
