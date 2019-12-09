@@ -5,7 +5,7 @@ tags: fabric
 categories: fabric应用
 ---
 简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。
-本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里[深入解析Hyperledger Fabric启动的全过程]()
+本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里[深入解析Hyperledger Fabric启动的全过程](https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/)
 。
 
 ## 1.搭建Fabric的前置条件
@@ -154,7 +154,7 @@ cd go/src/github.com/hyperledger/
 ```
 从github上拉取fabric的源码
 ```
-git clone "https://gerrit.hyperledger.org/r/fabric".git
+git clone "https://github.com/hyperledger/fabric.git"
 cd fabric/
 #本文使用的是1.4版本的Fabric，需要以下命令检出fabric版本为1.4的分支
 git checkout release-1.4
@@ -216,4 +216,4 @@ cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/
 sudo chmod -R 777 ~/go/src/github.com/hyperledger/fabric/
 ```
 下一篇文章将详细讲解fabric网络的搭建过程。
-传送门[深入解析Hyperledger Fabric启动的全过程]()
+传送门[深入解析Hyperledger Fabric启动的全过程](https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/)

@@ -2,6 +2,7 @@
 title: Hyperledger Fabric-CA
 date: 2019-12-08 20:21:58
 tags: fabric-ca
+categories: fabric-ca应用
 ---
 Fabric—Ca的概念不再解释了，这里只说明使用方法:
 
@@ -259,3 +260,105 @@ fabric-ca-client enroll \
 2. OU被添加到身份部门关系的每个组成部分。
 
 例如，如果一个身份类型为`peer`,部门为`department.team1`,则身份的OU分层(从根部开始)：`OU=team1,OU=department1,OU=peer`.
+
+### 获取身份混合器证书
+
+...
+
+### 获取身份混合器证书撤销信息
+
+### 重新登录一个身份
+
+假如你的登录证书过期了或者被恶意操作，需要通过以下命令重新创建一个登录证书：
+```
+export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/peer1
+fabric-ca-client reenroll
+```
+
+### 撤销一个证书或者身份
+
+身份或者证书是可以被撤销的。撤销一个身份将会撤销所有属于这个身份的证书同时也会阻止该身份去获取新的证书。撤销一个证书只会使单个证书无效。
+
+为了撤销一个证书或者是身份。撤销者必须含有`hf.Revoker`和`hf.Registrar.Roles`两个属性。撤销一个身份只可以撤销从属于自己下级或者相同级别部门的证书或者是身份。进一步，撤销者只能撤销在撤销者`hf.Registrar.Roles`属性列表中存在的身份类型的身份。
+
+例如，部门为`orgs.org1`并且`hf.Registrar.Roles=peer,client`的撤销者可以撤销从属于`orgs.org1`部门或者是`orgs.org1.department1`并且身份类型为`peer`或者是`client`的身份。不能撤销从属于`orgs.org2`部门或者是其他类型的身份。
+
+下面的命令将会使一个身份与该身份下的所有证书失效，该身份未来对`fabric CA`服务器的所有请求将会被拒绝。
+```
+fabric-ca-client revoke -e <enrollment_id> -r <reason>
+```
+
+下面是`-r`参数支持的具体的原因：
+
+1. unspecified
+2. keycompromise
+3. cacompromise
+4. affiliationchange
+5. superseded
+6. cessationofoperation
+7. certificatehold
+8. removefromcrl
+9. privilegewithdrawn
+10. aacompromise
+
+例如，引导启动的`admin`属于部门的最上级可以撤销`peer1`的身份信息：
+```
+export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin
+fabric-ca-client revoke -e peer1
+```
+
+属于一个身份的登录证书可以通过具体的AKI(权限密钥标识符)和序列号进行撤销：
+```
+fabric-ca-client revoke -a xxx -s yyy -r <reason>
+```
+
+例如，可以通过使用`openssl`命令获取一个证书的AKI和序列号并通过`revoke`命令撤销证书：
+```
+serial=$(openssl x509 -in userecert.pem -serial -noout | cut -d "=" -f 2)
+aki=$(openssl x509 -in userecert.pem -text | awk '/keyid/ {gsub(/ *keyid:|:/,"",$1);print tolower($0)}')
+fabric-ca-client revoke -s $serial -a $aki -r affiliationchange
+```
+
+`--gencrl`参数可以用来生成`CRL`(证书撤销列表)，`CRL`包含所有被撤销的证书。例如，以下命令可以撤销`peer1`的身份。生成一个`CRL`并存储到`<msp 文件夹>/crls/crl.pem`文件。
+
+```
+fabric-ca-client revoke -e peer1 --gencrl
+```
+
+`CRL`可以使用`gencrl`命令生成，参考[生成CRL]()部分获取关于`gencrl`命令的更多信息。
+
+### 生成CRL(证书撤销列表)
+
+通过`Fabric CA SERVER`撤销一个证书后，在`Hyperledger Fabric`中合适的`MSP`文件需要进行更新。包括本地的`peer`节点的`MSP`与合适的通道配置区块中的`MSP`.为了做到这一点，`PEM`编码的`CRL`需要放置到`MSP`文件夹内的`crls`文件夹。`fabric-ca-client gencrl`命令可以生成`CRL`。任何带有`hf.GenCRL`属性的身份都可以生成包含所有在一个确定的时间被撤销的证书的序列号的`CRL`。生成的`CRL`存储在`<msp 文件夹>/crls/crl.pem`文件。
+
+以下的命令将会创建包含所有被撤销的(超时和未超时)证书的`CRL`存储在`<msp 文件夹>/crls/crl.pem`文件。
+```
+export FABRIC_CA_CLIENT_HOME=~/clientconfig
+fabric-ca-client gencrl -M ~/msp
+```
+
+...
+
+
+### 开启TLS
+
+这一部分描述如何为`Fabric CA`客户端配置TLS的更多细节。
+
+以下部分可以在`fabric-ca-client-config.yaml`文件中进行配置：
+```
+tls:
+  enabled: true
+  certfiles:
+    - root.pem
+  client:
+    certfile: tls_client-cert.pem
+    keyfile: tls_client-key.pem
+```
+
+`certfiles`选项设置为被客户端信任的根证书。典型的就是`Fabric CA`根服务器的证书，`ca-cert.pem`可以在服务器的主目录发现.
+
+`client`选项要求只能手动在服务器进行TLS配置。
+
+### 基于属性的访问控制
+
+...未完待续

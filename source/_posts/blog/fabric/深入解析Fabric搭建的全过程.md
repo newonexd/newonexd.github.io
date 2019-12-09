@@ -5,7 +5,7 @@ tags: fabric
 categories: fabric应用
 ---
 在这篇文章中，使用``fabric-samples/first-network``中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。
-至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章[Hyperledger Fabric环境搭建过程]()
+至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章[Hyperledger Fabric环境搭建过程](https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/)
 fabric网络：单机，solo类型，两个组织，分别有两个节点
 首先看一下该文件夹内有哪些文件：
 ```

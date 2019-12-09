@@ -161,7 +161,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>之前的文章<a href="">深入解析Hyperledger Fabric启动的全过程</a>主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。</p>
+            <p>之前的文章<a href="https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">深入解析Hyperledger Fabric启动的全过程</a>主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。</p>
 <h3 id="1搭建环境"><a href="#1搭建环境" class="headerlink" title="1搭建环境"></a>1搭建环境</h3><p> <strong>本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb</strong>，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。</p>
 <table>
 <thead>
@@ -191,8 +191,8 @@
 <td align="left">10.65.200.44</td>
 </tr>
 </tbody></table>
-<p>Fabric的环境搭建过程不再详解，可以参考这一篇文章<a href="">Hyperledger Fabric环境搭建过程</a></p>
-<h2 id="2-多机环境搭建"><a href="#2-多机环境搭建" class="headerlink" title="2.多机环境搭建"></a>2.多机环境搭建</h2><p>如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。<br>按照<a href="">Hyperledger Fabric环境搭建过程</a>在五台机子上搭建Fabric完成后，<br>就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。<br>在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用<code>first-network</code>这个文件夹内的配置文件来修改为自己所需要的配置文件。</p>
+<p>Fabric的环境搭建过程不再详解，可以参考这一篇文章<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">Hyperledger Fabric环境搭建过程</a></p>
+<h2 id="2-多机环境搭建"><a href="#2-多机环境搭建" class="headerlink" title="2.多机环境搭建"></a>2.多机环境搭建</h2><p>如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。<br>按照<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">Hyperledger Fabric环境搭建过程</a>在五台机子上搭建Fabric完成后，<br>就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。<br>在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用<code>first-network</code>这个文件夹内的配置文件来修改为自己所需要的配置文件。</p>
 <p><strong>本文以orderer节点为例，在<code>10.65.182.150</code>这台服务器上进行操作。</strong></p>
 <h3 id="2-1准备配置文件"><a href="#2-1准备配置文件" class="headerlink" title="2.1准备配置文件"></a>2.1准备配置文件</h3><pre><code>#step1 进入到first-network文件夹的上一级目录
 cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/
@@ -213,7 +213,7 @@ cd first
 <h3 id="2-2生成相关配置文件"><a href="#2-2生成相关配置文件" class="headerlink" title="2.2生成相关配置文件"></a>2.2生成相关配置文件</h3><pre><code>#step1 生成证书文件
 cryptogen generate --config=./crypto-config.yaml
 #step2 生成创世区块  首先要确保channel-artifacts文件夹存在，如果不存在需要手动创建，不然会报错
-configtxgen -profile TwoOrgsOrdererGenesis -channelID mychannel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile TwoOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
 #step3 生成通道配置文件  其中通道名mychannel可以修改为自己的
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
 #step4 生成锚节点配置文件
@@ -399,7 +399,7 @@ services:
       - couchdb0
 </code></pre><p>至于peer0.org1的配置文件已经修改完毕，接下来我们启动该节点:</p>
 <pre><code>sudo docker-compose -f docker-compose-peer0-Org1.yaml -f docker-compose-peer0-Org1-couch.yaml up</code></pre><p>如果没有报错的话，peer0.org1节点成功启动。至于其他peer节点，只需要将<code>first</code>文件夹使用<code>scp</code>命令复制到各个服务器上，按照该模板对配置文件进行修改，主要是<code>docker-compose-cli.yaml</code>和<code>docker-compose-couch.yaml</code>两个文件。</p>
-<p>如果所有节点都可以成功启动的话，接下来就可以进行链码的安装测试了，这一部分不再重复介绍，具体内容可以参考<a href="">深入解析Hyperledger Fabric启动的全过程</a>中链码的安装测试过程。</p>
+<p>如果所有节点都可以成功启动的话，接下来就可以进行链码的安装测试了，这一部分不再重复介绍，具体内容可以参考<a href="https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">深入解析Hyperledger Fabric启动的全过程</a>中链码的安装测试过程。</p>
 <p>整个过程中可能会遇到各种各样的坑，不过大部分问题都是由于配置文件某一地方没有修改好，或者就是yaml文件的格式错误，还是比较好解决的。</p>
 <p>最后关闭网络需要清空所有数据，不然再次启动网络会出错。</p>
 <h2 id="3-关闭网络"><a href="#3-关闭网络" class="headerlink" title="3 关闭网络"></a>3 关闭网络</h2><p>对于Order节点,关闭网络的命令：</p>

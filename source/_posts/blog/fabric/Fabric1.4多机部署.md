@@ -4,7 +4,7 @@ date: 2019-11-23 18:38:53
 tags: fabric
 categories: fabric应用
 ---
-之前的文章[深入解析Hyperledger Fabric启动的全过程]()主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
+之前的文章[深入解析Hyperledger Fabric启动的全过程](https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/)主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
 ### 1搭建环境
  **本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb**，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。
 
@@ -16,10 +16,10 @@ categories: fabric应用
 |peer0.org2.example.com|10.65.200.182|
 |peer1.org2.example.com|10.65.200.44|
 
-Fabric的环境搭建过程不再详解，可以参考这一篇文章[Hyperledger Fabric环境搭建过程]()
+Fabric的环境搭建过程不再详解，可以参考这一篇文章[Hyperledger Fabric环境搭建过程](https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/)
 ## 2.多机环境搭建
 如果要成功搭建多机下的Fabric运行环境，首先要保证五台机子上的Fabric网络可以正常运行。
-按照[Hyperledger Fabric环境搭建过程]()在五台机子上搭建Fabric完成后，
+按照[Hyperledger Fabric环境搭建过程](https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/)在五台机子上搭建Fabric完成后，
 就可以对相应的配置文件进行修改了，这里本文只在Orderer节点的机子上修改配置文件，最后通过scp命令将配置文件复制到其余四台机子，保证所有的节点所使用的配置文件都是相同的。
 在官方的例子中，已经有很多模板可以拿来进行修改，这里本文使用``first-network``这个文件夹内的配置文件来修改为自己所需要的配置文件。
 
@@ -50,7 +50,7 @@ cd first
 #step1 生成证书文件
 cryptogen generate --config=./crypto-config.yaml
 #step2 生成创世区块  首先要确保channel-artifacts文件夹存在，如果不存在需要手动创建，不然会报错
-configtxgen -profile TwoOrgsOrdererGenesis -channelID mychannel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile TwoOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
 #step3 生成通道配置文件  其中通道名mychannel可以修改为自己的
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
 #step4 生成锚节点配置文件
@@ -274,7 +274,7 @@ sudo docker-compose -f docker-compose-peer0-Org1.yaml -f docker-compose-peer0-Or
 ```
 如果没有报错的话，peer0.org1节点成功启动。至于其他peer节点，只需要将``first``文件夹使用``scp``命令复制到各个服务器上，按照该模板对配置文件进行修改，主要是``docker-compose-cli.yaml``和``docker-compose-couch.yaml``两个文件。
 
-如果所有节点都可以成功启动的话，接下来就可以进行链码的安装测试了，这一部分不再重复介绍，具体内容可以参考[深入解析Hyperledger Fabric启动的全过程]()中链码的安装测试过程。
+如果所有节点都可以成功启动的话，接下来就可以进行链码的安装测试了，这一部分不再重复介绍，具体内容可以参考[深入解析Hyperledger Fabric启动的全过程](https://ifican.top/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/)中链码的安装测试过程。
 
 整个过程中可能会遇到各种各样的坑，不过大部分问题都是由于配置文件某一地方没有修改好，或者就是yaml文件的格式错误，还是比较好解决的。
 

@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    2.9k 字
+                    3.8k 字
                   </span>&nbsp;
                 
 
@@ -128,7 +128,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      11 分钟
+                      14 分钟
                   </span>&nbsp;
                 
 
@@ -307,12 +307,63 @@ fabric-ca-client enroll \
 <li>OU被添加到身份部门关系的每个组成部分。</li>
 </ol>
 <p>例如，如果一个身份类型为<code>peer</code>,部门为<code>department.team1</code>,则身份的OU分层(从根部开始)：<code>OU=team1,OU=department1,OU=peer</code>.</p>
+<h3 id="获取身份混合器证书"><a href="#获取身份混合器证书" class="headerlink" title="获取身份混合器证书"></a>获取身份混合器证书</h3><p>…</p>
+<h3 id="获取身份混合器证书撤销信息"><a href="#获取身份混合器证书撤销信息" class="headerlink" title="获取身份混合器证书撤销信息"></a>获取身份混合器证书撤销信息</h3><h3 id="重新登录一个身份"><a href="#重新登录一个身份" class="headerlink" title="重新登录一个身份"></a>重新登录一个身份</h3><p>假如你的登录证书过期了或者被恶意操作，需要通过以下命令重新创建一个登录证书：</p>
+<pre><code>export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/peer1
+fabric-ca-client reenroll</code></pre><h3 id="撤销一个证书或者身份"><a href="#撤销一个证书或者身份" class="headerlink" title="撤销一个证书或者身份"></a>撤销一个证书或者身份</h3><p>身份或者证书是可以被撤销的。撤销一个身份将会撤销所有属于这个身份的证书同时也会阻止该身份去获取新的证书。撤销一个证书只会使单个证书无效。</p>
+<p>为了撤销一个证书或者是身份。撤销者必须含有<code>hf.Revoker</code>和<code>hf.Registrar.Roles</code>两个属性。撤销一个身份只可以撤销从属于自己下级或者相同级别部门的证书或者是身份。进一步，撤销者只能撤销在撤销者<code>hf.Registrar.Roles</code>属性列表中存在的身份类型的身份。</p>
+<p>例如，部门为<code>orgs.org1</code>并且<code>hf.Registrar.Roles=peer,client</code>的撤销者可以撤销从属于<code>orgs.org1</code>部门或者是<code>orgs.org1.department1</code>并且身份类型为<code>peer</code>或者是<code>client</code>的身份。不能撤销从属于<code>orgs.org2</code>部门或者是其他类型的身份。</p>
+<p>下面的命令将会使一个身份与该身份下的所有证书失效，该身份未来对<code>fabric CA</code>服务器的所有请求将会被拒绝。</p>
+<pre><code>fabric-ca-client revoke -e &lt;enrollment_id&gt; -r &lt;reason&gt;</code></pre><p>下面是<code>-r</code>参数支持的具体的原因：</p>
+<ol>
+<li>unspecified</li>
+<li>keycompromise</li>
+<li>cacompromise</li>
+<li>affiliationchange</li>
+<li>superseded</li>
+<li>cessationofoperation</li>
+<li>certificatehold</li>
+<li>removefromcrl</li>
+<li>privilegewithdrawn</li>
+<li>aacompromise</li>
+</ol>
+<p>例如，引导启动的<code>admin</code>属于部门的最上级可以撤销<code>peer1</code>的身份信息：</p>
+<pre><code>export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin
+fabric-ca-client revoke -e peer1</code></pre><p>属于一个身份的登录证书可以通过具体的AKI(权限密钥标识符)和序列号进行撤销：</p>
+<pre><code>fabric-ca-client revoke -a xxx -s yyy -r &lt;reason&gt;</code></pre><p>例如，可以通过使用<code>openssl</code>命令获取一个证书的AKI和序列号并通过<code>revoke</code>命令撤销证书：</p>
+<pre><code>serial=$(openssl x509 -in userecert.pem -serial -noout | cut -d &quot;=&quot; -f 2)
+aki=$(openssl x509 -in userecert.pem -text | awk &#39;/keyid/ {gsub(/ *keyid:|:/,&quot;&quot;,$1);print tolower($0)}&#39;)
+fabric-ca-client revoke -s $serial -a $aki -r affiliationchange</code></pre><p><code>--gencrl</code>参数可以用来生成<code>CRL</code>(证书撤销列表)，<code>CRL</code>包含所有被撤销的证书。例如，以下命令可以撤销<code>peer1</code>的身份。生成一个<code>CRL</code>并存储到<code>&lt;msp 文件夹&gt;/crls/crl.pem</code>文件。</p>
+<pre><code>fabric-ca-client revoke -e peer1 --gencrl</code></pre><p><code>CRL</code>可以使用<code>gencrl</code>命令生成，参考<a href="">生成CRL</a>部分获取关于<code>gencrl</code>命令的更多信息。</p>
+<h3 id="生成CRL-证书撤销列表"><a href="#生成CRL-证书撤销列表" class="headerlink" title="生成CRL(证书撤销列表)"></a>生成CRL(证书撤销列表)</h3><p>通过<code>Fabric CA SERVER</code>撤销一个证书后，在<code>Hyperledger Fabric</code>中合适的<code>MSP</code>文件需要进行更新。包括本地的<code>peer</code>节点的<code>MSP</code>与合适的通道配置区块中的<code>MSP</code>.为了做到这一点，<code>PEM</code>编码的<code>CRL</code>需要放置到<code>MSP</code>文件夹内的<code>crls</code>文件夹。<code>fabric-ca-client gencrl</code>命令可以生成<code>CRL</code>。任何带有<code>hf.GenCRL</code>属性的身份都可以生成包含所有在一个确定的时间被撤销的证书的序列号的<code>CRL</code>。生成的<code>CRL</code>存储在<code>&lt;msp 文件夹&gt;/crls/crl.pem</code>文件。</p>
+<p>以下的命令将会创建包含所有被撤销的(超时和未超时)证书的<code>CRL</code>存储在<code>&lt;msp 文件夹&gt;/crls/crl.pem</code>文件。</p>
+<pre><code>export FABRIC_CA_CLIENT_HOME=~/clientconfig
+fabric-ca-client gencrl -M ~/msp</code></pre><p>…</p>
+<h3 id="开启TLS"><a href="#开启TLS" class="headerlink" title="开启TLS"></a>开启TLS</h3><p>这一部分描述如何为<code>Fabric CA</code>客户端配置TLS的更多细节。</p>
+<p>以下部分可以在<code>fabric-ca-client-config.yaml</code>文件中进行配置：</p>
+<pre><code>tls:
+  enabled: true
+  certfiles:
+    - root.pem
+  client:
+    certfile: tls_client-cert.pem
+    keyfile: tls_client-key.pem</code></pre><p><code>certfiles</code>选项设置为被客户端信任的根证书。典型的就是<code>Fabric CA</code>根服务器的证书，<code>ca-cert.pem</code>可以在服务器的主目录发现.</p>
+<p><code>client</code>选项要求只能手动在服务器进行TLS配置。</p>
+<h3 id="基于属性的访问控制"><a href="#基于属性的访问控制" class="headerlink" title="基于属性的访问控制"></a>基于属性的访问控制</h3><p>…未完待续</p>
 
             <hr>
           </div>
           <br>
           <div>
             <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
             
             
               <span>
