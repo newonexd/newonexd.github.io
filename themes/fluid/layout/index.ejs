@@ -49,11 +49,19 @@ page.banner_img_height = theme.index.banner_img_height
             <a href="/tags/<%- encodeURI(tag.name) %>"><%= tag.name %></a>&nbsp;
           <% }) %>
         <% } %>
-            <% if (theme.post.meta.wordcount.enable) { %>
-                <% var wordcount_texts = theme.post.meta.wordcount.format.split('{}') %>
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    <%= wordcount_texts[0] %><%- wordcount(post.content) %><%= wordcount_texts[1] %>
+<!--            <% if (theme.post.meta.wordcount.enable) { %>-->
+<!--                <% var wordcount_texts = theme.post.meta.wordcount.format.split('{}') %>-->
+<!--                &nbsp;<i class="far fa-chart-bar"></i>-->
+<!--                <span class="post-count">-->
+<!--                    <%= wordcount_texts[0] %><%- wordcount(post.content) %><%= wordcount_texts[1] %>-->
+<!--                  </span>&nbsp;-->
+<!--            <% } %>-->
+            <% if (theme.post.meta.views.enable) { %>
+                <!-- 不蒜子统计文章PV -->
+                <% var views_texts = theme.post.meta.views.format.split('{}') %>
+                &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                <span id="busuanzi_container_page_pv">
+                    <%- views_texts[0] %><span id="busuanzi_value_page_pv"></span><%- views_texts[1] %>
                   </span>&nbsp;
             <% } %>
       </div>
