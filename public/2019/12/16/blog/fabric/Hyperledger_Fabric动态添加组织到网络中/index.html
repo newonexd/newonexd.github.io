@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>Hyperledger Fabric动态添加组织到网络中 ~ 触不可及的官方网站</title>
+  <title>blog/fabric/Hyperledger_Fabric动态添加组织到网络中 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期二, 十二月 10日 2019, 8:39 晚上
+                  星期一, 十二月 16日 2019, 8:16 晚上
                 </p>
               
 
@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    3.9k 字
+                    4.4k 字
                   </span>&nbsp;
                 
 
@@ -128,7 +128,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      15 分钟
+                      18 分钟
                   </span>&nbsp;
                 
 
@@ -320,7 +320,24 @@ export CHANNEL_NAME=mychannel</code></pre><p>安装链码：</p>
 # Query Result: 80</code></pre><p>没问题了，到这里我们成功将组织三动态添加到网络中了。</p>
 </li>
 </ul>
-<h3 id="3-5更新组织三的锚节点"><a href="#3-5更新组织三的锚节点" class="headerlink" title="3.5更新组织三的锚节点"></a>3.5更新组织三的锚节点</h3><p>至于这一部分，以后再补充好了。。。。。未完待续</p>
+<h3 id="3-5更新组织三的锚节点"><a href="#3-5更新组织三的锚节点" class="headerlink" title="3.5更新组织三的锚节点"></a>3.5更新组织三的锚节点</h3><p>锚节点说简单点就是用于跨组织通信的。同一个组织可以通过Gossip协议进行通信，但是如果跨组织通信的话，是需要指定锚节点的，如果新添加的组织三没有更新锚节点，那么组织一与组织二将不能发现组织三节点的存在，但是组织三是可以发现组织一，二对的，因为组织一，二是已经更新过锚节点的。在最后一小部分，说明一下如何更新组织三的锚节点。<br>和前面的步骤相似：</p>
+<ol>
+<li>获取最新的配置区块</li>
+<li>更新配置信息</li>
+<li>将更新后的配置信息更新到链上。</li>
+</ol>
+<h4 id="3-5-1获取最新的配置区块"><a href="#3-5-1获取最新的配置区块" class="headerlink" title="3.5.1获取最新的配置区块"></a>3.5.1获取最新的配置区块</h4><pre><code>#还是之前的组织三的CLI容器，并且环境变量$CHANNEL_NAME,$ORDERER_CA需要提前配置好
+peer channel fetch config config_block.pb -o orderer.example.com:7050 -c $CHANNEL_NAME --tls --cafile $ORDERER_CA</code></pre><ul>
+<li>解码配置信息为JSON格式,并去除用不到的信息：<pre><code>configtxlator proto_decode --input config_block.pb --type common.Block | jq .data.data[0].payload.data.config &gt; config.json</code></pre></li>
+<li>将组织三的锚节点的配置信息写进去并保存为一个新的文件：<pre><code>jq &#39;.channel_group.groups.Application.groups.Org3MSP.values += {&quot;AnchorPeers&quot;:{&quot;mod_policy&quot;: &quot;Admins&quot;,&quot;value&quot;:{&quot;anchor_peers&quot;: [{&quot;host&quot;: &quot;peer0.org3.example.com&quot;,&quot;port&quot;: 11051}]},&quot;version&quot;: &quot;0&quot;}}&#39; config.json &gt; modified_anchor_config.json</code></pre></li>
+<li>将原有的配置信息与新的配置信息编码为<code>common.Config</code>格式：<pre><code>configtxlator proto_encode --input config.json --type common.Config --output config.pb
+configtxlator proto_encode --input modified_anchor_config.json --type common.Config --output modified_anchor_config.pb</code></pre></li>
+<li>计算两个文件的差异：<pre><code>configtxlator compute_update --channel_id $CHANNEL_NAME --original config.pb --updated modified_anchor_config.pb --output anchor_update.pb</code></pre></li>
+<li>再次解码：<pre><code>configtxlator proto_decode --input anchor_update.pb --type common.ConfigUpdate | jq . &gt; anchor_update.json</code></pre></li>
+<li>添加头部信息:<pre><code>echo &#39;{&quot;payload&quot;:{&quot;header&quot;:{&quot;channel_header&quot;:{&quot;channel_id&quot;:&quot;&#39;$CHANNEL_NAME&#39;&quot;, &quot;type&quot;:2}},&quot;data&quot;:{&quot;config_update&quot;:&#39;$(cat anchor_update.json)&#39;}}}&#39; | jq . &gt; anchor_update_in_envelope.json</code></pre></li>
+<li>编码为<code>Fabric</code>可读的配置文件类型:<pre><code>configtxlator proto_encode --input anchor_update_in_envelope.json --type common.Envelope --output anchor_update_in_envelope.pb</code></pre></li>
+<li>配置文件写完了，更新上去：<pre><code>peer channel update -f anchor_update_in_envelope.pb -c $CHANNEL_NAME -o orderer.example.com:7050 --tls --cafile $ORDERER_CA</code></pre>到这里锚节点更新完了，剩下的自行测试。</li>
+</ul>
 
             <hr>
           </div>
@@ -328,21 +345,6 @@ export CHANNEL_NAME=mychannel</code></pre><p>安装链码：</p>
           <div>
             <p>
             
-              <span>
-                <i class="iconfont icon-inbox"></i>
-                
-                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
-                  &nbsp;
-                
-              </span>&nbsp;&nbsp;
-            
-            
-              <span>
-                <i class="iconfont icon-tag"></i>
-                
-                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
-                
-              </span>
             
             </p>
             
@@ -519,7 +521,7 @@ export CHANNEL_NAME=mychannel</code></pre><p>安装链码：</p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hyperledger Fabric动态添加组织到网络中&nbsp;",
+        "blog/fabric/Hyperledger_Fabric动态添加组织到网络中&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

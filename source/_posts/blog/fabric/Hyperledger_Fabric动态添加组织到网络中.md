@@ -1,9 +1,3 @@
----
-title: Hyperledger Fabric动态添加组织到网络中
-date: 2019-12-10 20:39:37
-tags: fabric
-categories: fabric应用
----
 本文基于Hyperledger Fabric **1.4**版本。
 官方文档地址:[传送门](https://hyperledger-fabric.readthedocs.io/en/release-1.4/channel_update_tutorial.html)
 
@@ -307,4 +301,49 @@ peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["query","a"]}'
 没问题了，到这里我们成功将组织三动态添加到网络中了。
 
 ### 3.5更新组织三的锚节点
-至于这一部分，以后再补充好了。。。。。未完待续
+锚节点说简单点就是用于跨组织通信的。同一个组织可以通过Gossip协议进行通信，但是如果跨组织通信的话，是需要指定锚节点的，如果新添加的组织三没有更新锚节点，那么组织一与组织二将不能发现组织三节点的存在，但是组织三是可以发现组织一，二对的，因为组织一，二是已经更新过锚节点的。在最后一小部分，说明一下如何更新组织三的锚节点。
+和前面的步骤相似：
+
+1. 获取最新的配置区块
+2. 更新配置信息
+3. 将更新后的配置信息更新到链上。
+
+#### 3.5.1获取最新的配置区块
+```
+#还是之前的组织三的CLI容器，并且环境变量$CHANNEL_NAME,$ORDERER_CA需要提前配置好
+peer channel fetch config config_block.pb -o orderer.example.com:7050 -c $CHANNEL_NAME --tls --cafile $ORDERER_CA
+```
+* 解码配置信息为JSON格式,并去除用不到的信息：
+```
+configtxlator proto_decode --input config_block.pb --type common.Block | jq .data.data[0].payload.data.config > config.json
+```
+* 将组织三的锚节点的配置信息写进去并保存为一个新的文件：
+```
+jq '.channel_group.groups.Application.groups.Org3MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.org3.example.com","port": 11051}]},"version": "0"}}' config.json > modified_anchor_config.json
+```
+* 将原有的配置信息与新的配置信息编码为`common.Config`格式：
+```
+configtxlator proto_encode --input config.json --type common.Config --output config.pb
+configtxlator proto_encode --input modified_anchor_config.json --type common.Config --output modified_anchor_config.pb
+```
+* 计算两个文件的差异：
+```
+configtxlator compute_update --channel_id $CHANNEL_NAME --original config.pb --updated modified_anchor_config.pb --output anchor_update.pb
+```
+* 再次解码：
+```
+configtxlator proto_decode --input anchor_update.pb --type common.ConfigUpdate | jq . > anchor_update.json
+```
+* 添加头部信息:
+```
+echo '{"payload":{"header":{"channel_header":{"channel_id":"'$CHANNEL_NAME'", "type":2}},"data":{"config_update":'$(cat anchor_update.json)'}}}' | jq . > anchor_update_in_envelope.json
+```
+* 编码为`Fabric`可读的配置文件类型:
+```
+configtxlator proto_encode --input anchor_update_in_envelope.json --type common.Envelope --output anchor_update_in_envelope.pb
+```
+* 配置文件写完了，更新上去：
+```
+peer channel update -f anchor_update_in_envelope.pb -c $CHANNEL_NAME -o orderer.example.com:7050 --tls --cafile $ORDERER_CA
+```
+到这里锚节点更新完了，剩下的自行测试。
