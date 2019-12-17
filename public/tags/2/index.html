@@ -134,6 +134,55 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%86%85%E8%BF%90%E8%A1%8Cetcd%E9%9B%86%E7%BE%A4/">
+        <p class="h4 index-header">在容器中运行etcd集群</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：Docker container以下指南显示了如何使用静态引导过程在rkt和Docker上运行etcd。
+rkt
+运行单节点的etcd以下rkt run命令将在端口2379上公开etcd客户端API，并在端口2380上公开对等API。
+配置etcd时使用主机IP地址。
+export NODE1=192.168.1.21信任CoreOS App签名密钥。
+sudo rkt trust --prefix quay.io/coreos/etcd
+# gpg key fingerprint is: 18AD 5014 C99E F7E3 BA5F  6CE9 50BD D3E0 FC8A 365E运行etcd v3.2版本或指定其他发行版本。
+sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -advertise-client-urls=http://${NODE1}:2379 -initial-advertise-peer-urls=http://${NODE1}:2380 </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">
         <p class="h4 index-header">etcd网关</p>
         
@@ -577,63 +626,6 @@ etcd v3.4使用[CLIENT-URL]/v3/*保持[CLIENT-UR</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     1.3k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">
-        <p class="h4 index-header">gRPC命名与发现</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:gRPC naming and discoveryetcd提供一个gRPC解析器支持备用的命名系统，该命名系统从etcd获取主机以发现gRPC服务。以下机制基于监视对以服务名称为前缀的Key的更新。通过go-grpc使用etcd发现服务
-
-etcd客户端提供一个gRPC解析器通过etcd后端解析gRPC主机,解析器通过etcd客户端初始化并指定了解析目标:
-import (
-        &quot;go.etcd.io/etcd/clientv3&quot;
-        etcdnaming &quot;go.etcd.io/etcd/clientv3/naming&quot;
-
-        &quot;google.golang.org/grpc&quot;
-)
-
-...
-
-cli, cerr := clientv3.NewFromURL(&quot;http://localhost:2379&quot;)
-r := &amp;etcdnaming.GRPCResolver{Client: cli}
-b := grpc.RoundRobin(r)
-conn, g</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    519 字
                   </span>&nbsp;
             
       </div>

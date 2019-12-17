@@ -1,3 +1,9 @@
+---
+title: Hyperledger Fabric动态添加组织到网络中
+date: 2019-12-08 17:14:38
+tags: fabric
+categories: fabric应用
+---
 本文基于Hyperledger Fabric **1.4**版本。
 官方文档地址:[传送门](https://hyperledger-fabric.readthedocs.io/en/release-1.4/channel_update_tutorial.html)
 
