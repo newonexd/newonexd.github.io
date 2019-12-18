@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>IPFS学习-分布式哈希表DHT ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 18日 2019, 10:54 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.1k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="Distributed-Hash-Tables-DHT"><a href="#Distributed-Hash-Tables-DHT" class="headerlink" title="Distributed Hash Tables(DHT)"></a>Distributed Hash Tables(DHT)</h2><p><a href="https://en.wikipedia.org/wiki/Distributed_hash_table" target="_blank" rel="noopener">分布式哈希表</a>是一个分布式的键值对存储结构。在IPFS网络中，每一个节点都维护一个DHT的子集。当节点接受到一个请求。该节点要么直接回复，要么通过节点间传输直到找到可以回复该请求的节点。取决于实现方式，一个请求如果不能被第一个连接的节点回复</p>
+<ul>
+<li>进行节点间的转发，由最后一个节点联系收到请求的节点。</li>
+<li>进行节点间的转发，回复结果按照相同的路径转发回到原节点。</li>
+<li>由最优选择的节点对请求进行回复。</li>
+</ul>
+<p>IPFS使用这种策略。<br>DHT的去中心化提供了相比于传统的键值对存储更好的优势。包括：</p>
+<ul>
+<li>扩展性。对长度为n的哈希请求只需要最多为log<sub>2</sub>n步即可解决。</li>
+<li>通过冗余进行错误容忍。即可能每一个节点都加入或离开DHT。另外，如果一个节点反应缓慢或者不可达，请求可以连接到其他节点。</li>
+<li>负载均衡，请求可以发送到任何节点，没有任何一个节点处理所有的请求。</li>
+</ul>
+<h2 id="DHT如何工作"><a href="#DHT如何工作" class="headerlink" title="DHT如何工作"></a>DHT如何工作</h2><h3 id="Peer-IDs"><a href="#Peer-IDs" class="headerlink" title="Peer IDs"></a>Peer IDs</h3><p>每一个节点有有一个<code>peerID</code>，和DHT的键相同都是长度为n的哈希值。</p>
+<h3 id="Buckets"><a href="#Buckets" class="headerlink" title="Buckets"></a>Buckets</h3><p>由每一个节点维护的DHT的子集被称为”桶“，一个桶映射的哈希值和节点ID具有相同的前缀。最多m个比特位。有2<sup>m</sup>个桶，每个桶则映射2<sup>n-m</sup>个哈希值。<br>例如，如果m=2^16，并且使用16进制数据，节点ID为<code>ABCDEF12345</code>，维护以<code>ABCD</code>为前缀的哈希值映射。桶内的哈希值则可能为<code>*ABCD*38E56,*ABCD*09CBA,*ABCD*17ABB</code>.</p>
+<h3 id="节点列表"><a href="#节点列表" class="headerlink" title="节点列表"></a>节点列表</h3><p>节点之间保持连接到其他节点为了转发请求(当请求的哈希值不在当前节点的桶内)<br>如果哈希值长度为n，一个节点将保持连接n-1个列表节点。</p>
+<ul>
+<li>第一个列表维护第一个比特值不同的节点ID的节点。</li>
+<li>第二个列表维护前一个比特值相同，第二个比特值不同的节点ID的节点。</li>
+<li>第三个列表维护前两个比特值相同，第三个比特值不同的节点ID的节点。</li>
+<li>…</li>
+</ul>
+<p>假设最高的是第m个列表，很难发现最多有m个比特值相同的节点ID的节点。“最接近”对等方的列表通常保持空白。此处的“最接近”定义为XOR距离，因此它们共享的前缀越长，它们就越接近。列表还具有最大的条目（k）-否则第一个列表将包含一半的网络，然后是网络的四分之一，依此类推。</p>
+<h3 id="DHT使用"><a href="#DHT使用" class="headerlink" title="DHT使用"></a>DHT使用</h3><p>当节点接受到查询请求后，如果可以在自己的桶中找到答案则回复。否则联系最接近该节点的节点(IP+port,peerID,等等)回复。收到请求的节点尅将请求发送给最接近的节点。这个过程一直到可以回复请求的节点。一个哈希值长度为n的请求最多只需要log<sub>2</sub>n步，甚至是log2<sub>m</sub>n步。</p>
+<h3 id="键和哈希值"><a href="#键和哈希值" class="headerlink" title="键和哈希值"></a>键和哈希值</h3><p>在IPFS的Kademili DHT，键使用SHA256哈希。<a href="https://docs.libp2p.io/concepts/peer-id/" target="_blank" rel="noopener">节点ID</a>使用由IPFS使用的网络库<a href="https://libp2p.io/" target="_blank" rel="noopener">libp2p</a>。<br>使用DHT查看两种类型的对象时，都由SHA256进行散列：</p>
+<ul>
+<li>添加到IPFS的数据的<a href="https://docs.ipfs.io/guides/concepts/cid/" target="_blank" rel="noopener">Content IDs</a>。查找该值将给出具有该不变内容的对等方的peerID。 </li>
+<li><a href="https://docs.ipfs.io/guides/concepts/ipns/" target="_blank" rel="noopener">IPNS记录</a>。查找将给出与此IPNS地址关联的最后一个Content ID，从而启用可变内容的路由。</li>
+</ul>
+<p>所以，IPFS的DHT只是实现不可变与可变<a href="https://docs.libp2p.io/concepts/content-routing/" target="_blank" rel="noopener">内容路由</a>的一种方式.当前只是一种<a href="https://libp2p.io/implementations/#peer-routing" target="_blank" rel="noopener">实现</a>.</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="添加一条记录"><a href="#添加一条记录" class="headerlink" title="添加一条记录"></a>添加一条记录</h3><p>添加一个<code>blob</code>类型的数据到IPFS等同于广播它，由于DHT由内容路由实现。可以通过<code>ipfs add myData</code>自动打包数据挺添加内容ID和节点ID之间的映射到DHT。注意这里可能也被其他节点ID映射到该值，所以需要添加到列表中。如果提供的数据大于124KB，数据将会被打包成<code>blocks</code>，整个块将被映射。<br>可以通过使用<code>ipfs.name.publish</code>发布一个IPNS记录。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/IPFS">IPFS</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IPFS">IPFS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "IPFS学习-分布式哈希表DHT&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
