@@ -2,7 +2,7 @@
 title: IPFS学习-分布式哈希表DHT
 date: 2019-12-18 10:54:50
 tags: IPFS
-categories: IPFS
+categories: IPFS学习
 ---
 ## Distributed Hash Tables(DHT)
 [分布式哈希表](https://en.wikipedia.org/wiki/Distributed_hash_table)是一个分布式的键值对存储结构。在IPFS网络中，每一个节点都维护一个DHT的子集。当节点接受到一个请求。该节点要么直接回复，要么通过节点间传输直到找到可以回复该请求的节点。取决于实现方式，一个请求如果不能被第一个连接的节点回复

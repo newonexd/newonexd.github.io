@@ -134,6 +134,61 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/">
+        <p class="h4 index-header">IPFS学习-内容标识符(CIDs)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">内容标识符(CIDs)内容标识符也称为CID，是用于指向IPFS中材料的标签。 它不会指示内容的存储位置，但会根据内容本身形成一种地址。 CID简短，无论其基础内容的大小如何。
+CID基于内容的加密哈希，意思是：
+
+任何不相同的内容将会产生不同的CID
+内容中相同的部分添加到两个不同的IPFS节点通过相同的设置应该产生相同的CID。
+
+CID格式基于不同的编码或者是CID的版本使得CID具有不同的格式。多数存在的IPFS工具仍生成版本0的CID。但是file(MFS)和object现在默认使用CID V1.
+版本0当IPFS初始设计的时候，使用base58多次哈希作为内容标识符(虽然简单，但是与新的CID相比缺乏灵活性。)CIDv0仍然是许多IPFS默认选项，所以IPFS版本应该支持v0。
+如果一个CID具有46字符并以Qm开头，说明是一个CIDv0
+版本1CID v1包含一些前导标识符，这些标识符明确说明了使用哪种表示形式以及内容哈希本身。 这些包括：
+
+multibase前缀，指定用于其余CID的编码.
+CID版本标识符，指示这是哪个CID版本
+一个多编解码器标识符，指示目标内容的</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    565 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/">
         <p class="h4 index-header">IPFS学习-分布式哈希表DHT</p>
         
@@ -165,7 +220,7 @@ Buckets由每一个节点维护的DHT的子集被称为”桶“，一个桶映�
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/IPFS">IPFS</a>&nbsp;
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
           &nbsp;
         
         
@@ -300,6 +355,60 @@ cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
+1.整体架构
+架构图直接贴过来好了：
+官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
+
+三个组织
+Org0  -&gt; 组织0   
+Org1  -&gt; 组织1   
+Org2  -&gt; 组织2   
+
+
+组织中的成员
+Org0   一个Orderer节点，一个Org0的Admi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.7k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
         <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
         
@@ -347,60 +456,6 @@ Org</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
-1.整体架构
-架构图直接贴过来好了：
-官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
-
-三个组织
-Org0  -&gt; 组织0   
-Org1  -&gt; 组织1   
-Org2  -&gt; 组织2   
-
-
-组织中的成员
-Org0   一个Orderer节点，一个Org0的Admi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.7k 字
                   </span>&nbsp;
             
       </div>
@@ -592,53 +647,6 @@ etcd通过命令行参数或环境变量采用了几种与证书相关的配置�
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">
-        <p class="h4 index-header">系统限制</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:System limits
-请求大小限制
-etcd被设计用来处理小键值对典型的如元数据。较大的请求数据也起作用，但可能会增加其他请求的延迟。默认情况下，任意的请求最大的空间为1.5MiB，这个限制参数可以通过--max-request-bytes参数对etcd服务器进行配置。
-存储大小限制
-默认的存储大小限制为2GB,可以通过参数--quota-backend-bytes进行配置。正常环境下8GB是etcd支持的最大存储大小，如果配置的值超过它，etcd将在启动时发出警告。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    161 字
                   </span>&nbsp;
             
       </div>

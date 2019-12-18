@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>IPFS ~ 触不可及的官方网站</title>
+  <title>IPFS学习-内容标识符(CIDs) ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -36,7 +36,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/3.jpg')no-repeat center center;
+         style="background: url('/img/1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -106,6 +106,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 18日 2019, 11:14 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    565 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -117,35 +152,111 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <!--<p class="h4">共计 1 篇文章</p>-->
-  <hr>
-  
-    
       
-      <p class="h5">2019</p>
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-分布式哈希表DHT</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="内容标识符-CIDs"><a href="#内容标识符-CIDs" class="headerlink" title="内容标识符(CIDs)"></a>内容标识符(CIDs)</h1><p>内容标识符也称为CID，是用于指向IPFS中材料的标签。 它不会指示内容的存储位置，但会根据内容本身形成一种地址。 CID简短，无论其基础内容的大小如何。</p>
+<p>CID基于内容的<a href="http://localhost:1313/guides/concepts/hashes/" target="_blank" rel="noopener">加密哈希</a>，意思是：</p>
+<ul>
+<li>任何不相同的内容将会产生不同的CID</li>
+<li>内容中相同的部分添加到两个不同的IPFS节点通过相同的设置应该产生相同的CID。</li>
+</ul>
+<h2 id="CID格式"><a href="#CID格式" class="headerlink" title="CID格式"></a>CID格式</h2><p>基于不同的编码或者是CID的版本使得CID具有不同的格式。多数存在的IPFS工具仍生成版本0的CID。但是<code>file</code>(<a href="http://localhost:1313/guides/concepts/mfs/" target="_blank" rel="noopener">MFS</a>)和<code>object</code>现在默认使用CID V1.</p>
+<h3 id="版本0"><a href="#版本0" class="headerlink" title="版本0"></a>版本0</h3><p>当IPFS初始设计的时候，使用base58多次哈希作为内容标识符(虽然简单，但是与新的CID相比缺乏灵活性。)CIDv0仍然是许多IPFS默认选项，所以IPFS版本应该支持v0。</p>
+<p>如果一个CID具有46字符并以<code>Qm</code>开头，说明是一个CIDv0</p>
+<h3 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h3><p>CID v1包含一些前导标识符，这些标识符明确说明了使用哪种表示形式以及内容哈希本身。 这些包括：</p>
+<ul>
+<li><a href="https://github.com/multiformats/multibase" target="_blank" rel="noopener">multibase</a>前缀，指定用于其余CID的编码.</li>
+<li>CID版本标识符，指示这是哪个CID版本</li>
+<li>一个<a href="https://github.com/multiformats/multicodec" target="_blank" rel="noopener">多编解码器</a>标识符，指示目标内容的格式-帮助人们和软件在获取内容后知道如何解释该内容</li>
+</ul>
+<p>这些前导标识符还提供前向兼容性，支持在将来的CID版本中使用的不同格式。<br>您可以使用CID的前几个字节来解释内容地址的其余部分，并知道从IPFS提取内容后如何对其进行解码。 有关更多详细信息，请查看<a href="https://github.com/ipld/cid" target="_blank" rel="noopener">CID规范</a>。 它包括<a href="https://github.com/ipld/cid/blob/ef1b2002394b15b1e6c26c30545fd485f2c4c138/README.md#decoding-algorithm" target="_blank" rel="noopener">解码算法</a>，并链接到用于解码CID的现有软件实现。</p>
+<h2 id="探索CID"><a href="#探索CID" class="headerlink" title="探索CID"></a>探索CID</h2><p>是否想分解特定CID的多库，多编解码器或多哈希信息？ 您可以使用IPLD资源管理器中的<a href="https://cid.ipfs.io/#QmY7Yh4UquoXHLPFo2XbhXkhBvFoPwmQUSa92pxnxjQuPU" target="_blank" rel="noopener">CID检查器</a>或<a href="https://explore.ipld.io/#/explore/QmY7Yh4UquoXHLPFo2XbhXkhBvFoPwmQUSa92pxnxjQuPU" target="_blank" rel="noopener">CID信息面板</a>（两个链接都使用示例CID启动）来对不同格式的CID进行交互式细分。 还了解IPFS中<a href="https://discuss.ipfs.io/t/who-decides-what-hashing-algorithms-ipfs-allows/6742" target="_blank" rel="noopener">CID的未来</a>。</p>
 
-              </div>
-            </div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IPFS">IPFS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -220,6 +331,11 @@
 
 
 
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -260,7 +376,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "IPFS&nbsp;",
+        "IPFS学习-内容标识符(CIDs)&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

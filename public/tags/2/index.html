@@ -134,6 +134,53 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">
+        <p class="h4 index-header">系统限制</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址:System limits
+请求大小限制
+etcd被设计用来处理小键值对典型的如元数据。较大的请求数据也起作用，但可能会增加其他请求的延迟。默认情况下，任意的请求最大的空间为1.5MiB，这个限制参数可以通过--max-request-bytes参数对etcd服务器进行配置。
+存储大小限制
+默认的存储大小限制为2GB,可以通过参数--quota-backend-bytes进行配置。正常环境下8GB是etcd支持的最大存储大小，如果配置的值超过它，etcd将在启动时发出警告。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    161 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/etcd/%E8%AF%8D%E6%B1%87%E8%A1%A8/">
         <p class="h4 index-header">词汇表</p>
         
@@ -598,52 +645,6 @@ Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     2.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">
-        <p class="h4 index-header">运行时重新配置</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：runtime reconfigurationetcd带有增量运行时重新配置的支持。允许我们在集群运行的时候更新集群成员关系。仅当大多数集群成员都在运行时，才能处理重新配置请求，强烈建议在生产环境中集群的大小应该始终大于2。从两个成员的集群中移除一个成员是不安全的。两个成员的集群中大多数成员始终是2，如果在删除过程中出现故障，集群将很难继续运行需要重新从主要成员失败中重新启动集群。为了更好的理解运行时重新配置设计，请阅读运行时重新配置设计。
-重新配置使用案例
-本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
-循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
-改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.8k 字
                   </span>&nbsp;
             
       </div>
