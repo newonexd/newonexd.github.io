@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>IPFS ~ 触不可及的官方网站</title>
+  <title>IPFS学习-哈希 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -36,7 +36,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/4.jpg')no-repeat center center;
+         style="background: url('/img/1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -106,6 +106,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 18日 2019, 2:57 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    635 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      2 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -117,60 +152,107 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <!--<p class="h4">共计 5 篇文章</p>-->
-  <hr>
-  
-    
       
-      <p class="h5">2019</p>
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-IPNS</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-哈希</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-DNS链接</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-内容标识符(CIDs)</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-分布式哈希表DHT</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><p>哈希函数是接受一些任意输入并返回固定长度值的函数。具体值取决于所使用的给定哈希算法，例如<a href="https://en.wikipedia.org/wiki/SHA-1" target="_blank" rel="noopener">SHA-1</a>(GIT在使用),<a href="https://en.wikipedia.org/wiki/SHA-2" target="_blank" rel="noopener">SHA-256</a>,或者是<a href="https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2" target="_blank" rel="noopener">BLAKE2</a>,但是给予一个输入使用哈希算法总是返回相同的输出。<br>例如：输入以下：</p>
+<pre><code>Hello world</code></pre><p>使用<strong>SHA-1</strong>则会输出：</p>
+<pre><code>0x7B502C3A1F48C8609AE212CDFB639DEE39673F5E</code></pre><p>然而相同的输入使用<strong>SHA-256</strong>将会输出以下：</p>
+<pre><code>0x64EC88CA00B268E5BA1A35678A1B5316D212F4F366B2477232534A8AECA37F3C</code></pre><p>第二个哈希值长度要大于第一个，这是因为SHA-1创建一个160比特的哈希值，而SHA-256创建一个256比特的哈希值。同样，前置的<code>0x</code>只是一个指示符，告诉我们以下的哈希表示为基数16（或十六进制）的数字。<br>哈希可以用不同的基数表示（<code>base2</code>，<code>base16</code>，<code>base32</code>等）。 实际上，IPFS将此作为其<a href="https://ifican.top/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/" target="_blank" rel="noopener">内容标识符</a>的一部分，并使用<a href="https://github.com/multiformats/multibase" target="_blank" rel="noopener">Multibase</a>协议同时支持多种基本表示形式。<br>例如，”Hello World”的SHA-256哈希值使用<code>base32</code>表示为：</p>
+<pre><code>mtwirsqawjuoloq2gvtyug2tc3jbf5htm2zeo4rsknfiv3fdp46a</code></pre><h3 id="加密散列的特征"><a href="#加密散列的特征" class="headerlink" title="加密散列的特征"></a>加密散列的特征</h3><p>加密散列带有非常重要的特性：</p>
+<ul>
+<li>确定性-相同的输入消息总是返回相同的输出哈希。</li>
+<li>不相关-消息中的微小变化应生成完全不同的哈希。</li>
+<li>唯一性-从两条不同的消息生成相同的哈希是不可行的。</li>
+<li>单向性-从其哈希值猜测或计算输入消息是不可行的。</li>
+</ul>
+<p>事实证明，这些功能还意味着我们可以使用加密哈希来识别任何数据：哈希对于我们从中计算出的数据是唯一的，并且它不会太长（哈希是固定长度的，因此SHA-256哈希是 1 GB的视频文件的大小仍然只有32个字节），因此通过网络发送它不会占用很多资源。</p>
+<p>这对于像IPFS这样的分布式系统至关重要，在该系统中，我们希望能够从许多地方存储和检索数据。 运行IPFS的计算机可以询问与之连接的所有对等方，是否有一个带有特定哈希值的文件，如果其中一个具有特定的哈希值，则他们将整个文件发回。 没有短而独特的标识符（例如密码哈希），就不可能实现。 这项技术称为“内容寻址”-因为内容本身是用来形成地址的，而不是用于存储其所在计算机和磁盘位置的信息。</p>
 
-
-              </div>
-            </div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IPFS">IPFS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -245,6 +327,11 @@
 
 
 
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -285,7 +372,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "IPFS&nbsp;",
+        "IPFS学习-哈希&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

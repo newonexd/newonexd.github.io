@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>IPFS ~ 触不可及的官方网站</title>
+  <title>IPFS学习-DNS链接 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -36,7 +36,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/4.jpg')no-repeat center center;
+         style="background: url('/img/1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -106,6 +106,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 18日 2019, 2:31 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    492 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -117,60 +152,103 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <!--<p class="h4">共计 5 篇文章</p>-->
-  <hr>
-  
-    
       
-      <p class="h5">2019</p>
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-IPNS</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-哈希</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-DNS链接</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-内容标识符(CIDs)</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-分布式哈希表DHT</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-</div>
 
-
-
-              </div>
-            </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="DNSLink"><a href="#DNSLink" class="headerlink" title="DNSLink"></a>DNSLink</h1><h2 id="什么是DNS链接"><a href="#什么是DNS链接" class="headerlink" title="什么是DNS链接"></a>什么是DNS链接</h2><p>DNS链接使用<a href="https://en.wikipedia.org/wiki/TXT_record" target="_blank" rel="noopener">DNS TXT</a>记录映射域名(如<code>ipfs.io</code>)到一个IPFS地址。因为你可以编辑自己的DNS记录，可以使他们总是指向最新版本的IPFS中的对象(如果修改了IPFS中的对象则IPFS中的对象地址也会改变)。由于DNS链接使用DNS记录，所以可以设计名字/路径/(子)域/任何容易分类，阅读和记的名字。<br>一个DNS链接地址看起来像一个<a href="">IPNS</a>地址，但是DNS链接使用域名代替了被哈希的公钥:</p>
+<pre><code>/ipns/myexampledomain.org</code></pre><p>就像普通的IPFS地址，可以包含链接到其他的文件-或者是其他类型的IPFS支持的资源，像目录和链接：</p>
+<pre><code>/ipns/myexampledomain.org/media/</code></pre><h3 id="使用子域名发布"><a href="#使用子域名发布" class="headerlink" title="使用子域名发布"></a>使用子域名发布</h3><p>虽然您可以根据需要将TXT记录发布到确切的域，但是使用称为<code>_dnslink</code>的特殊子域来发布DNSLink记录会更有利。这使您可以提高自动设置的安全性，或将对DNSLink记录的控制权委派给第三方，而不必放弃对原始DNS区域的完全控制权。<br>例如，<code>docs.ipfs.io</code>没有含有TXT记录，但是页面仍然可以加载因为TXT记录在<code>_dnslink.docs.ipfs.io</code>中存在。如果查看<code>_dnslink.docs.ipfs.io</code>的DNS记录，可以看到以下DNSLink记录：</p>
+<pre><code>$ dig +noall +answer TXT _dnslink.docs.ipfs.io
+_dnslink.docs.ipfs.io.  34  IN  TXT &quot;dnslink=/ipfs/QmVMxjouRQCA2QykL5Rc77DvjfaX6m8NL6RyHXRTaZ9iya&quot;</code></pre><h3 id="使用DNSLink解析"><a href="#使用DNSLink解析" class="headerlink" title="使用DNSLink解析"></a>使用DNSLink解析</h3><p>当一个IPFS客户端或者节点尝试解析一个地址，将会寻找前缀为<code>dnslink=</code>的TXT记录。剩下的可以是<code>/ipfs/</code>链接或者是<code>/ipns/</code>，或者是链接到其他的DNSLink。</p>
+<pre><code>dnslink=/ipfs/&lt;具体内容的CID&gt;</code></pre><p>例如，回到之前<code>_dnslink.docs.ipfs.io</code>的DNS记录继续了解DNS链接实体：</p>
+<pre><code>$ dig +noall +answer TXT _dnslink.docs.ipfs.io
+_dnslink.docs.ipfs.io.  34  IN  TXT &quot;dnslink=/ipfs/QmVMxjouRQCA2QykL5Rc77DvjfaX6m8NL6RyHXRTaZ9iya&quot;</code></pre><p>基于这个地址：</p>
+<pre><code>/ipns/docs.ipfs.io/introduction/</code></pre><p>可以获取这个区块：</p>
+<pre><code>/ipfs/QmVMxjouRQCA2QykL5Rc77DvjfaX6m8NL6RyHXRTaZ9iya/introduction/</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IPFS">IPFS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -245,6 +323,11 @@
 
 
 
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -285,7 +368,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "IPFS&nbsp;",
+        "IPFS学习-DNS链接&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>IPFS ~ 触不可及的官方网站</title>
+  <title>IPFS学习-IPNS ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -36,7 +36,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/4.jpg')no-repeat center center;
+         style="background: url('/img/1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -106,6 +106,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 十二月 18日 2019, 2:57 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    464 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -117,60 +152,107 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <!--<p class="h4">共计 5 篇文章</p>-->
-  <hr>
-  
-    
       
-      <p class="h5">2019</p>
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-IPNS</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-哈希</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-DNS链接</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-内容标识符(CIDs)</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-    
-    <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">IPFS学习-分布式哈希表DHT</span>
-      <span style="float: right;">12-18</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>星际名称系统(IPNS)是一个创建个更新可变的链接到IPFS内容的系统，由于对象在IPFS中是内容寻址的，他们的内容变化将导致地址随之变化。对于多变的事物是有用的。但是很难获取某些内容的最新版本。</p>
+<p>在IPNS中名字是被哈希的公钥。它与一条记录相关联，该记录包含有关其链接的哈希的信息，该信息由相应的私钥签名。新的记录可以在任何时候被签名与发布。<br>查看IPNS地址，使用了<code>/ipns/</code>前缀：</p>
+<pre><code>/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd</code></pre><p>IPNS不是在IPFS上创建可变地址的唯一方法。 您还可以使用<a href="">DNSLink</a>（当前比IPNS快得多，并且还使用更易读的名称）。 其他社区成员正在探索使用区块链存储通用名称记录的方法。</p>
+<p>例如：<br>假设您要在IPFS下发布您的网站。 您可以使用<a href="">Files API</a>发布静态网站，然后获得一个可以链接到的CID。 但是，当您需要进行更改时，就会出现问题：您将获得一个新的CID，因为您现在拥有不同的内容。 而且，您不可能总是给别人新的地址。<br>这是Name API派上用场的地方。 使用它，您可以创建一个稳定的IPNS地址，该地址指向您网站最新版本的CID。</p>
+<pre><code>//文件的地址
+const addr = &#39;/ipfs/QmbezGequPwcsWo8UL4wDF6a8hYwM1hmbzYv2mnKkEWaUp&#39;
 
+ipfs.name.publish(addr, function (err, res) {
+    // 接收到包含两个字段的资源：
+    //   - name: 被发布的内容的名字
+    //   - value: 名字指向的&quot;真实&quot;的地址
+    console.log(`https://gateway.ipfs.io/ipns/${res.name}`)
+})</code></pre><p>用这种方式，可以使用相同的地址重新发布一个新的版本到网页，默认情况下，<code>ipfs.name.publish</code>将会使用节点ID。</p>
 
-              </div>
-            </div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/IPFS">IPFS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -245,6 +327,11 @@
 
 
 
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -285,7 +372,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "IPFS&nbsp;",
+        "IPFS学习-IPNS&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
