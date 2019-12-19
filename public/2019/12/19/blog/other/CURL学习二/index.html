@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>分类 ~ 触不可及的官方网站</title>
+  <title>CURL命令学习二 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -36,7 +36,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -96,7 +96,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/3.jpg')no-repeat center center;
+         style="background: url('/img/1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -106,6 +106,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 十二月 19日 2019, 8:52 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    449 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -117,22 +152,110 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="a-append"><a href="#a-append" class="headerlink" title="-a, --append"></a><code>-a, --append</code></h3><p>用于上传文件时，如果服务器上该文件不存在则创建，如果存在则追加到源文件。</p>
+<h3 id="K-config-lt-file-gt"><a href="#K-config-lt-file-gt" class="headerlink" title="-K, --config &lt;file&gt;"></a><code>-K, --config &lt;file&gt;</code></h3><p>指定从某个文件读取<code>curl</code>参数。如果指定<code>-</code>为文件名则从输入读取参数。如：<code>-K --config -</code></p>
+<h3 id="connect-timeout-lt-seconds-gt"><a href="#connect-timeout-lt-seconds-gt" class="headerlink" title="--connect-timeout &lt;seconds&gt;"></a><code>--connect-timeout &lt;seconds&gt;</code></h3><p>指定连接超时时间，若指定多个时间则采用最后一个。</p>
+<h3 id="C-continue-at-lt-offset-gt"><a href="#C-continue-at-lt-offset-gt" class="headerlink" title="-C --continue-at &lt;offset&gt;"></a><code>-C --continue-at &lt;offset&gt;</code></h3><p>从给予的偏移量继续文件传输，用于断点续传，如果使用<code>-C -</code>则表明由<code>curl</code>自动获取从哪里开始继续传输。</p>
+<h3 id="c-cookie-jar-lt-filename-gt"><a href="#c-cookie-jar-lt-filename-gt" class="headerlink" title="-c --cookie-jar &lt;filename&gt;"></a><code>-c --cookie-jar &lt;filename&gt;</code></h3><p>指定将<code>cookie</code>写入的文件，如果指定文件名为<code>-</code>，则将<code>cookie</code>写入输出。</p>
+<h3 id="b-cookie-lt-data-filename-gt"><a href="#b-cookie-lt-data-filename-gt" class="headerlink" title="-b --cookie &lt;data|filename&gt;"></a><code>-b --cookie &lt;data|filename&gt;</code></h3><p>将数据添加到<code>Cookie header</code>中传输到<code>HTTP</code>服务器。数据格式应该为<code>name1=value1;name2=value2</code>。如果文件名为<code>-</code>，则从输入读取数据。<br><code>-b --cookie</code>只用于输入<code>cookie</code>，并不会写<code>cookie</code>信息到本地，所以需要和<code>-c --cookie-jar</code>同时使用。</p>
+<h3 id="create-dirs"><a href="#create-dirs" class="headerlink" title="--create-dirs"></a><code>--create-dirs</code></h3><p>当使用<code>-o --output</code>选项时，<code>curl</code>将会创建必要的文件夹分层结构。如果<code>--output</code>文件名使用不存在的文件夹或者需要分层的文件夹存在，则没有文件夹被创建。</p>
+<h3 id="d-data-lt-data-gt"><a href="#d-data-lt-data-gt" class="headerlink" title="-d --data &lt;data&gt;"></a><code>-d --data &lt;data&gt;</code></h3><p>通过POST请求发送具体的数据到HTTP服务器。</p>
+<h3 id="f-fail"><a href="#f-fail" class="headerlink" title="-f --fail"></a><code>-f --fail</code></h3><p>当curl请求出现服务器错误时不打印错误信息，通常用于脚本中。只返回错误码22</p>
+<h3 id="F-form-lt-name-content-gt"><a href="#F-form-lt-name-content-gt" class="headerlink" title="-F --form &lt;name=content&gt;"></a><code>-F --form &lt;name=content&gt;</code></h3><p>与<code>-d</code>相似，想服务器发送数据，<code>-F</code>是以表单形式</p>
+<ul>
+<li>发送文件：<code>curl -F &quot;name=@file.txt&quot; http://www.xxx.html</code></li>
+<li>指定<code>Content-Type</code>：<code>curl -F &quot;web=@index.html;type=text/html&quot; http://www.xxx.html</code></li>
+</ul>
+<h3 id="i"><a href="#i" class="headerlink" title="-i"></a><code>-i</code></h3><p>在输出中包含HTTP响应头信息。</p>
+<h3 id="X"><a href="#X" class="headerlink" title="-X"></a><code>-X</code></h3><p>指定具体的请求方法如<code>GET,POST...</code></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
                 
-
-<ul class="category-tree-list"><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/CouchDB/">CouchDB</a><span class="category-tree-list-count">1</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/IPFS%E5%AD%A6%E4%B9%A0/">IPFS学习</a><span class="category-tree-list-count">5</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/curl/">curl</a><span class="category-tree-list-count">2</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/">etcd文档翻译</a><span class="category-tree-list-count">18</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/fabric-ca%E5%BA%94%E7%94%A8/">fabric-ca应用</a><span class="category-tree-list-count">2</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/fabric%E5%BA%94%E7%94%A8/">fabric应用</a><span class="category-tree-list-count">6</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/fabric%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">fabric源码解析</a><span class="category-tree-list-count">1</span></li></ul>
-
-
-              </div>
-            </div>
+                  <a class="hover-with-bg" href="/categories/curl">curl</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -207,6 +330,11 @@
 
 
 
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -247,7 +375,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "分类&nbsp;",
+        "CURL命令学习二&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

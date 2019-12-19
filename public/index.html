@@ -134,6 +134,170 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/19/blog/fabric/Fabric1.4%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%93%BE%E7%A0%81%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/">
+        <p class="h4 index-header">Fabric1.4源码解析：链码容器启动过程</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">想写点东西记录一下最近看的一些Fabric源码,本文使用的是fabric1.4的版本，所以对于其他版本的fabric，内容可能会有所不同。其实我仅仅知道Go语言一些语法的使用，并不太熟悉Go语言，所以解析的内容可能会有误，欢迎大家批评指正。本文想针对Fabric中链码容器的启动过程进行源码的解析。这里的链码指的是用户链码不是系统链码,顺便回顾一下系统链码:lscc(Life Cycle System ChainCode)生命周期系统链码cscc(Configuration System ChainCode)配置系统链码escc(Endorser System ChainCode)背书系统链码qscc(Query System ChainCode)查询系统链码vscc(Verification System ChainCode)验证系统链码本文主要解析的是用户链码的启动过程。
+1 起点#这是用户端链码的main方法，也是整个流程的入口点，调用了shim包中的Start(cc Chaincode)方法.
+func main(){
+    err :=shim.Start(new(Chain</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90">fabric源码解析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    4.6k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/19/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
+        <p class="h4 index-header">CouchDB学习一</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">端口
+
+
+端口号
+协议
+作用
+
+
+
+5984
+tcp
+标椎集群端口用于所有的HTTP API请求
+
+
+5986
+tcp
+用于管理员对节点与分片的管理
+
+
+4369
+tcp
+Erlang端口到daemon的映射
+
+
+基本配置couchdb配置curl地址：http://localhost:5984/_node/&lt;name@host&gt;/_config/couchdb/后接参数.
+
+attachment_stream-buffer_size  缓冲池大小，越大读性能越好，但增加写操作的响应时间.
+database_dir  数据库文件地址
+default_security  默认的安全级别admin_local. everyone:任何人都可以读和写。admin_only：只有admin可以读和写.admin_local:被分片的数据库可以被任何人读和写，但分片只可以被admin读和写.
+delayed_commits  延迟提交 false保证同步.true可以提高性能。
+file_compression  文件压缩默认snappy。none：不进行压缩。snappy：使用谷歌</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CouchDB">CouchDB</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    711 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/19/blog/other/CURL%E5%AD%A6%E4%B9%A0%E4%BA%8C/">
+        <p class="h4 index-header">CURL命令学习二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-a, --append用于上传文件时，如果服务器上该文件不存在则创建，如果存在则追加到源文件。
+-K, --config &lt;file&gt;指定从某个文件读取curl参数。如果指定-为文件名则从输入读取参数。如：-K --config -
+--connect-timeout &lt;seconds&gt;指定连接超时时间，若指定多个时间则采用最后一个。
+-C --continue-at &lt;offset&gt;从给予的偏移量继续文件传输，用于断点续传，如果使用-C -则表明由curl自动获取从哪里开始继续传输。
+-c --cookie-jar &lt;filename&gt;指定将cookie写入的文件，如果指定文件名为-，则将cookie写入输出。
+-b --cookie &lt;data|filename&gt;将数据添加到Cookie header中传输到HTTP服务器。数据格式应该为name1=value1;name2=value2。如果文件名为-，则从输入读取数据。-b --cookie只用于输入cookie，并不会写cookie信息到本地，所以需要和-c --c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/curl">curl</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    449 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/">
         <p class="h4 index-header">IPFS学习-IPNS</p>
         
@@ -480,165 +644,6 @@ cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     3.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
-        <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">本文基于Hyperledger Fabric 1.4版本。官方文档地址:传送门
-动态添加一个组织到Fabric网络中也是一个比较重要的功能。官方文档写的已经很详细了，有能力的尽量还是看官方文档，本文只是根据官方文档进行整理同时兼翻译。
-1.前提条件
-这个不再解释了，前提条件自然是搭建Fabric的环境了并跑通官方的例子，具体的看这里.
-2.启动网络
-还是以官方的byfn为例好了，不多说，对Fabric有一定了解的都能明白，不明白的看上面文档:
-./byfn.sh up
-#或者是
-./byfn.sh up -s couchdb
-#区别不大，只不过换了一个数据库而已，对本文内容没多少关系动态添加组织官方脚本自动化操作就简单执行以下命令：
-./eyfn.sh up本文重点不在这里，因为自动化操作省略了所有的内容，固然简单，但是仍然不懂其中过程。所以本文的重点还是下一部分，手动地一步一步完成动态增加组织。
-3手动添加组织到网络中byfn网络中的节点为:
-
-Order -&gt; orderer.example.com
-Org1  -&gt; peer0.org1.example.com
-Org</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
-1.整体架构
-架构图直接贴过来好了：
-官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
-
-三个组织
-Org0  -&gt; 组织0   
-Org1  -&gt; 组织1   
-Org2  -&gt; 组织2   
-
-
-组织中的成员
-Org0   一个Orderer节点，一个Org0的Admi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.7k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/04/blog/fabric/%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE/">
-        <p class="h4 index-header">Hyperledger Fabric私有数据</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">官方文档:点这里
-
-1简介在同一个通道中，允许某一组织在对同一通道内其他组织保持部分的数据私有。也就是说有一部分被标识为私有的数据只能具有权限的组织查看和操作，而其余组织不具备查看和操作私有数据的权限。通常如果需要保持数据私有可以另外创建一个通道只为私有数据服务，但是如果涉及到多个业务方时，为每一个组织另外创建通道会增加额外的管理类开销。并且也不能在进行私有数据操作的时候，让其余没有权限的组织节点都知道有这么一笔交易发生。从Fabric 1.2开始，引入了一个私有数据集合的概念，它允许通道内的指定的某一个组织中的部分成员可以对私有数据进行操作，而其他没有权限的节点只能知道有这么一笔交易发生而不能了解交易的细节。
-1.1私有数据集合
-私有数据集合包括两个部分：
-
-私有数据实体：通过Gossip协议在具有权限的节点之间传输，并且只有具有权限的节点可以看到。这部分私有数据存储在具有权限的节点的私有的状态数据库中。可以通过链码API在具有权限的节点上进行访问。并且私有数据不涉及排序服务，因为是通过Peer节点间的Gossip协议进行传输的。所以要求每一个节点都需要设置参数CORE_PEER_G</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.2k 字
                   </span>&nbsp;
             
       </div>
