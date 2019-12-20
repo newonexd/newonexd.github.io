@@ -134,6 +134,122 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/20/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
+        <p class="h4 index-header">blog/couchDB/CouchDB学习一</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">端口
+
+
+端口号
+协议
+作用
+
+
+
+5984
+tcp
+标椎集群端口用于所有的HTTP API请求
+
+
+5986
+tcp
+用于管理员对节点与分片的管理
+
+
+4369
+tcp
+Erlang端口到daemon的映射
+
+
+配置介绍配置文件CouchDb从以下位置按顺序读取配置文件
+
+etc/fefault.ini
+etc/default.d/*.ini
+etc/local.ini
+etc/local.d/*.ini
+
+类UNIX系统：/opt/couchdb/Windows系统:C:\CouchDBmaxOS:Applications/Apache CouchDB.app/Contents/Resources/couchdbx-core/etc下的default.ini和default.d文件夹。/Users/youruser/Library/Application Support/CouchDB2/etc/couchdb下的default.ini和default.d文件夹.
+通过HTTP API修改参数集群：
+curl -X PUT http://localhost:5984/_node/n</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-20&nbsp;&nbsp;
+        
+        
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/20/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%89/">
+        <p class="h4 index-header">page</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-I只获取请求头
+-k --insecure每次SSL连接curl都需要验证是否安全。-k参数表示如果不安全也可以继续操作。
+-4 --ipv4告诉curl只使用ipv4地址
+-6 --ipv6告诉curl只使用ipv6
+--keepalive-time &lt;seconds&gt;设置时间保持心跳连接
+--no-keepalive不设置心跳保持连接
+-l --list-only(FTP)当列出FTP文件夹时，该选项强制只列出名字
+-: --next表明curl可一次性发送多个请求。例子：
+curl www.exam1.com --next -d name=value www.exam2.com-N --no-buffer不使用输出流的缓冲区
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/curl">curl</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    142 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/19/blog/fabric/Fabric1.4%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%93%BE%E7%A0%81%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/">
         <p class="h4 index-header">Fabric1.4源码解析：链码容器启动过程</p>
         
@@ -169,78 +285,6 @@ func main(){
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.6k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/19/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
-        <p class="h4 index-header">CouchDB学习一</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">端口
-
-
-端口号
-协议
-作用
-
-
-
-5984
-tcp
-标椎集群端口用于所有的HTTP API请求
-
-
-5986
-tcp
-用于管理员对节点与分片的管理
-
-
-4369
-tcp
-Erlang端口到daemon的映射
-
-
-基本配置couchdb配置curl地址：http://localhost:5984/_node/&lt;name@host&gt;/_config/couchdb/后接参数.
-
-attachment_stream-buffer_size  缓冲池大小，越大读性能越好，但增加写操作的响应时间.
-database_dir  数据库文件地址
-default_security  默认的安全级别admin_local. everyone:任何人都可以读和写。admin_only：只有admin可以读和写.admin_local:被分片的数据库可以被任何人读和写，但分片只可以被admin读和写.
-delayed_commits  延迟提交 false保证同步.true可以提高性能。
-file_compression  文件压缩默认snappy。none：不进行压缩。snappy：使用谷歌</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDB">CouchDB</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    711 字
                   </span>&nbsp;
             
       </div>
@@ -590,60 +634,6 @@ curl -U user:passwd -x proxy:port http://www.xxx.com/</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     558 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric_CA/">
-        <p class="h4 index-header">Hyperledger Fabric-CA</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Fabric—Ca的概念不再解释了，这里只说明使用方法:
-前置条件
-Go语言1.10+版本
-GOPATH环境变量正确设置
-已安装libtool和libtdhl-dev包
-
-Ubuntu系统通过以下命令安装libtool和libtdhl-dev包：
-sudo apt install libtool libltdl-devMacOs 系统Mac系统通过以下命令安装：
-brew install libtoolFabric-Ca安装可以通过以下两种途径进行安装：
-
-直接下载二进制文件：go get -u github.com/hyperledger/fabric-ca/cmd/...如果使用这种方式安装，安装成功的话直接在命令行输入(前提是GOPATH正确配置):fabric-ca-server version即可打印出安装的Ca版本。
-从源码编译安装：首先在系统中建立以下路径:mkdir -p $GOPATH/src/github.com/hyperledger/
-cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到本地</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    3.8k 字
                   </span>&nbsp;
             
       </div>
