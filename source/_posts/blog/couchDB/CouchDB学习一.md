@@ -1,3 +1,9 @@
+---
+title: CouchDB学习一
+date: 2019-11-24 15:24:56
+tags: CouchDb
+categories: CouchDb学习
+---
 ## 端口
 
 |端口号|协议|作用|
