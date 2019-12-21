@@ -134,60 +134,6 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
-1.整体架构
-架构图直接贴过来好了：
-官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
-
-三个组织
-Org0  -&gt; 组织0   
-Org1  -&gt; 组织1   
-Org2  -&gt; 组织2   
-
-
-组织中的成员
-Org0   一个Orderer节点，一个Org0的Admi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.7k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
         <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
         
@@ -235,6 +181,60 @@ Org</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
+1.整体架构
+架构图直接贴过来好了：
+官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
+
+三个组织
+Org0  -&gt; 组织0   
+Org1  -&gt; 组织1   
+Org2  -&gt; 组织2   
+
+
+组织中的成员
+Org0   一个Orderer节点，一个Org0的Admi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.7k 字
                   </span>&nbsp;
             
       </div>
@@ -597,16 +597,47 @@ sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E4%BB%8B%E7%BB%8D/">
-        <p class="h4 index-header">CouchDB学习-介绍</p>
+      <a href="/2019/11/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
+        <p class="h4 index-header">CouchDB学习一</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">官方文档
-CouchDB1文档存储CouchDB服务器主机是一个存储文档的数据库。每一个文档在数据库中都有唯一的名字。CouchDB提供RESTful HTTP API用来读取和更新(添加，编辑，删除)数据库文档。文档是CouchDB数据库中的主要单元数据由任意字段和附件组成。文档也包括由数据库系统维护的元数据信息。文档字段具有唯一的名字并且包含多种类型(文本，数字，布尔值，列表等)的值。并且文本大小或元素数量没有限制。CouchDB文档更新模式是无锁的并且优化的。由客户端应用加载文档进行文档编辑，使用更新，最后存储回数据库。如果另一个客户端编辑了相同的文档并且首先保存了更新。那么客户端将会在存储时得到一个编辑冲突的错误。为了解决更新冲突，最新的文档版本将会打开，编辑将重新应用并再次尝试更新。单个文档更新(添加，编辑，删除)是全有或者全没有的，要么完全成功，要么完全失败。数据库不支持并行存储或更新文档。
-2ACID属性CouchDB文件层和系统提交特性具有全部的原子性，一致性，隔离性和持久性(ACID)属性。在硬盘中，CouchDB从不覆盖提交的数据或者被连接的结构。确保数据库文件总是</div>
+          <div class="index-text mb-1">端口
+
+
+端口号
+协议
+作用
+
+
+
+5984
+tcp
+标椎集群端口用于所有的HTTP API请求
+
+
+5986
+tcp
+用于管理员对节点与分片的管理
+
+
+4369
+tcp
+Erlang端口到daemon的映射
+
+
+配置介绍配置文件CouchDb从以下位置按顺序读取配置文件
+
+etc/fefault.ini
+etc/default.d/*.ini
+etc/local.ini
+etc/local.d/*.ini
+
+类UNIX系统：/opt/couchdb/Windows系统:C:\CouchDBmaxOS:Applications/Apache CouchDB.app/Contents/Resources/couchdbx-core/etc下的default.ini和default.d文件夹。/Users/youruser/Library/Application Support/CouchDB2/etc/couchdb下的default.ini和default.d文件夹.
+通过HTTP API修改参数集群：
+curl -X PUT http://localhost:5984/_node/n</div>
         </div>
       </a>
 
@@ -630,7 +661,7 @@ CouchDB1文档存储CouchDB服务器主机是一个存储文档的数据库。�
                 
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
-                    3.6k 字
+                    4k 字
                   </span>&nbsp;
             
       </div>
