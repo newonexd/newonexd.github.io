@@ -134,6 +134,155 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/21/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
+        <p class="h4 index-header">CouchDB学习-集群管理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">官方文档
+集群管理理论在etc/fefault.ini文件中有以下部分：
+[cluster]
+q=8
+n=3
+q - 分片的数量
+n - 每一份文档的拷贝数量(加上原文档一共几份副本)
+
+创建数据库时可以通过覆盖该值修改为自己的值。在集群操作中，获取操作中CouchDB返回状态码200或者是写操作返回状态码201即为大多数成员达成一致。大多数成员定义为相关拷贝的数量的一半。对于“读写”操作，“相关副本”的定义稍有不同。对于读操作，相关副本的数量是保存请求数据的当前可访问分片的数量，这意味着在发生故障或网络分区的情况下，相关副本的数量可能少于集群中的副本数量。 可以使用r参数设置读取份数。对于写操作，相关副本的数量始终为n，即集群中的副本数量。 对于写操作，可以使用w参数设置份数。 如果少于此数量的可用节点，则返回202。
+节点管理查看所有节点curl -u admin:adminpw -X GET http://localhost:5984/_membership
+{
+    &quot;all_nodes&quot;:[   # 当前节点所知道的节点
+        &quot;no</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/21/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%89/">
+        <p class="h4 index-header">CURL命令学习三</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-I只获取请求头
+-k --insecure每次SSL连接curl都需要验证是否安全。-k参数表示如果不安全也可以继续操作。
+-4 --ipv4告诉curl只使用ipv4地址
+-6 --ipv6告诉curl只使用ipv6
+--keepalive-time &lt;seconds&gt;设置时间保持心跳连接
+--no-keepalive不设置心跳保持连接
+-l --list-only(FTP)当列出FTP文件夹时，该选项强制只列出名字
+-: --next表明curl可一次性发送多个请求。例子：
+curl www.exam1.com --next -d name=value www.exam2.com-N --no-buffer不使用输出流的缓冲区
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/curl">curl</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    142 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/21/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E4%BB%8B%E7%BB%8D/">
+        <p class="h4 index-header">CouchDB学习-介绍</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">官方文档
+CouchDB1文档存储CouchDB服务器主机是一个存储文档的数据库。每一个文档在数据库中都有唯一的名字。CouchDB提供RESTful HTTP API用来读取和更新(添加，编辑，删除)数据库文档。文档是CouchDB数据库中的主要单元数据由任意字段和附件组成。文档也包括由数据库系统维护的元数据信息。文档字段具有唯一的名字并且包含多种类型(文本，数字，布尔值，列表等)的值。并且文本大小或元素数量没有限制。CouchDB文档更新模式是无锁的并且优化的。由客户端应用加载文档进行文档编辑，使用更新，最后存储回数据库。如果另一个客户端编辑了相同的文档并且首先保存了更新。那么客户端将会在存储时得到一个编辑冲突的错误。为了解决更新冲突，最新的文档版本将会打开，编辑将重新应用并再次尝试更新。单个文档更新(添加，编辑，删除)是全有或者全没有的，要么完全成功，要么完全失败。数据库不支持并行存储或更新文档。
+2ACID属性CouchDB文件层和系统提交特性具有全部的原子性，一致性，隔离性和持久性(ACID)属性。在硬盘中，CouchDB从不覆盖提交的数据或者被连接的结构。确保数据库文件总是</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.6k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/19/blog/fabric/Fabric1.4%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%93%BE%E7%A0%81%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/">
         <p class="h4 index-header">Fabric1.4源码解析：链码容器启动过程</p>
         
@@ -216,57 +365,6 @@ func main(){
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     449 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/19/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%89/">
-        <p class="h4 index-header">CURL命令学习三</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">-I只获取请求头
--k --insecure每次SSL连接curl都需要验证是否安全。-k参数表示如果不安全也可以继续操作。
--4 --ipv4告诉curl只使用ipv4地址
--6 --ipv6告诉curl只使用ipv6
---keepalive-time &lt;seconds&gt;设置时间保持心跳连接
---no-keepalive不设置心跳保持连接
--l --list-only(FTP)当列出FTP文件夹时，该选项强制只列出名字
--: --next表明curl可一次性发送多个请求。例子：
-curl www.exam1.com --next -d name=value www.exam2.com-N --no-buffer不使用输出流的缓冲区
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/curl">curl</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    142 字
                   </span>&nbsp;
             
       </div>
@@ -512,117 +610,6 @@ Buckets由每一个节点维护的DHT的子集被称为”桶“，一个桶映�
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     1.1k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/17/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%80/">
-        <p class="h4 index-header">CURL命令学习一</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">每天学习一点点。。。。
-
-直接获取页面数据：
-
-curl http://www.xxx.com/[可以指定具体的路径获取某个文件]用户名(密码):curl -u username http://www.xxx.com
-curl -u username:pwsswd http://www.xxx.com
-curl http://name:passwd@xxx.domain/filepath/下载页面数据：#以`demo.html`文件保存
-curl -o demo.html http://www.xxx.com/
-下载某个页面数据保存到本地并以源页面名称为默认命名(可以指定多个页面)：
-
-curl -O http://www.xxx.com/index.html/. [-O http://www.xxx2.com/html/]
-代理 
-
-curl -x proxy:port http://www.xxx.com/
-#如果代理需要名字和密码，用-U指定(-u)指定页面需要的用户名密码
-curl -U user:passwd -x proxy:port http://www.xxx.com/</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-17&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/curl">curl</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    558 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric_CA/">
-        <p class="h4 index-header">Hyperledger Fabric-CA</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Fabric—Ca的概念不再解释了，这里只说明使用方法:
-前置条件
-Go语言1.10+版本
-GOPATH环境变量正确设置
-已安装libtool和libtdhl-dev包
-
-Ubuntu系统通过以下命令安装libtool和libtdhl-dev包：
-sudo apt install libtool libltdl-devMacOs 系统Mac系统通过以下命令安装：
-brew install libtoolFabric-Ca安装可以通过以下两种途径进行安装：
-
-直接下载二进制文件：go get -u github.com/hyperledger/fabric-ca/cmd/...如果使用这种方式安装，安装成功的话直接在命令行输入(前提是GOPATH正确配置):fabric-ca-server version即可打印出安装的Ca版本。
-从源码编译安装：首先在系统中建立以下路径:mkdir -p $GOPATH/src/github.com/hyperledger/
-cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到本地</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    3.8k 字
                   </span>&nbsp;
             
       </div>

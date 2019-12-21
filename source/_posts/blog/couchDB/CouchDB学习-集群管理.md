@@ -1,6 +1,6 @@
 ---
 title: CouchDB学习-集群管理
-date: 2019-11-24 15:24:56
+date: 2019-12-21 15:24:56
 tags: CouchDb
 categories: CouchDb学习
 ---
