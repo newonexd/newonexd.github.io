@@ -134,6 +134,50 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/">
+        <p class="h4 index-header">IPFS学习-DNS链接</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">DNSLink什么是DNS链接DNS链接使用DNS TXT记录映射域名(如ipfs.io)到一个IPFS地址。因为你可以编辑自己的DNS记录，可以使他们总是指向最新版本的IPFS中的对象(如果修改了IPFS中的对象则IPFS中的对象地址也会改变)。由于DNS链接使用DNS记录，所以可以设计名字/路径/(子)域/任何容易分类，阅读和记的名字。一个DNS链接地址看起来像一个IPNS地址，但是DNS链接使用域名代替了被哈希的公钥:
+/ipns/myexampledomain.org就像普通的IPFS地址，可以包含链接到其他的文件-或者是其他类型的IPFS支持的资源，像目录和链接：
+/ipns/myexampledomain.org/media/使用子域名发布虽然您可以根据需要将TXT记录发布到确切的域，但是使用称为_dnslink的特殊子域来发布DNSLink记录会更有利。这使您可以提高自动设置的安全性，或将对DNSLink记录的控制权委派给第三方，而不必放弃对原始DNS区域的完全控制权。例如，docs.ipfs.io没有含有TXT记录，但是页面仍然可以加载因为TXT记录在_dnslink.</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    492 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/">
         <p class="h4 index-header">IPFS学习-内容标识符(CIDs)</p>
         
@@ -608,56 +652,11 @@ $ etcdctl user ad</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/25/blog/etcd/TLS/">
-        <p class="h4 index-header">TLS</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：TLSetcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.要启动并运行，首先要获得一个成员的CA证书和签名密钥对。 建议为集群中的每个成员创建并签名一个新的密钥对。为了方便起见，cfssl工具提供了一个简单的接口来生成证书，我们在此处提供了使用该工具的示例。 或者，尝试使用本指南生成自签名密钥对。
-基本设置
-etcd通过命令行参数或环境变量采用了几种与证书相关的配置选项：
-客户端到服务器的通信：--cert-file=&lt;path&gt;:用于SSL/TLS与etcd的连接的证书。设置此选项后，advertise-client-urls可以使用HTTPS模式。--key-file=&lt;path&gt;:证书的密钥。 必须未加密。--client-cert-auth:设置此选项后，etcd将检查所有传入的HTTPS请求以查找由受信任CA签名的客户端证书，不提供有效客户端证书的请求将失败。 如果启用了身份验证，则证书将为“公用名”字段指定的用户名提供凭据。--trusted-ca-file=&lt;path&gt;</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><a class="page-number" href="/tags/5/">5</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   

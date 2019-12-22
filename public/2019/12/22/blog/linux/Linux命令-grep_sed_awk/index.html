@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>正则表达式 ~ 触不可及的官方网站</title>
+  <title>Linux命令-grep,sed,awk ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期日, 十二月 22日 2019, 12:27 中午
+                  星期日, 十二月 22日 2019, 2:59 下午
                 </p>
               
 
@@ -120,7 +120,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    474 字
+                    742 字
                   </span>&nbsp;
                 
 
@@ -128,7 +128,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      1 分钟
+                      3 分钟
                   </span>&nbsp;
                 
 
@@ -161,162 +161,114 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h1 id="字符位置"><a href="#字符位置" class="headerlink" title="字符位置"></a>字符位置</h1><table>
-<thead>
-<tr>
-<th>符号表示</th>
-<th>符号含义</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>^str</code></td>
-<td>需要查找的字符在行首</td>
-<td><code>^a</code> 查找以字符<code>a</code>开头</td>
-</tr>
-<tr>
-<td><code>str$</code></td>
-<td>需要查找的字符在行尾</td>
-<td><code>a$</code> 查找以字符<code>a</code>结尾</td>
-</tr>
-</tbody></table>
-<h1 id="字符表示"><a href="#字符表示" class="headerlink" title="字符表示"></a>字符表示</h1><table>
-<thead>
-<tr>
-<th>符号表示</th>
-<th>符号含义</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>\</code></td>
-<td>转义符</td>
-<td>将特殊字符变为普通字符如<code>\^</code></td>
-</tr>
-<tr>
-<td><code>.</code></td>
-<td>说明一定有一个任意的字符</td>
-<td><code>a.b</code> 说明字符<code>a</code>与<code>b</code>之间一定存在一个字符</td>
-</tr>
-<tr>
-<td><code>*</code></td>
-<td>说明存在零个或者多个前一个字符</td>
-<td><code>a*</code>说明字符<code>a</code>后边可能存在0个或多个字符<code>a</code> <code>.*</code>表示存在任意字符</td>
-</tr>
-<tr>
-<td><code>+</code></td>
-<td><strong>扩展正则</strong>说明存在一个或一个以上前一个字符</td>
-<td><code>a+</code>说明字符<code>a</code>后边可能存在1个或多个字符<code>a</code></td>
-</tr>
-<tr>
-<td><code>?</code></td>
-<td><strong>扩展正则</strong>说明存在0个或一个前一个字符</td>
-<td><code>ab？</code>查找字符<code>ab</code>或者是<code>a</code></td>
-</tr>
-<tr>
-<td>`</td>
-<td>`</td>
-<td>或</td>
-</tr>
-<tr>
-<td><code>()</code></td>
-<td><strong>扩展正则</strong>字符集合</td>
-<td>`(ab</td>
-</tr>
-<tr>
-<td><code>()+</code></td>
-<td><strong>扩展正则</strong>多个重复字符集合</td>
-<td><code>(ab)+</code>:查找具有一个以上<code>ab</code>子字符串的字符串</td>
-</tr>
-<tr>
-<td><code>[list]</code></td>
-<td>列出可能存在的字符</td>
-<td><code>a[bc]</code>查找字符<code>ab</code>或者是<code>ac</code></td>
-</tr>
-<tr>
-<td><code>[n1-n2]</code></td>
-<td>列出可能存在的字符区间</td>
-<td><code>[a-g]</code> 查找字符区间<code>a-g</code>中任意字符</td>
-</tr>
-<tr>
-<td><code>[^list}</code></td>
-<td>列出不需要的字符即反向选择</td>
-<td><code>[^a]</code> 查找字符中不存在<code>a</code>的字符</td>
-</tr>
-<tr>
-<td><code>\{n,m\}</code></td>
-<td><strong>连续</strong><code>n</code>到<code>m</code>个之前的字符</td>
-<td><code>a\{2,3\}</code>查找字符<code>aa</code>或者是<code>aaa</code>;</br> <code>a\{2\}</code>查找字符<code>aa</code>;</br><code>a\{2,\}</code>查找连续2个字符<code>a</code>以上的字符如<code>aaa</code>，<code>aaaa</code>等;</td>
-</tr>
-</tbody></table>
-<h1 id="字符替换"><a href="#字符替换" class="headerlink" title="字符替换"></a>字符替换</h1><table>
-<thead>
-<tr>
-<th>符号表示</th>
-<th>符号含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>[:digit:]</code></td>
-<td>代表数字<code>0-9</code></td>
-</tr>
-<tr>
-<td><code>[:alnum:]</code></td>
-<td>代表英文字符和数字:<code>a-z,A-Z,0-9</code></td>
-</tr>
-<tr>
-<td><code>[:lower:]</code></td>
-<td>代表小写字符:<code>a-z</code></td>
-</tr>
-<tr>
-<td><code>[:upper:]</code></td>
-<td>代表大写字符:<code>A-Z</code></td>
-</tr>
-<tr>
-<td><code>[:space:]</code></td>
-<td>代表空格，包括<code>[Tab]</code></td>
-</tr>
-</tbody></table>
-<h1 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h1><table>
-<thead>
-<tr>
-<th>符号表示</th>
-<th>符号含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>\b</code></td>
-<td>回退键</td>
-</tr>
-<tr>
-<td><code>\f</code></td>
-<td>换页符</td>
-</tr>
-<tr>
-<td><code>\n</code></td>
-<td>换行符</td>
-</tr>
-<tr>
-<td><code>\r</code></td>
-<td>回车键</td>
-</tr>
-<tr>
-<td><code>\t</code></td>
-<td><code>Tab</code>键</td>
-</tr>
-</tbody></table>
-
+            <h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><hr>
+<p>(global search regular expression[RE] and print out the line)<br>正则表达式全局搜索并将行打印出来</p>
+<ul>
+<li>在文件中查找包含字符串”text”的行</li>
+</ul>
+<pre><code>grep text local_file
+grep &quot;text&quot; local_file #另一种方式
+grep &quot;text&quot; local_file1 local_file2 ...  #查找多个文件</code></pre><ul>
+<li>在文件中查找<strong>不</strong>包含字符串”text”的行</li>
+</ul>
+<pre><code>grep -v &quot;text&quot; local_file</code></pre><ul>
+<li><strong>忽略大小写</strong></li>
+</ul>
+<pre><code>grep -i &quot;TeXt&quot; local_file
+grep -y &quot;TeXt&quot; local_file</code></pre><ul>
+<li><strong>不显示错误信息</strong>，常用于脚本文件中</li>
+</ul>
+<pre><code>grep -s &quot;text&quot; local_file</code></pre><ul>
+<li><strong>只打印出匹配到的字符串</strong></li>
+</ul>
+<pre><code>grep -o &quot;text&quot; local_file</code></pre><ul>
+<li><strong>统计文件中有多少行包含需要查找的字符串</strong></li>
+</ul>
+<pre><code>grep -c &quot;text&quot; local_file</code></pre><ul>
+<li><strong>不输出信息</strong>，命令运行成功返回0.失败返回非0值，用于判断</li>
+</ul>
+<pre><code>grep -q &quot;text&quot; local_file</code></pre><ul>
+<li>匹配多个字符串,相当于逻辑中的或</li>
+</ul>
+<pre><code>grep -e &quot;text1&quot; -e &quot;text2&quot; local_file</code></pre><ul>
+<li><strong>递归查找</strong>，用于多级目录中的文件</li>
+</ul>
+<pre><code>grep -r &quot;text&quot; . #在当前目录下进行查找</code></pre><ul>
+<li>输出匹配需要查找字符串的行以及<strong>之前</strong>的行</li>
+</ul>
+<pre><code>grep &quot;text&quot; -B 3 local_file #输出之前的3行</code></pre><ul>
+<li>输出匹配需要查找字符串的行以及<strong>之后</strong>的行</li>
+</ul>
+<pre><code>grep &quot;text&quot; -A 3 local_file #输出之后的3行</code></pre><h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><hr>
+<p>流编辑器，用来编辑一个或者多个文件，简化对文件的重复操作。在缓冲区内操作，除非特别指定，不对文件本身内容进行修改。</p>
+<h2 id="i"><a href="#i" class="headerlink" title="-i"></a><code>-i</code></h2><p>对文件本身进行修改</p>
+<h2 id="q"><a href="#q" class="headerlink" title="-q"></a><code>-q</code></h2><ul>
+<li>打印出第2行后退出<code>sed</code></li>
+</ul>
+<pre><code>sed &#39;2q&#39; local_file</code></pre><h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ul>
+<li>查找第2-5行数据</li>
+</ul>
+<pre><code>sed &#39;2,5p&#39; local_file
+sed -n &#39;2,5p&#39; local_file #并打印行号</code></pre><ul>
+<li>查找包含字符串”text”的行与包含字符串”file”的行范围内的行</li>
+</ul>
+<pre><code>sed &#39;/text/,/file/p&#39; local_file</code></pre><ul>
+<li>查找从第2行开始一直到以字符串”text“开头的行之间的所有行</li>
+</ul>
+<pre><code>sed &#39;2,/^text/p&#39; local_file</code></pre><h2 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h2><ul>
+<li>在第2行后面一行添加字符串”text”</li>
+</ul>
+<pre><code>sed &#39;2a text&#39; local_file</code></pre><ul>
+<li>在第二行前面一行添加字符串”text”</li>
+</ul>
+<pre><code>sed &#39;2i text&#39; local_file</code></pre><ul>
+<li>在每一个单词前面加上字符”a”:</li>
+</ul>
+<pre><code>sed &#39;s/\w\+/a&amp;/g&#39;  # \w\+匹配每一个单词 &amp;对应之前匹配的每一个单词</code></pre><h2 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h2><ul>
+<li>替换字符串<code>file</code>为<code>files</code></li>
+</ul>
+<pre><code>sed &#39;s/file/files/g&#39; local_file #打印到控制台，不修改文件
+sed &#39;s:file:file:g&#39; local_file # /标记可以使用其他符号代替
+sed -i &#39;s/file/files/g&#39; local_file #修改文件本身内容，不打印到控制台</code></pre><ul>
+<li>替换第2-5行为字符串”text”</li>
+</ul>
+<pre><code>sed &#39;2,5c text&#39; local_file</code></pre><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ul>
+<li>删除文件内的第2-5行</li>
+</ul>
+<pre><code>sed &#39;/2,5/d&#39; local_file</code></pre><ul>
+<li>删除开头字符串为”text”的行</li>
+</ul>
+<pre><code>sed &#39;/^text.*//g&#39; local_file
+sed &#39;/^text/&#39;d local_file</code></pre><ul>
+<li>删除最后一行</li>
+</ul>
+<pre><code>sed &#39;$d&#39; local_file</code></pre><ul>
+<li>删除空白行</li>
+</ul>
+<pre><code>sed &#39;/^$/d&#39; local_file</code></pre><h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><hr>
+<ul>
+<li>打印每一行的第2，3列数据</li>
+</ul>
+<pre><code>awk &#39;{print $2,$3}&#39; local_file</code></pre>
             <hr>
           </div>
           <br>
           <div>
             <p>
             
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/Linux%E5%91%BD%E4%BB%A4">Linux命令</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
             
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>
+                  <a class="hover-with-bg" href="/tags/Linux">Linux</a>
                 
               </span>
             
@@ -495,7 +447,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "正则表达式&nbsp;",
+        "Linux命令-grep,sed,awk&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
