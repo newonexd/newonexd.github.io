@@ -401,7 +401,7 @@ curl -X PUT $COUCH_URL:5984/<dbname>?zone=<zone>
 purge_tree: UUID -> {PurgeSeq, DocId, Revs}
 purge_seq_tree: PurgeSeq -> {UUID, DocId, Revs}
 ```
-每次对`_purge API`的交互式请求，都会在增加`purge_seq`和`purge_request`时创建成对的有序集合，其中`purge_request`是一个包含`docid`和修订列表的元组。 对于每个`purge_request`都会生成`uuid`。清除请求将添加到内部清除树：将元组`{UUID-> {PurgeSeq，DocId，Revs}}`添加到`topurge_tree，atupleis {PurgeSeq-> {UUID，DocId，Revs}}`添加到`purge_seq_tree`。
+每次对`_purge API`的交互式请求，都会在增加`purge_seq`和`purge_request`时创建成对的有序集合，其中`purge_request`是一个包含`docid`和修订列表的元组。 对于每个`purge_request`都会生成`uuid`。清除请求将添加到内部清除树：将元组`{UUID-> {PurgeSeq，DocId，Revs}}`添加到`purge_tree`，元组 `{PurgeSeq-> {UUID，DocId，Revs}}`添加到`purge_seq_tree`。
 ### 压缩清除
 在数据库压缩期间，最旧的清除请求将被删除，以仅在数据库中存储`purged_infos_limit`个清除数目。 但是，为了使数据库与索引和其他副本保持一致，我们只能删除索引和内部复制作业已处理的清除请求。因此，有时清除树可能存储的数据超过`purged_infos_limit`清除数目。 如果数据库中存储的清除数量超出`purged_infos_limit`某个阈值，则日志中会产生警告，表明数据库的清除与索引和其他副本的同步问题。
 ### 本地清除检查点文档
