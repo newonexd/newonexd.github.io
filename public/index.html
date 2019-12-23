@@ -134,6 +134,54 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/23/blog/consensus/paxos/">
+        <p class="h4 index-header">Paxos算法</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">使Paxos变简单摘要Paxos算法，用英语说明时，变得非常简单。
+1 介绍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人们一直认为，用于实现容错分布式系统的Paxos算法难以理解，可能是因为最初的演示文稿对许多读者来说是希腊文.事实上，它是分布式算法中最简单，最有效的方法之一。它的核心是共识算法。下一节将说明这种共识算法几乎不可避免地遵循了我们希望它满足的特性。最后一部分介绍了完整的Paxos算法，该算法是通过将共识直接应用于构建分布式系统的状态机方法而获得的，这种方法应该是众所周知的，因为它是有关分布式系统理论的最常被引用的文章的主题。
+2 共识算法2.1 问题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假设有一个可以提出值的进程的集合。共识算法确保只有一个提出的值被选中。如果没有值被提出，则没有值应该被选中。如果一个值被选中，那么所有过程应该能够learn被选中的值。共识需要满足以下要求：
+
+只有被提出的值才可以被选中
+被选中的只有一个值
+除非一个值真正地被选中，否则某个进程不</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    6.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/22/blog/linux/Linux%E5%91%BD%E4%BB%A4-grep_sed_awk/">
         <p class="h4 index-header">Linux命令-grep,sed,awk</p>
         
@@ -641,52 +689,6 @@ func main(){
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     464 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/">
-        <p class="h4 index-header">IPFS学习-哈希</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Hashes哈希函数是接受一些任意输入并返回固定长度值的函数。具体值取决于所使用的给定哈希算法，例如SHA-1(GIT在使用),SHA-256,或者是BLAKE2,但是给予一个输入使用哈希算法总是返回相同的输出。例如：输入以下：
-Hello world使用SHA-1则会输出：
-0x7B502C3A1F48C8609AE212CDFB639DEE39673F5E然而相同的输入使用SHA-256将会输出以下：
-0x64EC88CA00B268E5BA1A35678A1B5316D212F4F366B2477232534A8AECA37F3C第二个哈希值长度要大于第一个，这是因为SHA-1创建一个160比特的哈希值，而SHA-256创建一个256比特的哈希值。同样，前置的0x只是一个指示符，告诉我们以下的哈希表示为基数16（或十六进制）的数字。哈希可以用不同的基数表示（base2，base16，base32等）。 实际上，IPFS将此作为其内容标识符的一部分，并使用Multibase协议同时支持多种基本表示形式。例如，”Hello World”的SHA-256哈希值使用base32表示为：
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/IPFS">IPFS</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    635 字
                   </span>&nbsp;
             
       </div>
