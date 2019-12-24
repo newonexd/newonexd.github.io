@@ -134,6 +134,60 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
+1.整体架构
+架构图直接贴过来好了：
+官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
+
+三个组织
+Org0  -&gt; 组织0   
+Org1  -&gt; 组织1   
+Org2  -&gt; 组织2   
+
+
+组织中的成员
+Org0   一个Orderer节点，一个Org0的Admi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.7k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/04/blog/fabric/%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE/">
         <p class="h4 index-header">Hyperledger Fabric私有数据</p>
         
@@ -598,51 +652,6 @@ etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     982 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">
-        <p class="h4 index-header">gRPC代理</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:gRPC proxygRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
-可扩展的监视 API
-gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。
- </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.2k 字
                   </span>&nbsp;
             
       </div>
