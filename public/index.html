@@ -134,6 +134,95 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/24/blog/fabric/%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97/">
+        <p class="h4 index-header">Hyperledger Fabric使用硬件安全模块(HSM)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">使用硬件安全模型官方文档可以通过Fabric节点使用硬件安全模块(HSM)来产生和存储私钥。HSM用于保护私钥和处理加密操作。允许peer节点与orderer节点在不暴露他们的私钥的条件下去签名和背书交易，当前Fabric只支持使用PKCS11标准与HSM进行通信。
+配置HSM为了在Fabric节点上使用HSM，需要更新关于节点配置文件如core.yaml中的BCCSP(加密服务提供者)部分.在BCCSP部分，需要选择PKCS11作为提供者并提供需要使用的PKCS11库的路径。还需要提供为加密操作创建的令牌的标签和密码。可以使用令牌去生成和存储多个秘钥。预先构建的Hyperledger Fabric Docker镜像不能够使用PKCS11。如果使用Docker部署Fabric，需要通过以下的命令启动PKCS11构建自己的镜像。
+make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，挂载到容器内部或者通过节点安装后是可以使用的。
+示例接下来的示例说明了如何去配置一个可以使用HSM的Fabirc节点。
+首先，需要安装一个实现了PKCS11的接口。本</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-API/">
+        <p class="h4 index-header">CouchDB学习-API</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">APIAPI URL路径可以指定访问CouchDB服务器的某个组件。URL请求结果包括标识和访问的数据库中的高效的描述字段。与所有URL一样，各个组件之间用正斜杠分隔。通常，以_（下划线）字符开头的URL组件和JSON字段表示服务器或返回的对象中的特殊组件或实体。例如，URL片段/_all_dbs获取CouchDB实例中所有数据库的列表。该引用根据URL结构进行构造，如下所示。
+1 基本APICouchDB API是与CouchDB实例接口的主要方法。使用HTTP发出请求，请求用于从数据库请求信息，存储新数据以及对文档中存储的信息进行查看和格式化。对API的请求可以按您正在访问的CouchDB系统的不同区域以及用于发送请求的HTTP方法进行分类。不同的方法意味着不同的操作，例如，从数据库中检索信息通常由GET操作处理，而更新则由POST或PUT请求处理。不同方法必须提供的信息之间存在一些差异。有关基本HTTP方法和请求结构的指南，请参见请求格式和响应。对于几乎所有操作，都在JavaScript对象表示法（JSON）对象中定义了提交的数据和返回的数据结构。 JSON基础知识中提供了有关J</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    5.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/23/blog/consensus/paxos/">
         <p class="h4 index-header">Paxos算法</p>
         
@@ -597,98 +686,6 @@ func main(){
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.6k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/19/blog/other/CURL%E5%AD%A6%E4%B9%A0%E4%BA%8C/">
-        <p class="h4 index-header">CURL命令学习二</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">-a, --append用于上传文件时，如果服务器上该文件不存在则创建，如果存在则追加到源文件。
--K, --config &lt;file&gt;指定从某个文件读取curl参数。如果指定-为文件名则从输入读取参数。如：-K --config -
---connect-timeout &lt;seconds&gt;指定连接超时时间，若指定多个时间则采用最后一个。
--C --continue-at &lt;offset&gt;从给予的偏移量继续文件传输，用于断点续传，如果使用-C -则表明由curl自动获取从哪里开始继续传输。
--c --cookie-jar &lt;filename&gt;指定将cookie写入的文件，如果指定文件名为-，则将cookie写入输出。
--b --cookie &lt;data|filename&gt;将数据添加到Cookie header中传输到HTTP服务器。数据格式应该为name1=value1;name2=value2。如果文件名为-，则从输入读取数据。-b --cookie只用于输入cookie，并不会写cookie信息到本地，所以需要和-c --c</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/curl">curl</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    449 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/">
-        <p class="h4 index-header">IPFS学习-IPNS</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">星际名称系统(IPNS)是一个创建个更新可变的链接到IPFS内容的系统，由于对象在IPFS中是内容寻址的，他们的内容变化将导致地址随之变化。对于多变的事物是有用的。但是很难获取某些内容的最新版本。
-在IPNS中名字是被哈希的公钥。它与一条记录相关联，该记录包含有关其链接的哈希的信息，该信息由相应的私钥签名。新的记录可以在任何时候被签名与发布。查看IPNS地址，使用了/ipns/前缀：
-/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJdIPNS不是在IPFS上创建可变地址的唯一方法。 您还可以使用DNSLink（当前比IPNS快得多，并且还使用更易读的名称）。 其他社区成员正在探索使用区块链存储通用名称记录的方法。
-例如：假设您要在IPFS下发布您的网站。 您可以使用Files API发布静态网站，然后获得一个可以链接到的CID。 但是，当您需要进行更改时，就会出现问题：您将获得一个新的CID，因为您现在拥有不同的内容。 而且，您不可能总是给别人新的地址。这是Name API派上用场的地方。 使用它，您可以创建一个稳定的IPNS地址，</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/IPFS">IPFS</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    464 字
                   </span>&nbsp;
             
       </div>
