@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>CouchDB基本操作 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 十二月 26日 2019, 8:37 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    920 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="CouchDB操作"><a href="#CouchDB操作" class="headerlink" title="CouchDB操作"></a>CouchDB操作</h2><p>判断数据库是否正常运行:</p>
+<pre><code>curl http://localhost:5984/_up | jq .</code></pre><p>获取CouchDB唯一标识符(UUID):</p>
+<pre><code>curl http://localhost:5984/_uuids | jq .</code></pre><p>获取CouchDB数据库信息:</p>
+<pre><code>curl http://localhost:5984/ | jq .</code></pre><h2 id="节点操作"><a href="#节点操作" class="headerlink" title="节点操作"></a>节点操作</h2><h3 id="查询节点"><a href="#查询节点" class="headerlink" title="查询节点"></a>查询节点</h3><h3 id="查询所有节点"><a href="#查询所有节点" class="headerlink" title="查询所有节点"></a>查询所有节点</h3><p>查询当前节点连接的所有节点以及集群中的节点：</p>
+<pre><code>curl -u admin:admin http://localhost:5984/_membership</code></pre><h3 id="查询单个节点状态"><a href="#查询单个节点状态" class="headerlink" title="查询单个节点状态"></a>查询单个节点状态</h3><pre><code>curl -u admin:admin http://localhost:5984/_node/{node-name}/_stats
+# 查询本地节点状态
+curl -u admin:admin http://localhost:5984/_node/local/_stats </code></pre><h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><h3 id="查询数据库"><a href="#查询数据库" class="headerlink" title="查询数据库"></a>查询数据库</h3><p>查询所有数据库:</p>
+<pre><code>curl http://localhost:5984/_all_dbs | jq .</code></pre><p>查询某个数据库详细信息:</p>
+<pre><code>curl http://localhost:5984/{db_name} | jq .</code></pre><p>查询数据库更新事件:</p>
+<pre><code>curl -u admin:admin http://localhost:5984/_db_updates | jq .</code></pre><p>查询数据库设计文档:</p>
+<pre><code>curl -u admin:admin http://localhost:5984/data/_design_docs | jq .</code></pre><h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><p>创建名称为<code>data</code>的数据库，分片数为1，副本数为2(包括源数据库).</p>
+<ul>
+<li><code>-u</code>指定用户名与密码</li>
+<li><code>-X</code>指定请求方法为<code>PUT</code>(不加<code>-X</code>默认为<code>GET</code>)<pre><code>curl -u admin:admin -X PUT http://localhost:5984/data?q=1&amp;n=2 | jq .</code></pre></li>
+</ul>
+<h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><p>删除刚刚创建的数据库<code>data</code>。</p>
+<pre><code>curl -u admin:admin -X DELETE http://localhost:5984/data | jq .</code></pre><h3 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h3><p>为指定的数据库创建复合键:</p>
+<pre><code>curl -X POST  \
+    -H &quot;Content-Type:application/json&quot; \
+    -H &quot;Host:localhost:5984&quot; \
+    -u admin:admin \
+    http://localhost:5984/data/_all_docs \
+    -d &quot;{ \&quot;_id\&quot;: [ \&quot;abc\&quot;,\&quot;bcd\&quot; ]}&quot; | jq .</code></pre><p>为指定的本地数据库创建复合键:</p>
+<pre><code>curl -X POST  \
+    -H &quot;Content-Type:application/json&quot; \
+    -H &quot;Host:localhost:5984&quot; \
+    -u admin:admin \
+    http://localhost:5984/data/_local_docs \
+    -d &quot;{ \&quot;_id\&quot;: [ \&quot;abc\&quot;,\&quot;bcd\&quot; ]}&quot; | jq .</code></pre><h3 id="数据库索引"><a href="#数据库索引" class="headerlink" title="数据库索引"></a>数据库索引</h3><p>查询指定数据库索引:</p>
+<pre><code>curl -u admin:admin \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_index | jq .</code></pre><p>为指定数据库创建索引:</p>
+<ul>
+<li>索引字段为<code>foo</code></li>
+<li>索引名称为<code>foo-index</code></li>
+<li>索引类型为<code>json</code><pre><code>curl -X POST \
+  -u admin:admin \
+  -H &quot;Content-Type:application/json&quot; \
+  -H &quot;localhost:5984&quot; \
+  http://localhost:5984/data/_index \
+  -d &quot;{ \&quot;index\&quot;: { \&quot;fields\&quot;: [\&quot;foo\&quot; ]}, \&quot;name\&quot;:\&quot;foo-index\&quot;,\&quot;type\&quot;:\&quot;json\&quot;}&quot; | jq .</code></pre>删除索引:<pre><code>curl -u admin:admin \
+  -H &quot;Content-Type:application/json&quot; \
+  -X DELETE \ http://localhost:5984/data/_index/{ddoc}/json/{index_name}</code></pre></li>
+</ul>
+<p>清空所有视图索引文件:</p>
+<pre><code>curl -X POST -u admin:admin http://localhost:5984/data/_view_cleanup</code></pre><h3 id="数据库分片"><a href="#数据库分片" class="headerlink" title="数据库分片"></a>数据库分片</h3><p>查询指定的数据库分片信息:</p>
+<pre><code>curl -u admin:admin \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_shards | jq .</code></pre><p>根据文档ID查询指定的分片上存储的文档信息:</p>
+<pre><code>curl -u admin:admin \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_shards/{docid} | jq .</code></pre><p>强制进行数据库分片信息同步:</p>
+<pre><code>curl -u admin:admin \
+    -X POST \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_sync_shards | jq .</code></pre><h3 id="数据库压缩"><a href="#数据库压缩" class="headerlink" title="数据库压缩"></a>数据库压缩</h3><p>压缩指定的数据库:</p>
+<pre><code>curl -u admin:admin \
+    -X POST \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_compact | jq .</code></pre><h3 id="数据库安全"><a href="#数据库安全" class="headerlink" title="数据库安全"></a>数据库安全</h3><p>获取当前数据库安全对象:</p>
+<pre><code>curl -u admin:admin http://localhost:5984/data/_security | jq .</code></pre><h2 id="文档操作"><a href="#文档操作" class="headerlink" title="文档操作"></a>文档操作</h2><h3 id="查询文档"><a href="#查询文档" class="headerlink" title="查询文档"></a>查询文档</h3><p>查询数据库<code>data</code>中所有文档:</p>
+<pre><code>curl -u admin:admin -H &quot;Content-Type:application/json&quot; http://localhost:5984/data/_all_docs | jq .</code></pre><p>查询数据库<code>data</code>中的指定文档:<br><code>cec6606d0ddaca2b555ebb8404a772a0</code>为指定的文档ID</p>
+<pre><code>curl -u admin:admin http://localhost:5984/data/cec6606d0ddaca2b555ebb8404a772a0 | jq .</code></pre><p>查询数据库中文档的更新信息:</p>
+<pre><code>curl -u admin:admin \
+    -H &quot;Content-Type:application/json&quot; \
+    http://localhost:5984/data/_changes | jq .</code></pre><p>查询本地数据库中的文档:</p>
+<pre><code>curl -u admin:admin http://localhost:5984/data/_local_docs | jq .</code></pre><h3 id="创建文档"><a href="#创建文档" class="headerlink" title="创建文档"></a>创建文档</h3><p>向数据库<code>data</code>中创建<code>id</code>为<code>id</code>,标题为<code>demo</code>的新文档:</p>
+<pre><code>curl -X POST \
+    -H &quot;Content-Type:application/json&quot; \
+    -u admin:admin \
+    http://localhost:5984/data/ \
+    -d &quot;{ \&quot;_id\&quot;:\&quot;id\&quot;,\&quot;title\&quot;:\&quot;demo\&quot;}&quot; | jq .</code></pre><h3 id="删除文档"><a href="#删除文档" class="headerlink" title="删除文档"></a>删除文档</h3><p>从数据库<code>data</code>中删除指定的文档:</p>
+<pre><code>curl -X DELETE -u admin:admin http://localhost:5984/data/cec6606d0ddaca2b555ebb8404a772a0</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/CouchDb%E5%BA%94%E7%94%A8">CouchDb应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/CouchDb">CouchDb</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "CouchDB基本操作&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
