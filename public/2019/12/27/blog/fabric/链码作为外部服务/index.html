@@ -111,7 +111,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期五, 十二月 27日 2019, 10:17 上午
+                  星期五, 十二月 27日 2019, 2:17 凌晨
                 </p>
               
 
@@ -165,12 +165,12 @@
 <p>在外部构建功能可以使用之前，链码包内容要求指定的编程语言的源代码进行构建并作为链码二进制文件运行。新的外部构建和运行功能允许用户有选择地定制化构建过程。将链码作为外部服务运行。构建过程允许指定链码运行服务的端点信息。因此包内容可以简单地由外部链码运行服务端点信息和用于安全通信的TLS归档组成。TLS是可选的，但是除了简单的测试环境以外，强烈建议所有环境都使用TLS。</p>
 <p>接下来的部分将描述如何将链码配置为外部服务：</p>
 <ul>
-<li><a href="">打包链码</a></li>
-<li><a href="">配置节点对外部链码进行处理</a></li>
-<li><a href="">外部构建和运行的简单脚本文件</a></li>
-<li><a href="">编写链码作为外部服务</a></li>
-<li><a href="">部署链码</a></li>
-<li><a href="">将链码作为外部服务运行</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#打包链码" target="_blank" rel="noopener">打包链码</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#配置节点对外部链码进行处理" target="_blank" rel="noopener">配置节点对外部链码进行处理</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#外部构建和运行的脚本文件模板" target="_blank" rel="noopener">外部构建和运行的简单脚本文件</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#编写链码作为外部服务运行" target="_blank" rel="noopener">编写链码作为外部服务运行</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#部署链码" target="_blank" rel="noopener">部署链码</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#将链码作为外部服务运行" target="_blank" rel="noopener">将链码作为外部服务运行</a></li>
 </ul>
 <h2 id="打包链码"><a href="#打包链码" class="headerlink" title="打包链码"></a>打包链码</h2><p>通过Fabric V2.0版本的<code>chaincode lifecycle</code>，链码可以被打包并以<code>.tar.gz</code>格式进行安装。下面的<code>myccpackage.tgz</code>归档说明了要求的结构：</p>
 <pre><code>tar xvfz myccpackage.tgz
@@ -325,7 +325,7 @@ func main() {
 <li><strong>KaOpts</strong>(keepalive.ServerParameters):保持连接选项，默认为空</li>
 </ul>
 <h2 id="部署链码"><a href="#部署链码" class="headerlink" title="部署链码"></a>部署链码</h2><p>当GO语言链码准备好部署后，可以通过<a href="https://hyperledger-fabric.readthedocs.io/en/latest/cc_service.html#packaging-chaincode" target="_blank" rel="noopener">Packageing chaincode</a>部分解释的内容对链码进行打包。并通过<a href="https://hyperledger-fabric.readthedocs.io/en/latest/chaincode4noah.html#chaincode-lifecycle" target="_blank" rel="noopener">chaincode lifecycle</a>部分内容对链码进行部署。</p>
-<h2 id="将链码作为外部服务运行"><a href="#将链码作为外部服务运行" class="headerlink" title="将链码作为外部服务运行"></a>将链码作为外部服务运行</h2><p>根据指定的<a href="">编写链码作为外部服务运行</a>部分创建链码，并选择构建可运行的链码环境如<code>Kubernetes</code>或者直接在<code>peer</code>主机上运行。</p>
+<h2 id="将链码作为外部服务运行"><a href="#将链码作为外部服务运行" class="headerlink" title="将链码作为外部服务运行"></a>将链码作为外部服务运行</h2><p>根据指定的<a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#编写链码作为外部服务运行" target="_blank" rel="noopener">编写链码作为外部服务运行</a>部分创建链码，并选择构建可运行的链码环境如<code>Kubernetes</code>或者直接在<code>peer</code>主机上运行。</p>
 <p>使用链码作为外部服务模板，将不再要求在每一个节点上安装链码。当链码端点在<code>peer</code>节点上部署并运行后，可以继续正常地实例化和调用链码。</p>
 
             <hr>
