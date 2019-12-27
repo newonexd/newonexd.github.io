@@ -134,6 +134,60 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric_CA/">
+        <p class="h4 index-header">Hyperledger Fabric-CA</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Fabric—Ca的概念不再解释了，这里只说明使用方法:
+前置条件
+Go语言1.10+版本
+GOPATH环境变量正确设置
+已安装libtool和libtdhl-dev包
+
+Ubuntu系统通过以下命令安装libtool和libtdhl-dev包：
+sudo apt install libtool libltdl-devMacOs 系统Mac系统通过以下命令安装：
+brew install libtoolFabric-Ca安装可以通过以下两种途径进行安装：
+
+直接下载二进制文件：go get -u github.com/hyperledger/fabric-ca/cmd/...如果使用这种方式安装，安装成功的话直接在命令行输入(前提是GOPATH正确配置):fabric-ca-server version即可打印出安装的Ca版本。
+从源码编译安装：首先在系统中建立以下路径:mkdir -p $GOPATH/src/github.com/hyperledger/
+cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到本地</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.8k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
         <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
         
@@ -587,81 +641,6 @@ sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     1.3k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
-        <p class="h4 index-header">CouchDB学习一</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">端口
-
-
-端口号
-协议
-作用
-
-
-
-5984
-tcp
-标椎集群端口用于所有的HTTP API请求
-
-
-5986
-tcp
-用于管理员对节点与分片的管理
-
-
-4369
-tcp
-Erlang端口到daemon的映射
-
-
-配置介绍配置文件CouchDb从以下位置按顺序读取配置文件
-
-etc/fefault.ini
-etc/default.d/*.ini
-etc/local.ini
-etc/local.d/*.ini
-
-类UNIX系统：/opt/couchdb/Windows系统:C:\CouchDBmaxOS:Applications/Apache CouchDB.app/Contents/Resources/couchdbx-core/etc下的default.ini和default.d文件夹。/Users/youruser/Library/Application Support/CouchDB2/etc/couchdb下的default.ini和default.d文件夹.
-通过HTTP API修改参数集群：
-curl -X PUT http://localhost:5984/_node/n</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4k 字
                   </span>&nbsp;
             
       </div>

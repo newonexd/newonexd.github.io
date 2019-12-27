@@ -134,6 +134,57 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/">
+        <p class="h4 index-header">Hyperledger Fabric链码作为外部服务</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">链码作为外部服务Fabric v2.0支持链码在Fabric环境外部署和执行。允许用户管理与节点保持独立的链码运行。这种方案激励了Fabric中的链码云部署，例如Kubernetes。代替了在每一个节点上面构建与运行链码。链码可以作为一个服务运行，它的生命周期将可以在Fabric环境外进行管理。这种措施利用Fabirc v2.0的外部构建和运行功能。其功能具有允许操作者通过程序构建，运行，发现链码对节点进行扩展。在读取本文内容之前，应该对外部构建与扩展较为熟悉。
+在外部构建功能可以使用之前，链码包内容要求指定的编程语言的源代码进行构建并作为链码二进制文件运行。新的外部构建和运行功能允许用户有选择地定制化构建过程。将链码作为外部服务运行。构建过程允许指定链码运行服务的端点信息。因此包内容可以简单地由外部链码运行服务端点信息和用于安全通信的TLS归档组成。TLS是可选的，但是除了简单的测试环境以外，强烈建议所有环境都使用TLS。
+接下来的部分将描述如何将链码配置为外部服务：
+
+打包链码
+配置节点对外部链码进行处理
+外部构建和运行的简单脚本文件
+编写链码作为外部服务
+部署链码
+将链码作为外部</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-27&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/26/blog/couchDB/CouchDB%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
         <p class="h4 index-header">CouchDB基本操作</p>
         
@@ -648,57 +699,6 @@ n - 每一份文档的拷贝数量(加上原文档一共几份副本)
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     7.2k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/21/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%89/">
-        <p class="h4 index-header">CURL命令学习三</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">-I只获取请求头
--k --insecure每次SSL连接curl都需要验证是否安全。-k参数表示如果不安全也可以继续操作。
--4 --ipv4告诉curl只使用ipv4地址
--6 --ipv6告诉curl只使用ipv6
---keepalive-time &lt;seconds&gt;设置时间保持心跳连接
---no-keepalive不设置心跳保持连接
--l --list-only(FTP)当列出FTP文件夹时，该选项强制只列出名字
--: --next表明curl可一次性发送多个请求。例子：
-curl www.exam1.com --next -d name=value www.exam2.com-N --no-buffer不使用输出流的缓冲区
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/curl">curl</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    142 字
                   </span>&nbsp;
             
       </div>
