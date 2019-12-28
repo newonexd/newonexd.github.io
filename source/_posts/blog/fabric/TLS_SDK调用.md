@@ -367,13 +367,15 @@ public class FabUser implements User {
 }
 ```
 * 创建用户：
+
 ```
 
 FabUser fabUser = new FabUser("admin", Const.USER_MSP_ID, Const.USER_KEY_FILE, Const.USER_CERT_FILE);
-        hfClient.setUserContext(fabUser);
+hfClient.setUserContext(fabUser);
 ```
 
 * 创建一个通道实例，与Fabric网络中的通道是对应的：
+
 ```
 //创建通道实例
 Channel channel = hfClient.newChannel(Const.CHANNEL_NAME);

@@ -183,6 +183,53 @@ sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">
+        <p class="h4 index-header">etcd网关</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址:L4 gateway
+什么是etcd网关
+etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。网关是无状态且透明的； 它既不会检查客户端请求，也不会干扰群集响应。网关支持多个etcd服务器端点，并采用简单的循环策略。 它仅路由到可用端点，并向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
+什么时候使用etcd网关
+每个访问etcd的应用程序必须首先具有etcd集群客户端端点的地址。 如果同一服务器上的多个应用程序访问相同的etcd集群，则每个应用程序仍需要知道etcd集群的广播的客户端端点。 如果将etcd集群重新配置为具有不同的端点，则每个应用程序可能还需要更新其端点列表。 这种大规模的重新配置既乏味又容易出错。etcd网关通过充当稳定的本地端点来解决此问题。 典型的etcd网关配置是，每台计算机运行一台网关，侦听本地地址，并且每个etcd应用程序都连接到其本地网关。 结果只是网关需要更新其端点，而不是更新每个应用程序。总之，为了自动传播集群端点更改，etcd网关在为访问同一etcd集群的多个应用程序服务的每台机器上运行。
+什么时候不该使用e</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    982 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
         <p class="h4 index-header">CouchDB学习一</p>
         
@@ -248,53 +295,6 @@ curl -X PUT http://localhost:5984/_node/n</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">
-        <p class="h4 index-header">etcd网关</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:L4 gateway
-什么是etcd网关
-etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。网关是无状态且透明的； 它既不会检查客户端请求，也不会干扰群集响应。网关支持多个etcd服务器端点，并采用简单的循环策略。 它仅路由到可用端点，并向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
-什么时候使用etcd网关
-每个访问etcd的应用程序必须首先具有etcd集群客户端端点的地址。 如果同一服务器上的多个应用程序访问相同的etcd集群，则每个应用程序仍需要知道etcd集群的广播的客户端端点。 如果将etcd集群重新配置为具有不同的端点，则每个应用程序可能还需要更新其端点列表。 这种大规模的重新配置既乏味又容易出错。etcd网关通过充当稳定的本地端点来解决此问题。 典型的etcd网关配置是，每台计算机运行一台网关，侦听本地地址，并且每个etcd应用程序都连接到其本地网关。 结果只是网关需要更新其端点，而不是更新每个应用程序。总之，为了自动传播集群端点更改，etcd网关在为访问同一etcd集群的多个应用程序服务的每台机器上运行。
-什么时候不该使用e</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    982 字
                   </span>&nbsp;
             
       </div>
