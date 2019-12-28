@@ -985,7 +985,7 @@ docker network ls
 ```
 找到以`fabric-ca`为后缀的一条如`cademo_fabric-ca`,修改之前的所有`peer`节点容器配置文件的环境变量：
 ```
-- CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca
+CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca
 ```
 修改完成重启节点容器，再次执行以上的命令(需要重新配置环境变量，加入通道这两个操作)。
 终于，实例化成功了。

@@ -223,8 +223,7 @@ sudo systemctl restart docker
 #执行以下命令如果输出docker版本信息如：Docker version 18.09.6, build 481bc77则说明安装成功
 docker -v</code></pre><p>执行<code>docker info</code> 如果结果中含有如下内容则说明镜像配置成功：</p>
 <pre><code>Registry Mirrors:
-   https://registry.docker-cn.com/</code></pre><h3 id="1-3-安装Docker-Compose"><a href="#1-3-安装Docker-Compose" class="headerlink" title="1.3 安装Docker-Compose"></a>1.3 安装Docker-Compose</h3><p>首先需要安装Python pip：</p>
-<pre><code>sudo apt-get install python-pip</code></pre><p>下载docker-compose的二进制包：</p>
+   https://registry.docker-cn.com/</code></pre><h3 id="1-3-安装Docker-Compose"><a href="#1-3-安装Docker-Compose" class="headerlink" title="1.3 安装Docker-Compose"></a>1.3 安装Docker-Compose</h3><p>下载docker-compose的二进制包：</p>
 <pre><code>curl -L https://github.com/docker/compose/releases/download/1.25.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 #执行这一步时如果出现如下信息：
 # Warning: Failed to create the file /usr/local/bin/docker-compose: Permission 

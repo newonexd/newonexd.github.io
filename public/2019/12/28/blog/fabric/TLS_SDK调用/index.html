@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Hyperledger Fabric 开启TLS调用Java SDK ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十二月 28日 2019, 5:00 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      14 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="Hyperledger-Fabric-开启TLS调用Java-SDK"><a href="#Hyperledger-Fabric-开启TLS调用Java-SDK" class="headerlink" title="Hyperledger Fabric 开启TLS调用Java SDK"></a>Hyperledger Fabric 开启TLS调用Java SDK</h1><p>之前更新的Fabric 1.4.1+版本之后新增了<code>etcdRaft</code>共识机制，而且官方文档明确指定了如果使用该共识机制就必须开启<code>TLS</code>，所以之前通过关闭<code>TLS</code>调用SDK的方式就不好用了，并且Fabric 2.0版本抛弃了<code>solo</code>，<code>kafka</code>模式，也就是默认都使用<code>etcdRaft</code>共识了，所以记录一下如何开开启<code>TLS</code>的情况下使用<code>SDK</code>.</p>
+<p>在之前，本文是直接使用了<code>Fabric v2.0.0-beta</code>版本的环境，并且<code>JAVA SDK</code>版本也是直接用了<code>v2.0.0</code>的版本，所以如果<code>Fabric</code>以及<code>SDK</code>不会在正式版的<code>2.0.0</code>版本发生重大更新的话，本文的方案应该是可以满足<code>v2.0.0+</code>版本的使用的。</p>
+<p>先说一下运行环境：</p>
+<ul>
+<li>Hyperledger Fabric v2.0.0-beta</li>
+<li>Hyperledger Fabric-sdk-java v2.0.0-SNAPSHOT</li>
+<li>Java 1.8</li>
+</ul>
+<p>本文分成两个部分:</p>
+<ol>
+<li><code>Hyperledger Fabric v2.0.0-beta</code>版本的安装</li>
+<li><code>Hyperledger Fabric-sdk-java</code>的使用</li>
+</ol>
+<h2 id="1-安装2-0版本的Fabric"><a href="#1-安装2-0版本的Fabric" class="headerlink" title="1 安装2.0版本的Fabric"></a>1 安装2.0版本的Fabric</h2><h3 id="1-1-前提条件"><a href="#1-1-前提条件" class="headerlink" title="1.1 前提条件"></a>1.1 前提条件</h3><p>这里是搭建<code>Fabric</code>环境之前需要(安装的工具和软件)完成的步骤：<br>只介绍<code>Ubuntu</code>系统的:</p>
+<ul>
+<li><code>GOlang</code>(必需)</li>
+<li><code>Git</code>(可选)</li>
+<li><code>Docker</code>(必需)</li>
+<li><code>Docker-compose</code>(必须)</li>
+</ul>
+<h4 id="1-1-1-安装Golang"><a href="#1-1-1-安装Golang" class="headerlink" title="1.1.1 安装Golang"></a>1.1.1 安装Golang</h4><p>首先需要安装一些必要的依赖：</p>
+<pre><code>sudo apt install libtool libltdl-dev</code></pre><p>国内GO语言安装包的下载地址为:</p>
+<pre><code>https://studygolang.com/dl</code></pre><p>本文中下载了<code>go1.12.5.linux-amd64.tar.gz</code>到Ubuntu系统中。<br>将压缩包复制到<code>/usr/local</code>路径下,执行以下命令进行解压：</p>
+<pre><code>cd /usr/local
+tar zxvf go*.tar.gz</code></pre><p>接下来配置GO的环境变量：</p>
+<pre><code>sudo vim ~/.profile</code></pre><p>在文本中添加以下内容:</p>
+<pre><code>export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin</code></pre><p>执行命令：</p>
+<pre><code>source ~/.profile
+go version</code></pre><p>如果可以看到GO的版本信息，说明GO已经安装完成。</p>
+<h4 id="1-1-2-安装Git"><a href="#1-1-2-安装Git" class="headerlink" title="1.1.2 安装Git"></a>1.1.2 安装Git</h4><p>在命令行直接输入<code>git</code>看是否已安装过，如果安装过直接进入下一步。<br>安装<code>GIT</code>：</p>
+<pre><code>sudo apt-get install git</code></pre><h4 id="1-1-3-安装Docker"><a href="#1-1-3-安装Docker" class="headerlink" title="1.1.3 安装Docker"></a>1.1.3 安装Docker</h4><p>如果有旧版本的Docker,先卸载掉：</p>
+<pre><code>sudo apt-get remove docker \
+             docker-engine \
+             docker.io</code></pre><p>安装Docker:</p>
+<pre><code># step 1: 安装必要的一些系统工具
+sudo apt-get update
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+# step 2:安装GPG证书：
+curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+# step 3:写入软件源信息
+sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;
+# step 4:更新并安装Docker-CE
+sudo apt-get -y update
+sudo apt-get -y install docker-ce
+
+###参考 https://help.aliyun.com/document_detail/60742.html</code></pre><p>将当前用户添加到Docker用户组：</p>
+<pre><code># step 1: 创建docker用户组
+sudo groupadd docker
+# step 2:将当前用户添加到docker用户组
+sudo usermod -aG docker $USER
+#退出当前终端
+exit</code></pre><p>将docker镜像更改为阿里云的地址：<br><strong>这一步只限Ubuntu16.04+,Debian8+,CentOS 7的系统。</strong><br>编辑<code>/etc/docker/daemon.json</code>文件，如果没有则自行创建，添加以下内容：</p>
+<pre><code>{
+  &quot;registry-mirrors&quot;: [
+    &quot;https://registry.dockere-cn.com&quot;
+  ]
+}</code></pre><p>对于Ubuntu14.04,Debian 7的系统，使用以下方法更改镜像地址：<br>编辑<code>/etc/default/docker</code>文件，在其中的<code>DOCKER_OPTS</code>中添加：</p>
+<pre><code>DOCKER_OPTS=&quot;--registry-mirror=https://registry.dockere-cn.com&quot;</code></pre><p>最后重启服务：</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl restart docker
+#执行以下命令如果输出docker版本信息如：Docker version 18.09.6, build 481bc77则说明安装成功
+docker -v</code></pre><p>执行<code>docker info</code> 如果结果中含有如下内容则说明镜像配置成功：</p>
+<pre><code>Registry Mirrors:
+   https://registry.docker-cn.com/</code></pre><h4 id="1-1-4-安装Docker-compose"><a href="#1-1-4-安装Docker-compose" class="headerlink" title="1.1.4 安装Docker-compose"></a>1.1.4 安装Docker-compose</h4><p>下载docker-compose的二进制包：</p>
+<pre><code>curl -L https://github.com/docker/compose/releases/download/1.25.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#执行这一步时如果出现如下信息：
+# Warning: Failed to create the file /usr/local/bin/docker-compose: Permission 
+# 则添加sudo 重新执行
+#更改权限
+sudo chmod +x /usr/local/bin/docker-compose
+
+#检测docker-compose是否安装成功：
+docker-compose -v</code></pre><h3 id="1-2-搭建Fabric环境"><a href="#1-2-搭建Fabric环境" class="headerlink" title="1.2 搭建Fabric环境"></a>1.2 搭建Fabric环境</h3><p><strong>注意，这里使用的是v2.0.0-beta版本的环境</strong>，也可以使用低版本的环境。</p>
+<p>首先创建文件夹</p>
+<pre><code>cd $HOME
+mkdir -p go/src/github.com/hyperledger/
+#进入刚刚创建的文件夹内
+cd go/src/github.com/hyperledger/</code></pre><h4 id="1-2-1-下载官方Fabric示例"><a href="#1-2-1-下载官方Fabric示例" class="headerlink" title="1.2.1 下载官方Fabric示例"></a>1.2.1 下载官方Fabric示例</h4><p>直接执行以下命令：</p>
+<pre><code>git clone https://github.com/hyperledger/fabric-samples.git</code></pre><p>下载完成后当前文件夹内会出现<code>fabric-samples</code>子文件夹，进入该文件夹:</p>
+<pre><code>cd fabric-samples</code></pre><h4 id="1-2-2-下载二进制可执行文件和Docker镜像"><a href="#1-2-2-下载二进制可执行文件和Docker镜像" class="headerlink" title="1.2.2 下载二进制可执行文件和Docker镜像"></a>1.2.2 下载二进制可执行文件和Docker镜像</h4><p>简单一行命令完成：</p>
+<pre><code>curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.0.0-beta 1.4.4 0.4.18
+# 或者是1.4.4版本的
+curl -sSL https://bit.ly/2ysbOFE | bash -s -- 1.4.4 1.4.4 0.4.18</code></pre><p>将下载的<code>bin</code>目录添加到<code>PATH</code>路径下：</p>
+<pre><code>sudo vim ~/.profile
+# 在文件内最下面添加以下内容并保存
+export PATH=$PATH:$HOME/go/src/github.com/hyperledger/fabric-samples/bin
+# 加载该文件
+source ~/.profile</code></pre><p>当然也有可能因为网速原因下载失败，可以采用下面的第二种方法：</p>
+<pre><code># 在fabric-samples文件夹内执行
+curl https://raw.githubusercontent.com/hyperledger/fabric/master/scripts/bootstrap.sh -o bootstrap.sh</code></pre><p>打开该文件 开头有以下内容：</p>
+<pre><code>...
+VERSION=1.4.4  # 如果使用2.0.0版本的则修改为  2.0.0-beta
+...
+CA_VERSION=1.4.4
+...
+THIRDPARTY_IMAGE_VERSION=0.4.18</code></pre><p>下拉到最下面有以下内容(在<code>if</code>代码块中)：</p>
+<pre><code>...
+cloneSamplesRepo  这个前面加上#  注释掉
+...
+pullBinaries
+...
+pullDockerImages
+...</code></pre><p>保存该文件，添加权限：</p>
+<pre><code>sudo chmod u+x bootstrap.sh</code></pre><p>执行该文件，如果失败的话重复执行:</p>
+<pre><code>sh ./bootstrap.sh</code></pre><p>全部完成的话启动网络测试一下是否成功:</p>
+<pre><code>cd $HOME/go/src/github.com/hyperledger/fabric-samples/first-network/
+./byfn.sh up</code></pre><p>如果最后输出内容为</p>
+<pre><code>========= All GOOD, BYFN execution completed =========== 
+
+
+ _____   _   _   ____   
+| ____| | \ | | |  _ \  
+|  _|   |  \| | | | | | 
+| |___  | |\  | | |_| | 
+|_____| |_| \_| |____/  
+</code></pre><p>说明我们的fabric网络已经成功搭建完毕。<br>网络不用关闭，我们直接拿这个网络进行测试</p>
+<h2 id="2-Java-SDK-的使用"><a href="#2-Java-SDK-的使用" class="headerlink" title="2 Java SDK 的使用"></a>2 Java SDK 的使用</h2><p>接下来就是使用Fabric SDK调用Fabric 链码了，本文使用IDEA 创建Maven进行搭建SDK环境，如何创建Maven就不再说明了。<br>下面是代码的说明，<strong>完整的代码可以在</strong><a href="https://github.com/newonexd/fabric-sdk-demo" target="_blank" rel="noopener">这里</a>找到。</p>
+<h3 id="2-1-导包"><a href="#2-1-导包" class="headerlink" title="2.1 导包"></a>2.1 导包</h3><p>第一步，将SDK的包导入进去,打开Maven项目中的<code>pom.xml</code>文件添加以下内容:</p>
+<pre><code>    &lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;snapshots-repo&lt;/id&gt;
+            &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+            &lt;releases&gt;
+                &lt;enabled&gt;false&lt;/enabled&gt;
+            &lt;/releases&gt;
+            &lt;snapshots&gt;
+                &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;/snapshots&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+
+
+    &lt;dependencies&gt;
+        &lt;!-- https://mvnrepository.com/artifact/org.hyperledger.fabric-sdk-java/fabric-sdk-java --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hyperledger.fabric-sdk-java&lt;/groupId&gt;
+            &lt;artifactId&gt;fabric-sdk-java&lt;/artifactId&gt;
+            &lt;version&gt;2.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;</code></pre><h3 id="2-2-复制证书文件"><a href="#2-2-复制证书文件" class="headerlink" title="2.2 复制证书文件"></a>2.2 复制证书文件</h3><p>我们通过SDK调用链码功能肯定是需要证书文件的，所以需要将Fabric网络中的证书文件复制过来:<br>转到<code>first-network/</code>文件夹内，有一个<code>crypto-config</code>的文件夹，我们直接将他拷贝到Maven项目中(实际项目中肯定不能这么做):</p>
+<pre><code>#放在Maven项目的这个路径下：
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   ├── *.java  #这里是将要写的代码
+│   │   └── resources
+│   │       └── crypto-config   #直接拷贝整个文件夹到这里</code></pre><h3 id="2-3-调用SDK"><a href="#2-3-调用SDK" class="headerlink" title="2.3 调用SDK"></a>2.3 调用SDK</h3><h4 id="2-3-1-创建Hyperledger-Fabric-客户端实例"><a href="#2-3-1-创建Hyperledger-Fabric-客户端实例" class="headerlink" title="2.3.1 创建Hyperledger Fabric 客户端实例"></a>2.3.1 创建Hyperledger Fabric 客户端实例</h4><p>部分代码如下：</p>
+<pre><code>//*****************************************************
+//*********Hyperledger Fabric客户端初始化配置************
+//*****************************************************
+//创建默认的加密套件
+CryptoSuite suite = CryptoSuite.Factory.getCryptoSuite();
+//Hyperledger Fabric 客户端
+HFClient hfClient = HFClient.createNewInstance();
+hfClient.setCryptoSuite(suite);</code></pre><p>然后是指定的用于调用链码的用户,我们需要实现官方提供的<code>User</code>接口才能创建用户：</p>
+<pre><code># 部分文件内容
+public class FabUser implements User {
+    private String name;
+    private String account;
+    private String affiliation;
+    private String mspId;
+    private Set&lt;String&gt; roles;
+    private Enrollment enrollment;
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public Set&lt;String&gt; getRoles() {
+        return this.roles;
+    }
+
+    @Override
+    public String getAccount() {
+        return this.account;
+    }
+
+    @Override
+    public String getAffiliation() {
+        return this.affiliation;
+    }
+
+    @Override
+    public Enrollment getEnrollment() {
+        return this.enrollment;
+    }
+
+    @Override
+    public String getMspId() {
+        return this.mspId;
+    }
+        /**
+     * 创建用户实例
+     * @param name
+     * @param mspId
+     * @param keyFile  当前用户秘钥文件路径
+     * @param certFile 当前用户证书文件路径
+     */
+    FabUser(String name, String mspId, String keyFile, String certFile) {
+        if ((this.enrollment = loadKeyAndCert(keyFile, certFile)) != null) {
+            this.name = name;
+            this.mspId = mspId;
+        }
+    }
+        /**
+     * 从文件系统中加载秘钥与证书
+     * @param keyFile  #用户的秘钥文件路径
+     * @param certFile #用户的证书文件路径
+     * @return
+     */
+    private Enrollment loadKeyAndCert(String keyFile, String certFile) {
+        byte[] keyPem;
+        try {
+            keyPem = Files.readAllBytes(Paths.get(Const.BASE_PATH + keyFile));
+            byte[] certPem = Files.readAllBytes(Paths.get(Const.BASE_PATH + certFile));
+            CryptoPrimitives primitives = new CryptoPrimitives();
+            PrivateKey privateKey = primitives.bytesToPrivateKey(keyPem);
+            return new X509Enrollment(privateKey, new String(certPem));
+        } catch (IOException | IllegalAccessException | InstantiationException | CryptoException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}</code></pre><ul>
+<li>创建用户：<pre><code></code></pre></li>
+</ul>
+<p>FabUser fabUser = new FabUser(“admin”, Const.USER_MSP_ID, Const.USER_KEY_FILE, Const.USER_CERT_FILE);<br>        hfClient.setUserContext(fabUser);</p>
+<pre><code>
+* 创建一个通道实例，与Fabric网络中的通道是对应的：</code></pre><p>//创建通道实例<br>Channel channel = hfClient.newChannel(Const.CHANNEL_NAME);</p>
+<pre><code>
+* 创建`peer`节点和`orderer`节点实例
+</code></pre><p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>*****</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>//<strong><strong><strong><strong>**</strong></strong></strong></strong>配置Peer节点<strong><strong><strong><strong>*****</strong></strong></strong></strong><br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>*****</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p>
+<p>/**</p>
+<ul>
+<li>添加peer节点信息，客户端可以向该peer节点发送查询与调用链码的请求</li>
+<li>需配置peer节点域名，peer节点主机地址+端口号(主机地址需要与Fabric网络中peer节点对应)</li>
+<li>如果开启TLS的话需配置TLS根证书</li>
+<li>/<br>Peer peer = hfClient.newPeer(<br>   Const.PEER0_ORG1_DOMAIN_NAME, Const.PEER0_ORG1_HOST,<br>   loadTLSFile(Const.PEER0_ORG1_TLS_DIR, Const.PEER0_ORG1_DOMAIN_NAME));<br>Peer peer1 = hfClient.newPeer(<br>   Const.PEER0_ORG2_DOMAIN_NAME, Const.PEER0_ORG2_HOST,<br>   loadTLSFile(Const.PEER0_ORG2_TLS_DIR, Const.PEER0_ORG2_DOMAIN_NAME));<br>channel.addPeer(peer1);<br>channel.addPeer(peer);</li>
+</ul>
+<p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>*****</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>//<strong><strong><strong><strong>**</strong></strong></strong></strong>配置Orderer节点<strong><strong><strong><strong>*****</strong></strong></strong></strong><br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>*****</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p>
+<p>/**</p>
+<ul>
+<li>添加orderer节点信息，客户端接受到peer节点的背书响应后发送到该orderer节点</li>
+<li>需配置orderer节点域名，orderer节点主机地址+端口号(主机地址需要与Fabric网络中orderer节点对应)</li>
+<li>如果开启TLS的话需配置TLS根证书</li>
+<li>/<br>Orderer orderer = hfClient.newOrderer(<br>   Const.ORDERER_DOMAIN_NAME, Const.ORDERER_HOST,<br>   loadTLSFile(Const.ORDERER_TLS_DIR, Const.ORDERER_DOMAIN_NAME));<br>channel.addOrderer(orderer);<br>//通道初始化<br>channel.initialize();<br>//创建与Fabric中链码对应的实例  这里使用的是Fabric官方的示例链码<br>ChaincodeID chaincodeID = ChaincodeID.newBuilder().setName(Const.CHAINCODE_NAME).build();<pre><code></code></pre></li>
+</ul>
+<h4 id="2-3-2-TLS证书的加载"><a href="#2-3-2-TLS证书的加载" class="headerlink" title="2.3.2 TLS证书的加载"></a>2.3.2 TLS证书的加载</h4><p><strong>最重要的还是这个用于加载<code>TLS</code>证书的方法，也是本文重点,主要就是一下的几点属性，其中<code>hostName</code>必须与节点的域名对应，比如为节点<code>peer0.org1.example.com</code>加载<code>TLS</code>证书，那么<code>hostName</code>必须是<code>peer0.org1.example.com</code>，另外需要说明的是<code>TLS</code>证书是为<code>peer</code>与<code>orderer</code>节点加载的，不是为调用链码的客户端加载的，除非在<code>fabric</code>环境中开启对客户端<code>TLS</code>证书的验证。</strong></p>
+<pre><code>/**
+ * 为Fabric网络中节点配置TLS根证书
+ *
+ * @param rootTLSCert 根证书路径
+ * @param hostName    节点域名
+ * @return
+ * @throws IOException
+ */
+private static Properties loadTLSFile(String rootTLSCert, String hostName) throws IOException {
+    Properties properties = new Properties();
+    # 其实只需要一个TLS根证书就可以了，比如TLS相关的秘钥等都是可选的
+    properties.put(&quot;pemBytes&quot;, Files.readAllBytes(Paths.get(Const.BASE_PATH + rootTLSCert)));
+    properties.setProperty(&quot;sslProvider&quot;, &quot;openSSL&quot;);
+    properties.setProperty(&quot;negotiationType&quot;, &quot;TLS&quot;);
+    properties.setProperty(&quot;trustServerCertificate&quot;, &quot;true&quot;);
+    properties.setProperty(&quot;hostnameOverride&quot;, hostName);
+    return properties;
+}</code></pre><h4 id="2-3-3-链码查询功能"><a href="#2-3-3-链码查询功能" class="headerlink" title="2.3.3 链码查询功能"></a>2.3.3 链码查询功能</h4><p>链码主要API主要是查询和调用，这两个的区别是调用查询不用请求<code>Orderer</code>，并且不生成新的交易以及区块，而调用功能则需要请求<code>peer</code>以及<code>orderer</code>节点，满足背书策略的话会生成新的交易和新的区块。<br>与查询相关的代码:</p>
+<pre><code>/**
+ * @param hfClient    Hyperledger Fabric 客户端实例
+ * @param channel     通道实例
+ * @param chaincodeID 链码ID
+ * @param func        查询功能名称
+ * @param args        查询功能需要的参数
+ * @throws ProposalException
+ * @throws InvalidArgumentException
+ */
+private static void query(HFClient hfClient, Channel channel, ChaincodeID chaincodeID, String func, String[] args) throws ProposalException, InvalidArgumentException {
+    QueryByChaincodeRequest req = hfClient.newQueryProposalRequest();
+    req.setChaincodeID(chaincodeID);
+    req.setFcn(func);
+    req.setArgs(args);
+    // 向peer节点发送调用链码的提案并等待返回查询响应集合
+    Collection&lt;ProposalResponse&gt; queryResponse = channel.queryByChaincode(req);
+    for (ProposalResponse pres : queryResponse) {
+        System.out.println(pres.getProposalResponse().getResponse().getPayload().toStringUtf8());
+    }
+}</code></pre><p>只需要通过几行代码即可使用:</p>
+<pre><code>//*****************************************************
+//******************查询链码功能*************************
+//*****************************************************
+
+String queryFunc = &quot;query&quot;;
+String[] queryArgs = {&quot;a&quot;};
+query(hfClient, channel, chaincodeID, queryFunc, queryArgs);</code></pre><h4 id="2-3-4-链码调用功能"><a href="#2-3-4-链码调用功能" class="headerlink" title="2.3.4 链码调用功能"></a>2.3.4 链码调用功能</h4><p>调用链码的流程是先创建提案请求发送到<code>peer</code>节点，由<code>peer</code>节点返回提案背书响应，然后由客户端将背书响应发送给<code>orderer</code>节点，最后返回链码事件，而之前的提案背书响应不可以作为调用链码的结果，因为那一步还没有经过验证，也没有区块的生成。只有从最后返回的链码事件中确认交易是有效的才可以确认调用链码是成功的。<br>链码调用相关代码:</p>
+<pre><code>/**
+ * @param hfClient    Hyperledger Fabric 客户端实例
+ * @param channel     通道实例
+ * @param chaincodeID 链码ID
+ * @param func        查询功能名称
+ * @param args        查询功能需要的参数
+ * @throws InvalidArgumentException
+ * @throws ProposalException
+ * @throws ExecutionException
+ * @throws InterruptedException
+ */
+private static void invoke(HFClient hfClient, Channel channel, ChaincodeID chaincodeID, String func, String[] args) throws InvalidArgumentException, ProposalException, ExecutionException, InterruptedException {
+    //提交链码交易
+    TransactionProposalRequest req2 = hfClient.newTransactionProposalRequest();
+    req2.setChaincodeID(chaincodeID);
+    req2.setFcn(func);
+    req2.setArgs(args);
+    //配置提案等待时间
+    req2.setProposalWaitTime(3000);
+    // 向peer节点发送调用链码的提案并等待返回背书响应集合
+    Collection&lt;ProposalResponse&gt; rsp2 = channel.sendTransactionProposal(req2);
+    for (ProposalResponse pres : rsp2) {
+        System.out.println(pres.getProposalResponse().getResponse().getPayload().toStringUtf8());
+    }
+    //将背书响应集合发送到Orderer节点
+    BlockEvent.TransactionEvent event = channel.sendTransaction(rsp2).get();
+    System.out.println(&quot;区块是否有效：&quot; + event.isValid());
+}</code></pre><p>通过简单几行代码即可使用:</p>
+<pre><code>String invokeFunc = &quot;invoke&quot;;
+String[] invokeArgs = {&quot;a&quot;, &quot;b&quot;, &quot;10&quot;};
+invoke(hfClient, channel, chaincodeID, invokeFunc, invokeArgs);</code></pre><p><strong>再贴一遍完整的代码获取地址</strong>：—&gt;&gt;<a href="https://github.com/newonexd/fabric-sdk-demo" target="_blank" rel="noopener">点这里</a></p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h2><p>从搭建环境到成功通过SDK调用链码的过程是漫长的，但是一路走过来确实会学习到好多东西。希望对大家有所帮助.</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric-ca">fabric-ca</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric 开启TLS调用Java SDK&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

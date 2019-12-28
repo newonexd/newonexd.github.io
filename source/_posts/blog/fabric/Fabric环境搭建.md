@@ -127,10 +127,7 @@ Registry Mirrors:
    https://registry.docker-cn.com/
 ```
 ### 1.3 安装Docker-Compose
-首先需要安装Python pip：
-```
-sudo apt-get install python-pip
-```
+
 下载docker-compose的二进制包：
 ```
 curl -L https://github.com/docker/compose/releases/download/1.25.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose

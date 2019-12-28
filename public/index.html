@@ -134,6 +134,59 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/28/blog/fabric/TLS_SDK%E8%B0%83%E7%94%A8/">
+        <p class="h4 index-header">Hyperledger Fabric 开启TLS调用Java SDK</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Hyperledger Fabric 开启TLS调用Java SDK之前更新的Fabric 1.4.1+版本之后新增了etcdRaft共识机制，而且官方文档明确指定了如果使用该共识机制就必须开启TLS，所以之前通过关闭TLS调用SDK的方式就不好用了，并且Fabric 2.0版本抛弃了solo，kafka模式，也就是默认都使用etcdRaft共识了，所以记录一下如何开开启TLS的情况下使用SDK.
+在之前，本文是直接使用了Fabric v2.0.0-beta版本的环境，并且JAVA SDK版本也是直接用了v2.0.0的版本，所以如果Fabric以及SDK不会在正式版的2.0.0版本发生重大更新的话，本文的方案应该是可以满足v2.0.0+版本的使用的。
+先说一下运行环境：
+
+Hyperledger Fabric v2.0.0-beta
+Hyperledger Fabric-sdk-java v2.0.0-SNAPSHOT
+Java 1.8
+
+本文分成两个部分:
+
+Hyperledger Fabric v2.0.0-beta版本的安装
+Hyperledger Fabric-sdk-java</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/">
         <p class="h4 index-header">Hyperledger Fabric链码作为外部服务</p>
         
@@ -645,60 +698,6 @@ curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/21/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
-        <p class="h4 index-header">CouchDB学习-集群管理</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">官方文档
-集群管理理论在etc/fefault.ini文件中有以下部分：
-[cluster]
-q=8
-n=3
-q - 分片的数量
-n - 每一份文档的拷贝数量(加上原文档一共几份副本)
-
-创建数据库时可以通过覆盖该值修改为自己的值。在集群操作中，获取操作中CouchDB返回状态码200或者是写操作返回状态码201即为大多数成员达成一致。大多数成员定义为相关拷贝的数量的一半。对于“读写”操作，“相关副本”的定义稍有不同。对于读操作，相关副本的数量是保存请求数据的当前可访问分片的数量，这意味着在发生故障或网络分区的情况下，相关副本的数量可能少于集群中的副本数量。 可以使用r参数设置读取份数。对于写操作，相关副本的数量始终为n，即集群中的副本数量。 对于写操作，可以使用w参数设置份数。 如果少于此数量的可用节点，则返回202。
-节点管理查看所有节点curl -u admin:adminpw -X GET http://localhost:5984/_membership
-{
-    &quot;all_nodes&quot;:[   # 当前节点所知道的节点
-        &quot;no</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.2k 字
                   </span>&nbsp;
             
       </div>

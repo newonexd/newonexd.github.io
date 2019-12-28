@@ -838,13 +838,12 @@ export CORE_PEER_ADDRESS=peer1-org1:7051</code></pre></li>
     Certificate: cacerts/ca.example.com-cert.pem  #这里需要修改
     OrganizationalUnitIdentifier: orderer</code></pre><p>因为高版本的Fabric把节点类型区分开了，所以需要我们手动配置。<br>将该文件复制到<code>$GOPATH/src/github.com/caDemo/org1/adminuser/msp</code>文件夹内，同时修改上面指定的位置的文件名(与对应文件夹内的文件名对应就好了)。</p>
 <ul>
-<li>实例化部分出错的可能性是最高的，很多都是因为网络模式指定错误导致链码容器启动失败，解决方案：<pre><code>#终端执行命令
-docker network ls</code></pre>找到以<code>fabric-ca</code>为后缀的一条如<code>cademo_fabric-ca</code>,修改之前的所有<code>peer</code>节点容器配置文件的环境变量：<br>```</li>
-</ul>
-<ul>
-<li>CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca<br>```<br>修改完成重启节点容器，再次执行以上的命令(需要重新配置环境变量，加入通道这两个操作)。<br>终于，实例化成功了。<h3 id="5-3-调用和查询链码"><a href="#5-3-调用和查询链码" class="headerlink" title="5.3 调用和查询链码"></a>5.3 调用和查询链码</h3>最后测试一下链码功能能不能正常使用了：</li>
-</ul>
-<ul>
+<li><p>实例化部分出错的可能性是最高的，很多都是因为网络模式指定错误导致链码容器启动失败，解决方案：</p>
+<pre><code>#终端执行命令
+docker network ls</code></pre><p>找到以<code>fabric-ca</code>为后缀的一条如<code>cademo_fabric-ca</code>,修改之前的所有<code>peer</code>节点容器配置文件的环境变量：</p>
+<pre><code>CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=cademo_fabric-ca</code></pre><p>修改完成重启节点容器，再次执行以上的命令(需要重新配置环境变量，加入通道这两个操作)。<br>终于，实例化成功了。</p>
+<h3 id="5-3-调用和查询链码"><a href="#5-3-调用和查询链码" class="headerlink" title="5.3 调用和查询链码"></a>5.3 调用和查询链码</h3><p>最后测试一下链码功能能不能正常使用了：</p>
+</li>
 <li><p>还是组织一的<code>cli</code>容器：</p>
 <pre><code>docker exec -it cli bash
 export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/adminuser/msp
