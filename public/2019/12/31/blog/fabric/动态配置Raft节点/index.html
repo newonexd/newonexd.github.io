@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Hyperledger Fabric动态配置Raft节点 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 十二月 31日 2019, 12:48 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    7.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      38 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="Hyperledger-Fabric动态配置Raft节点"><a href="#Hyperledger-Fabric动态配置Raft节点" class="headerlink" title="Hyperledger Fabric动态配置Raft节点"></a>Hyperledger Fabric动态配置Raft节点</h1><p>最近看官方文档发现新的共识算法etcdRaft允许动态添加或删除排序节点，所以也花了一天时间操作了以下，写篇文章把整个过程记录一下。<br>初始网络本文设置了4个Orderer节点，1个Peer节点(用于更新配置文件以及测试用),然后动态添加第五个Orderer节点。<br>本文分成两个部分:</p>
+<ol>
+<li>第一部分是手动通过Fabric-CA生成每一个节点的证书文件</li>
+<li>第二部分是更新Fabric网络配置添加新的Orderer节点。</li>
+</ol>
+<p>本文基于<strong>Fabric v2.0.0-beta</strong>版本。版本号只要高于1.4.1就行</p>
+<h2 id="1-搭建定制化的Fabric网络"><a href="#1-搭建定制化的Fabric网络" class="headerlink" title="1 搭建定制化的Fabric网络"></a>1 搭建定制化的Fabric网络</h2><p>前提条件是成功跑起来Fabric的示例网络，可以看这里-&gt;<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">Hyperledger Fabric环境搭建</a></p>
+<p>首先在<code>$GOPATH</code>下(本文路径地址为<code>$GOPATH/src/github.com/hyperledger/fab</code>)建立如下几个文件夹用于之后的操作:</p>
+<pre><code>.  # 这里是根目录fab
+├── ca    # 用于生成CA证书的ca配置文件的文件夹
+│   ├── org1
+│   │   └── fabric-ca-server-config.yaml
+│   └── server
+│       └── fabric-ca-server-config.yaml
+├── channel-artifacts    #用于保存创世区块以及通道配置文件
+├── configtx.yaml      #配置文件：用于生成创世区块以及通道配置文件
+├── crypto-config     #存储生成的证书文件
+├── docker      # Fabric网络节点通过Docker启动，用于启动节点的Docker文件
+│   ├── base.yaml
+│   ├── docker-compose-addOrderer5.yaml
+│   ├── docker-compose-ca.yaml
+│   ├── docker-compose-orderers.yaml
+│   └── docker-compose-peer.yaml
+└── store    #存储区块等信息</code></pre><p><strong>以下所有操作默认都在根目录文件夹内！</strong></p>
+<h3 id="1-1CA配置文件"><a href="#1-1CA配置文件" class="headerlink" title="1.1CA配置文件"></a>1.1CA配置文件</h3><p>直接在这里贴出来:<code>org1/fabric-ca-server-config.yaml</code>:</p>
+<pre><code>
+version: 1.2.0
+
+# Server&#39;s listening port (default: 7054)
+port: 7054
+
+# Enables debug logging (default: false)
+debug: false
+
+crlsizelimit: 512000
+
+tls:
+  # Enable TLS (default: false)
+  enabled: true
+  certfile:
+  keyfile:
+  clientauth:
+    type: noclientcert
+    certfiles:
+
+ca:
+  # Name of this CA
+  name: Org1CA
+  keyfile:
+  certfile:
+  chainfile:
+
+crl:
+  expiry: 24h
+
+registry:
+
+  maxenrollments: -1
+
+  identities:
+     - name: admin
+       pass: adminpw
+       type: client
+       affiliation: &quot;&quot;
+       attrs:
+          hf.Registrar.Roles: &quot;*&quot;
+          hf.Registrar.DelegateRoles: &quot;*&quot;
+          hf.Revoker: true
+          hf.IntermediateCA: true
+          hf.GenCRL: true
+          hf.Registrar.Attributes: &quot;*&quot;
+          hf.AffiliationMgr: true
+
+db:
+  type: sqlite3
+  datasource: fabric-ca-server.db
+  tls:
+      enabled: false
+      certfiles:
+      client:
+        certfile:
+        keyfile:
+
+ldap:
+
+   enabled: false
+   url: ldap://&lt;adminDN&gt;:&lt;adminPassword&gt;@&lt;host&gt;:&lt;port&gt;/&lt;base&gt;
+   tls:
+      certfiles:
+      client:
+         certfile:
+         keyfile:
+   attribute:
+      names: [&#39;uid&#39;,&#39;member&#39;]
+      converters:
+         - name:
+           value:
+      maps:
+         groups:
+            - name:
+              value:
+
+affiliations:
+   org1:
+      - department1
+      - department2
+   org2:
+      - department1
+
+signing:
+    default:
+      usage:
+        - digital signature
+      expiry: 8760h
+    profiles:
+      ca:
+         usage:
+           - cert sign
+           - crl sign
+         expiry: 43800h
+         caconstraint:
+           isca: true
+           maxpathlen: 0
+      tls:
+         usage:
+            - signing
+            - key encipherment
+            - server auth
+            - client auth
+            - key agreement
+         expiry: 8760h
+
+csr:
+   cn: ca.org1.example.com
+   names:
+      - C: US
+        ST: &quot;North Carolina&quot;
+        L: &quot;Durham&quot;
+        O: org1.example.com
+        OU:
+   hosts:
+     - localhost
+     - org1.example.com
+   ca:
+      expiry: 131400h
+      pathlength: 1
+
+bccsp:
+    default: SW
+    sw:
+        hash: SHA2
+        security: 256
+        filekeystore:
+            keystore: msp/keystore
+
+cacount:
+
+cafiles:
+
+intermediate:
+  parentserver:
+    url:
+    caname:
+
+  enrollment:
+    hosts:
+    profile:
+    label:
+
+  tls:
+    certfiles:
+    client:
+      certfile:
+      keyfile:
+</code></pre><p>以及<code>server/fabric-ca-server-config.yaml:</code>:</p>
+<pre><code># Version of config file
+version: 1.2.0
+# Server&#39;s listening port (default: 7054)
+port: 7054
+# Enables debug logging (default: false)
+debug: false
+# Size limit of an acceptable CRL in bytes (default: 512000)
+crlsizelimit: 512000
+tls:
+  # Enable TLS (default: false)
+  enabled: true
+  # TLS for the server&#39;s listening port
+  certfile:
+  keyfile:
+  clientauth:
+    type: noclientcert
+    certfiles:
+
+ca:
+  # Name of this CA
+  name: OrdererCA
+  keyfile:
+  certfile:
+  chainfile:
+
+crl:
+  expiry: 24h
+
+registry:
+  maxenrollments: -1
+
+  identities:
+     - name: admin
+       pass: adminpw
+       type: client
+       affiliation: &quot;&quot;
+       attrs:
+          hf.Registrar.Roles: &quot;*&quot;
+          hf.Registrar.DelegateRoles: &quot;*&quot;
+          hf.Revoker: true
+          hf.IntermediateCA: true
+          hf.GenCRL: true
+          hf.Registrar.Attributes: &quot;*&quot;
+          hf.AffiliationMgr: true
+
+db:
+  type: sqlite3
+  datasource: fabric-ca-server.db
+  tls:
+      enabled: false
+      certfiles:
+      client:
+        certfile:
+        keyfile:
+
+ldap:
+   enabled: false
+   url: ldap://&lt;adminDN&gt;:&lt;adminPassword&gt;@&lt;host&gt;:&lt;port&gt;/&lt;base&gt;
+   tls:
+      certfiles:
+      client:
+         certfile:
+         keyfile:
+   attribute:
+      names: [&#39;uid&#39;,&#39;member&#39;]
+      converters:
+         - name:
+           value:
+      maps:
+         groups:
+            - name:
+              value:
+
+affiliations:
+   org1:
+      - department1
+      - department2
+   org2:
+      - department1
+
+signing:
+    default:
+      usage:
+        - digital signature
+      expiry: 8760h
+    profiles:
+      ca:
+         usage:
+           - cert sign
+           - crl sign
+         expiry: 43800h
+         caconstraint:
+           isca: true
+           maxpathlen: 0
+      tls:
+         usage:
+            - signing
+            - key encipherment
+            - server auth
+            - client auth
+            - key agreement
+         expiry: 8760h
+
+csr:
+   cn: ca.example.com
+   names:
+      - C: US
+        ST: &quot;New York&quot;
+        L: &quot;New York&quot;
+        O: example.com
+        OU:
+   hosts:
+     - localhost
+     - example.com
+   ca:
+      expiry: 131400h
+      pathlength: 1
+
+bccsp:
+    default: SW
+    sw:
+        hash: SHA2
+        security: 256
+        filekeystore:
+            keystore: msp/keystore
+
+cacount:
+cafiles:
+
+intermediate:
+  parentserver:
+    url:
+    caname:
+
+  enrollment:
+    hosts:
+    profile:
+    label:
+
+  tls:
+    certfiles:
+    client:
+      certfile:
+      keyfile:</code></pre><p><code>docker-compose-ca.yaml</code>文件:</p>
+<pre><code>version: &#39;2&#39;
+
+services:
+  ca:
+    image: hyperledger/fabric-ca:1.4.4
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - &quot;9054:9054&quot;
+    command: sh -c &#39;fabric-ca-server start -b admin:adminpw -d&#39;
+    volumes:
+      - ../ca/server:/etc/hyperledger/fabric-ca-server
+    container_name: ca_orderer
+
+  ca0:
+    image: hyperledger/fabric-ca:1.4.4
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - &quot;7054:7054&quot;
+    command: sh -c &#39;fabric-ca-server start -b admin:adminpw -d&#39;
+    volumes:
+      - ../ca/org1:/etc/hyperledger/fabric-ca-server
+    container_name: ca_org1</code></pre><p>将以上三个文件保存到指定的路径，然后使用以下命令启动CA服务器：</p>
+<pre><code>docker-compose -f docker/docker-compose-ca.yaml up -d</code></pre><p>服务器会自动读取上面的两个配置文件，并初始化CA服务器。<br>当然，服务器配置文件将自动生成在<code>ca/server/</code>子文件夹内，其中最主要使用到的是<code>tls-cert.pem</code>文件。</p>
+<h3 id="1-2-注册Orderer节点"><a href="#1-2-注册Orderer节点" class="headerlink" title="1.2 注册Orderer节点"></a>1.2 注册Orderer节点</h3><p>首先配置环境变量并登陆管理员账号:</p>
+<pre><code>#创建存储Order节点证书的子文件夹。
+mkdir -p crypto-config/orderOrganization/example.com
+export FABRIC_CA_CLIENT_HOME=${PWD}/crypto-config/orderOrganization/example.com
+fabric-ca-client enroll -u https://admin:adminpw@localhost:9054 --caname ca-orderer --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>生成节点类型分类配置文件(不知道这个文件应该称作什么，暂且使用这个名字称呼好了):</p>
+<pre><code>  echo &#39;NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: orderer&#39; &gt; ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml</code></pre><p>之后注册网络中初始的4个Orderer节点:</p>
+<pre><code>fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name orderer1 --id.secret ordererpw --id.type orderer --id.attrs &#39;&quot;hf.Registrar.Roles=orderer&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name orderer2 --id.secret ordererpw --id.type orderer --id.attrs &#39;&quot;hf.Registrar.Roles=orderer&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name orderer3 --id.secret ordererpw --id.type orderer --id.attrs &#39;&quot;hf.Registrar.Roles=orderer&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name orderer4 --id.secret ordererpw --id.type orderer --id.attrs &#39;&quot;hf.Registrar.Roles=orderer&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>注册<code>Admin</code>节点:</p>
+<pre><code>fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --id.attrs &#39;&quot;hf.Registrar.Roles=admin&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><h3 id="1-3-获取Orderer证书文件"><a href="#1-3-获取Orderer证书文件" class="headerlink" title="1.3 获取Orderer证书文件"></a>1.3 获取Orderer证书文件</h3><p>为刚刚创建的几个用户创建各自的文件夹用于存储证书文件:</p>
+<pre><code>mkdir -p crypto-config/orderOrganization/example.com/orderers
+mkdir -p crypto-config/orderOrganization/example.com/orderers/orderer1.example.com
+mkdir -p crypto-config/orderOrganization/example.com/orderers/orderer2.example.com
+mkdir -p crypto-config/orderOrganization/example.com/orderers/orderer3.example.com
+mkdir -p crypto-config/orderOrganization/example.com/orderers/orderer4.example.com</code></pre><p>接下来获取每一个Orderer节点的<code>MSP</code>证书文件:</p>
+<pre><code>fabric-ca-client enroll -u https://orderer1:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/msp --csr.hosts orderer1.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer2:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/msp --csr.hosts orderer2.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer3:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/msp --csr.hosts orderer3.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer4:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/msp --csr.hosts orderer4.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>还有每一个节点的<code>TLS</code>证书:</p>
+<pre><code>fabric-ca-client enroll -u https://orderer1:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls --enrollment.profile tls --csr.hosts orderer1.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer2:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls --enrollment.profile tls --csr.hosts orderer2.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer3:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls --enrollment.profile tls --csr.hosts orderer3.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+fabric-ca-client enroll -u https://orderer4:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls --enrollment.profile tls --csr.hosts orderer4.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>将之前生成的节点类型分类配置文件拷贝到每一个节点的<code>MSP</code>文件夹:</p>
+<pre><code>cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/msp/config.yaml
+cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/msp/config.yaml
+cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/msp/config.yaml
+cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/msp/config.yaml</code></pre><p>然后为每一个节点的<code>TLS</code>证书以及秘钥文件修改名字，方便之后的使用:</p>
+<pre><code>cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/signcerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/keystore/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.key
+
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/signcerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/server.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/keystore/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/server.key
+
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/signcerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/server.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/keystore/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/server.key
+
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/signcerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/server.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/keystore/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/server.key</code></pre><p>然后在<code>MSP</code>文件夹内创建<code>tlscacerts</code>文件夹，并将<code>TLS</code>文件拷贝过去:</p>
+<pre><code>mkdir ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/msp/tlscacerts
+mkdir ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/msp/tlscacerts
+mkdir ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/msp/tlscacerts
+mkdir ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/msp/tlscacerts
+
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/msp/tlscacerts/tlsca.example.com-cert.pem</code></pre><p>复制TLS根证书:</p>
+<pre><code>mkdir -p ${PWD}/crypto-config/orderOrganization/example.com/msp/tlscacerts
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/msp/tlscacerts/tlsca.example.com-cert.pem</code></pre><p>最后是<code>Admin</code>节点的证书文件:</p>
+<pre><code>#首先也是创建文件夹
+mkdir -p crypto-config/orderOrganization/example.com/users
+mkdir -p crypto-config/orderOrganization/example.com/users/Admin@example.com
+#获取证书文件
+fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/users/Admin@example.com/msp --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/users/Admin@example.com/msp/config.yaml</code></pre><p>到这里Orderer节点证书已经生成完毕(可以根据实际需要修改Orderer节点数量，最少不能低于3个)，接下来是网络中唯一的<code>peer</code>节点的配置文件生成:</p>
+<h3 id="1-4-注册Peer节点"><a href="#1-4-注册Peer节点" class="headerlink" title="1.4 注册Peer节点"></a>1.4 注册Peer节点</h3><p>和上面步骤相同，首先创建子文件夹用于存储证书文件:</p>
+<pre><code>mkdir -p crypto-config/peerOrganizations/org1.example.com/</code></pre><p>配置环境变量并登陆管理员身份:</p>
+<pre><code>export FABRIC_CA_CLIENT_HOME=${PWD}/crypto-config/peerOrganizations/org1.example.com/
+fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-org1 --tls.certfiles ${PWD}/ca/org1/tls-cert.pem</code></pre><p>生成节点类型分类配置文件:</p>
+<pre><code>echo &#39;NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/localhost-7054-ca-org1.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/localhost-7054-ca-org1.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/localhost-7054-ca-org1.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/localhost-7054-ca-org1.pem
+    OrganizationalUnitIdentifier: orderer&#39; &gt; ${PWD}/crypto-config/peerOrganizations/org1.example.com/msp/config.yaml</code></pre><p>虽然网络中只有一个peer节点，但是我们需要注册三个用户:<code>peer0,user1,org1admin</code>，其中第一个是必需的，第二个是用于测试的，第三个为<code>Admin</code>用户，安装和实例化链码需要<code>Admin</code>用户的证书:</p>
+<pre><code>fabric-ca-client register -u https://admin:adminpw@localhost:7054 --caname ca-org1 --id.name peer0 --id.secret peer0pw --id.type peer --id.attrs &#39;&quot;hf.Registrar.Roles=peer&quot;&#39; --tls.certfiles ${PWD}/ca/org1/tls-cert.pem
+fabric-ca-client register -u https://admin:adminpw@localhost:7054 --caname ca-org1 --id.name user1 --id.secret user1pw --id.type client --id.attrs &#39;&quot;hf.Registrar.Roles=client&quot;&#39; --tls.certfiles ${PWD}/ca/org1/tls-cert.pem
+fabric-ca-client register -u https://admin:adminpw@localhost:7054 --caname ca-org1 --id.name org1admin --id.secret org1adminpw --id.type admin --id.attrs &#39;&quot;hf.Registrar.Roles=admin&quot;&#39; --tls.certfiles ${PWD}/ca/org1/tls-cert.pem</code></pre><h3 id="1-5-获取Peer节点证书文件"><a href="#1-5-获取Peer节点证书文件" class="headerlink" title="1.5 获取Peer节点证书文件"></a>1.5 获取Peer节点证书文件</h3><p>节点注册完毕，获取他们的证书文件:<br>创建子文件夹:</p>
+<pre><code>mkdir -p crypto-config/peerOrganizations/org1.example.com/peers
+mkdir -p crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.co</code></pre><p>获取证书文件:</p>
+<pre><code>#MSP文件
+fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-org1 -M ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp --csr.hosts peer0.org1.example.com --tls.certfiles ${PWD}/ca/org1/tls-cert.pem
+#TLS证书
+fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-org1 -M ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls --enrollment.profile tls --csr.hosts peer0.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/ca/org1/tls-cert.pem</code></pre><p>拷贝节点分类配置文件:</p>
+<pre><code>cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/config.yaml</code></pre><p>修改证书以及秘钥文件，方便之后使用:</p>
+<pre><code>cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/signcerts/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/keystore/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key</code></pre><p>将TLS相关证书复制一份:</p>
+<pre><code>mkdir ${PWD}/crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts/ca.crt
+
+mkdir ${PWD}/crypto-config/peerOrganizations/org1.example.com/tlsca
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/tlscacerts/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+
+mkdir ${PWD}/crypto-config/peerOrganizations/org1.example.com/ca
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/cacerts/* ${PWD}/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem</code></pre><p>获取<code>user</code>与<code>Admin</code>用户证书文件:</p>
+<pre><code>#创建子文件夹
+mkdir -p crypto-config/peerOrganizations/org1.example.com/users
+mkdir -p crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com
+mkdir -p crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com
+#获取证书文件
+fabric-ca-client enroll -u https://user1:user1pw@localhost:7054 --caname ca-org1 -M ${PWD}/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp --tls.certfiles ${PWD}/ca/org1/tls-cert.pem
+fabric-ca-client enroll -u https://org1admin:org1adminpw@localhost:7054 --caname ca-org1 -M ${PWD}/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp --tls.certfiles ${PWD}/ca/org1/tls-cert.pem
+cp ${PWD}/crypto-config/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml</code></pre><h3 id="1-6-启动网络之前的准备"><a href="#1-6-启动网络之前的准备" class="headerlink" title="1.6 启动网络之前的准备"></a>1.6 启动网络之前的准备</h3><p>到这里我们已经生成了所有需要的证书文件，接下来是生成用于启动网络的创世区块,生成创世区块需要一个文件<code>configtx.yaml</code>,直接复制过来:</p>
+<pre><code>
+Organizations:
+    - &amp;OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: ./crypto-config/orderOrganization/example.com/msp   #这里路径需要对应！！！
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: &quot;OR(&#39;OrdererMSP.member&#39;)&quot;
+            Writers:
+                Type: Signature
+                Rule: &quot;OR(&#39;OrdererMSP.member&#39;)&quot;
+            Admins:
+                Type: Signature
+                Rule: &quot;OR(&#39;OrdererMSP.admin&#39;)&quot;
+
+    - &amp;Org1  #如果需要更多组织节点，可以按照该模板在下面添加
+        Name: Org1MSP
+        ID: Org1MSP
+        MSPDir: ./crypto-config/peerOrganizations/org1.example.com/msp  #这里路径需要对应！！！
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: &quot;OR(&#39;Org1MSP.admin&#39;, &#39;Org1MSP.peer&#39;, &#39;Org1MSP.client&#39;)&quot;
+            Writers:
+                Type: Signature
+                Rule: &quot;OR(&#39;Org1MSP.admin&#39;, &#39;Org1MSP.client&#39;)&quot;
+            Admins:
+                Type: Signature
+                Rule: &quot;OR(&#39;Org1MSP.admin&#39;)&quot;
+            Endorsement:
+                Type: Signature
+                Rule: &quot;OR(&#39;Org1MSP.peer&#39;)&quot;
+        AnchorPeers:
+              Port: 7051
+
+Capabilities:
+    Channel: &amp;ChannelCapabilities
+        V2_0: true
+
+    Orderer: &amp;OrdererCapabilities
+        V2_0: true
+
+    Application: &amp;ApplicationCapabilities
+        V2_0: true
+
+Application: &amp;ApplicationDefaults
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Readers&quot;
+        Writers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Writers&quot;
+        Admins:
+            Type: ImplicitMeta
+            Rule: &quot;MAJORITY Admins&quot;
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: &quot;MAJORITY Endorsement&quot;
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: &quot;MAJORITY Endorsement&quot;
+    Capabilities:
+        &lt;&lt;: *ApplicationCapabilities
+
+Orderer: &amp;OrdererDefaults
+    OrdererType: etcdraft
+
+    Addresses:
+        - orderer1.example.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Readers&quot;
+        Writers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Writers&quot;
+        Admins:
+            Type: ImplicitMeta
+            Rule: &quot;MAJORITY Admins&quot;
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Writers&quot;
+Channel: &amp;ChannelDefaults
+    Policies:
+        # Who may invoke the &#39;Deliver&#39; API
+        Readers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Readers&quot;
+        # Who may invoke the &#39;Broadcast&#39; API
+        Writers:
+            Type: ImplicitMeta
+            Rule: &quot;ANY Writers&quot;
+        # By default, who may modify elements at this config level
+        Admins:
+            Type: ImplicitMeta
+            Rule: &quot;MAJORITY Admins&quot;
+    Capabilities:
+        &lt;&lt;: *ChannelCapabilities
+
+Profiles:
+
+    TwoOrgsChannel:   #用于生成通道配置文件
+        Consortium: SampleConsortium
+        &lt;&lt;: *ChannelDefaults
+        Application:
+            &lt;&lt;: *ApplicationDefaults
+            Organizations:
+                - *Org1
+            Capabilities:
+                &lt;&lt;: *ApplicationCapabilities
+
+    SampleMultiNodeEtcdRaft:   #用于生成系统通道创世区块
+        &lt;&lt;: *ChannelDefaults
+        Capabilities:
+            &lt;&lt;: *ChannelCapabilities
+        Orderer:
+            &lt;&lt;: *OrdererDefaults
+            OrdererType: etcdraft   #指定使用etcdraft共识算法
+            EtcdRaft:
+                Consenters:
+                - Host: orderer1.example.com
+                  Port: 7050
+                  ClientTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.crt
+                  ServerTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.crt
+                - Host: orderer2.example.com
+                  Port: 8050
+                  ClientTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/server.crt
+                  ServerTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/server.crt
+                - Host: orderer3.example.com
+                  Port: 9050
+                  ClientTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/server.crt
+                  ServerTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/server.crt
+                - Host: orderer4.example.com
+                  Port: 10050
+                  ClientTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/server.crt
+                  ServerTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/server.crt
+#                    - Host: orderer5.example.com
+#                      Port: 11050
+#                      ClientTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.crt
+#                      ServerTLSCert: ./crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/server.crt
+            Addresses:
+                - orderer1.example.com:7050
+                - orderer2.example.com:8050
+                - orderer3.example.com:9050
+                - orderer4.example.com:10050
+#                - orderer5.example.com:11050
+
+            Organizations:
+            - *OrdererOrg
+            Capabilities:
+                &lt;&lt;: *OrdererCapabilities
+        Application:
+            &lt;&lt;: *ApplicationDefaults
+            Organizations:
+            - &lt;&lt;: *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                - *Org1</code></pre><p>将该文件保存到指定位置，接下来生成创世区块:</p>
+<pre><code>export FABRIC_CFG_PATH=$PWD
+configtxgen -profile SampleMultiNodeEtcdRaft -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
+# 生成通道配置文件
+export CHANNEL_NAME=mychannel
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID $CHANNEL_NAME</code></pre><h3 id="1-7-启动网络"><a href="#1-7-启动网络" class="headerlink" title="1.7 启动网络"></a>1.7 启动网络</h3><p>首先写包含所有节点的Docker文件,这里直接贴出来:<br><code>base.yaml</code>:</p>
+<pre><code>version: &#39;2&#39;
+
+services:
+  orderer-base:
+    image: hyperledger/fabric-orderer:2.0.0-beta
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+#      - FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=file
+      - ORDERER_GENERAL_BOOTSTRAPFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer</code></pre><p>然后是Orderer节点的Docker文件<code>docker-compose-orderers.yaml</code>:</p>
+<pre><code># Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: &#39;2&#39;
+
+volumes:
+  orderer1.example.com:
+  orderer2.example.com:
+  orderer3.example.com:
+  orderer4.example.com:
+
+networks:
+  byfn:
+
+services:
+
+  orderer1.example.com:
+    extends:
+      file: base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=7050
+    container_name: orderer1.example.com
+    networks:
+      - byfn
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer1.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../store/o1:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+
+
+  orderer2.example.com:
+    extends:
+      file: base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=8050
+    container_name: orderer2.example.com
+    networks:
+      - byfn
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer2.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../store/o2:/var/hyperledger/production/orderer
+    ports:
+      - 8050:8050
+
+  orderer3.example.com:
+    extends:
+      file: base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=9050
+    container_name: orderer3.example.com
+    networks:
+      - byfn
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer3.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../store/o3:/var/hyperledger/production/orderer
+    ports:
+      - 9050:9050
+
+  orderer4.example.com:
+    extends:
+      file: base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=10050
+    container_name: orderer4.example.com
+    networks:
+      - byfn
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer4.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../store/o4:/var/hyperledger/production/orderer
+    ports:
+      - 10050:10050</code></pre><p>最后一个是peer节点的Docker文件<code>docker-compose-peer.yaml</code>：</p>
+<pre><code>version: &#39;2&#39;
+
+volumes:
+  peer0.org1.example.com:
+
+networks:
+  byfn:
+
+services:
+
+  peer0.org1.example.com:
+    container_name: peer0.org1.example.com
+    image: hyperledger/fabric-peer:2.0.0-beta
+    environment:
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_byfn
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer0.org1.example.com
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
+      - ../store/p1:/var/hyperledger/production
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    depends_on:
+      - couchdb0
+    ports:
+      - 7051:7051
+    networks:
+      - byfn
+
+  couchdb0:
+    container_name: couchdb0
+    image: couchdb:2.3
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an &quot;Admin Party&quot; mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - &quot;5984:5984&quot;
+    networks:
+      - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:2.0.0-beta
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+#      - FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.org1.example.com
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./../../chaincode/:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+      - ../crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ../channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - peer0.org1.example.com
+    networks:
+      - byfn</code></pre><p>将以上文件保存到指定位置后，使用以下命令直接启动:</p>
+<pre><code>docker-compose -f docker/docker-compose-orderers.yaml -f docker/docker-compose-peer.yaml up -d</code></pre><p>启动完成后可以查看每个节点的日志确认节点成功运行:</p>
+<pre><code>docker logs orderer1.example.com
+...
+docker logs peer0.org1.example.com</code></pre><p>如果没有错误的话就可以进行第二部分了，如果出现错误则要回去检查是不是哪里漏掉了。</p>
+<h3 id="1-8-简单测试"><a href="#1-8-简单测试" class="headerlink" title="1.8 简单测试"></a>1.8 简单测试</h3><p>先进行第一部分的测试，看一下创建通道，加入通道是否成功:</p>
+<pre><code>#进入CLI容器
+docker exec -it cli bash
+#配置环境变量
+export CHANNEL_NAME=mychannel
+export ORDERER_CA=${PWD}/crypto/orderOrganization/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export PEER0_ORG1_CA=${PWD}/crypto/peerOrganization/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+export CORE_PEER_LOCALMSPID=&quot;Org1MSP&quot;
+export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
+export CORE_PEER_MSPCONFIGPATH=${PWD}/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+export CORE_PEER_ADDRESS=peer0.org1.example.com:7051</code></pre><p>创建通道:</p>
+<pre><code>peer channel create -o orderer1.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/mychannel.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block</code></pre><p>加入通道:</p>
+<pre><code>peer channel join -b ./channel-artifacts/$CHANNEL_NAME.block</code></pre><p>如果一切顺利的话，网络就成功搭建起来了，至于链码就不再测试了。<br>直接到第二部分，动态添加一个Orderer节点。</p>
+<h2 id="2-动态添加Raft节点"><a href="#2-动态添加Raft节点" class="headerlink" title="2 动态添加Raft节点"></a>2 动态添加Raft节点</h2><p>主要步骤如下：</p>
+<ol>
+<li>为该节点生成证书文件</li>
+<li>获取当前网络的配置文件</li>
+<li>将证书文件添加到配置文件中</li>
+<li>更新配置文件</li>
+<li>启动新的Orderer节点</li>
+</ol>
+<h3 id="2-1-生成证书文件"><a href="#2-1-生成证书文件" class="headerlink" title="2.1 生成证书文件"></a>2.1 生成证书文件</h3><h4 id="2-1-1-注册该节点身份"><a href="#2-1-1-注册该节点身份" class="headerlink" title="2.1.1 注册该节点身份"></a>2.1.1 注册该节点身份</h4><pre><code>fabric-ca-client register -u https://admin:adminpw@localhost:9054 --caname ca-orderer --id.name orderer5 --id.secret ordererpw --id.type orderer --id.attrs &#39;&quot;hf.Registrar.Roles=orderer&quot;&#39; --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>为该节点创建存储证书的文件夹:</p>
+<pre><code>mkdir -p crypto-config/orderOrganization/example.com/orderers/orderer5.example.com</code></pre><h4 id="2-1-2-获取该节点证书"><a href="#2-1-2-获取该节点证书" class="headerlink" title="2.1.2 获取该节点证书"></a>2.1.2 获取该节点证书</h4><pre><code>#MSP
+fabric-ca-client enroll -u https://orderer5:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/msp --csr.hosts orderer5.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem
+#TLS
+fabric-ca-client enroll -u https://orderer5:ordererpw@localhost:9054 --caname ca-orderer -M ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls --enrollment.profile tls --csr.hosts orderer5.example.com --tls.certfiles ${PWD}/ca/server/tls-cert.pem</code></pre><p>复制节点分类配置文件:</p>
+<pre><code>cp ${PWD}/crypto-config/orderOrganization/example.com/msp/config.yaml ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/msp/config.yaml</code></pre><p>修改证书与秘钥文件名称:</p>
+<pre><code>cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/ca.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/signcerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/server.crt
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/keystore/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/server.key</code></pre><p>创建文件夹并拷贝TLS证书文件:</p>
+<pre><code>mkdir ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/msp/tlscacerts
+cp ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/tlscacerts/* ${PWD}/crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/msp/tlscacerts/tlsca.example.com-cert.pem</code></pre><h3 id="2-2-获取网络配置文件"><a href="#2-2-获取网络配置文件" class="headerlink" title="2.2 获取网络配置文件"></a>2.2 获取网络配置文件</h3><p>将节点添加进网络，首先需要将该节点添加到系统通道内，所以先获取系统通道的配置文件:<br>进入<code>cli</code>容器:</p>
+<pre><code>docker exec -it cli bash</code></pre><p>配置环境变量，需要使用Orderer节点的身份信息:</p>
+<pre><code>export CORE_PEER_LOCALMSPID=&quot;OrdererMSP&quot;
+export ORDERER_CA=${PWD}/crypto/orderOrganization/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/crypto/ordererOrganization/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/orderOrganization/example.com/users/Admin@example.com/msp
+export CORE_PEER_ADDRESS=peer0.org1.example.com:7051</code></pre><p>获取系统通道配置文件:</p>
+<pre><code>peer channel fetch config channel-artifacts/config_block.pb -o orderer1.example.com:7050 -c byfn-sys-channel --tls --cafile $ORDERER_CA</code></pre><p>解码该配置文件:</p>
+<pre><code>configtxlator proto_decode --input channel-artifacts/config_block.pb --type common.Block | jq .data.data[0].payload.data.config &gt; channel-artifacts/config.json</code></pre><h3 id="2-3将证书文件添加到配置文件中"><a href="#2-3将证书文件添加到配置文件中" class="headerlink" title="2.3将证书文件添加到配置文件中"></a>2.3将证书文件添加到配置文件中</h3><p>退出容器，可以在<code>channel-artifacts</code>文件内找到<code>config.json</code>文件。将该文件复制一份并在<code>channel-artifacts</code>文件夹下保存为<code>update_config.json</code>,使用编辑工具打开，并搜索<code>.example.com</code>字段如下：<br>字段一部分：</p>
+<pre><code>  {
+    &quot;client_tls_cert&quot;: &quot;一连串的字符串&quot;,
+    &quot;host&quot;: &quot;orderer1.example.com&quot;,
+    &quot;port&quot;: 7050,
+    &quot;server_tls_cert&quot;: &quot;一连串的字符串&quot;
+  }</code></pre><p>以及匹配到的第二部分的字段:</p>
+<pre><code>      &quot;OrdererAddresses&quot;: {
+        &quot;mod_policy&quot;: &quot;/Channel/Orderer/Admins&quot;,
+        &quot;value&quot;: {
+          &quot;addresses&quot;: [
+            &quot;orderer1.example.com:7050&quot;,
+            &quot;orderer2.example.com:8050&quot;,
+            &quot;orderer3.example.com:9050&quot;,
+            &quot;orderer4.example.com:10050&quot;
+          ]
+        },
+        &quot;version&quot;: &quot;0&quot;
+    }</code></pre><p>在字段一部分，需要将我们生成的新的节点的证书添加上去，其中证书文件地址为:</p>
+<pre><code>crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt</code></pre><p>使用<code>BASE64</code>转码:</p>
+<pre><code>cat crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt | base64 &gt; cert.txt</code></pre><p>在<code>update_config.json</code>文件中字段一的部分下面按照字段一的格式添加相同的代码块，并进行修改：<br>将<code>cert.txt</code>文件中的内容复制到字段一的<code>client_tls_cert,server_tls_cert</code>对应部分，并修改<code>host</code>对应部分为<code>orderer5.example.com</code>，<code>port</code>为<code>11050</code>.</p>
+<h3 id="2-4更新配置文件"><a href="#2-4更新配置文件" class="headerlink" title="2.4更新配置文件"></a>2.4更新配置文件</h3><p>接下来进入<code>cli</code>容器:</p>
+<pre><code>docker exec -it cli bash</code></pre><p>对原有的配置文件与更新的配置文件进行编码:</p>
+<pre><code>configtxlator proto_encode --input channel-artifacts/config.json --type common.Config &gt; channel-artifacts/config.pb
+configtxlator proto_encode --input channel-artifacts/update_config.json --type common.Config &gt; channel-artifacts/config_update.pb</code></pre><p>计算出两个文件的差异:</p>
+<pre><code>configtxlator compute_update --channel_id byfn-sys-channel --original channel-artifacts/config.pb --updated channel-artifacts/config_update.pb &gt; channel-artifacts/updated.pb</code></pre><p>对该文件进行解码，并添加用于更新配置的头部信息:</p>
+<pre><code>configtxlator proto_decode --input channel-artifacts/updated.pb --type common.ConfigUpdate &gt; channel-artifacts/updated.json
+echo &#39;{&quot;payload&quot;:{&quot;header&quot;:{&quot;channel_header&quot;:{&quot;channel_id&quot;:&quot;byfn-sys-channel&quot;, &quot;type&quot;:2}},&quot;data&quot;:{&quot;config_update&quot;:&#39;$(cat channel-artifacts/updated.json)&#39;}}}&#39; | jq . &gt; channel-artifacts/updated_envelope.json</code></pre><p>编码为<code>Envelope</code>格式的文件:</p>
+<pre><code>configtxlator proto_encode --input channel-artifacts/updated_envelope.json --type common.Envelope &gt; channel-artifacts/updated_envelope.pb</code></pre><p>对该文件进行签名操作，用于更新配置:</p>
+<pre><code>peer channel signconfigtx -f channel-artifacts/updated_envelope.pb</code></pre><p>提交更新通道配置交易:</p>
+<pre><code>peer channel update -f channel-artifacts/updated_envelope.pb -c byfn-sys-channel -o orderer1.example.com:7050 --tls true --cafile $ORDERER_CA</code></pre><p>如果没有错误的话，新的Orderer节点证书已经成功添加到网络配置中，接下来可以启动新的节点了:</p>
+<h3 id="2-5-启动新的Orderer节点"><a href="#2-5-启动新的Orderer节点" class="headerlink" title="2.5 启动新的Orderer节点"></a>2.5 启动新的Orderer节点</h3><p>写一下新的Orderer节点的Docker文件<code>docker-compose-addOrderer5.yaml</code>:</p>
+<pre><code>
+version: &#39;2&#39;
+
+volumes:
+  orderer5.example.com:
+
+networks:
+  byfn:
+
+services:
+  orderer5.example.com:
+    extends:
+      file: base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=11050
+    container_name: orderer5.example.com
+    networks:
+      - byfn
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/orderOrganization/example.com/orderers/orderer5.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../store/o5:/var/hyperledger/production/orderer
+    ports:
+      - 11050:11050</code></pre><p>直接通过命令启动它:</p>
+<pre><code>docker-compose -f docker-compose-addOrderer5.yaml up -d</code></pre><p>可以查看新节点的日志确认新的节点已经成功加入了网络。</p>
+<p>到这里，本文成功把新的Orderer节点添加进了网络，但是只将该节点添加到了系统通道内，对于应用通道<code>mychannel</code>来说，新的节点并没有添加进来，将新的节点添加进<code>mychannel</code>通道和以上步骤相同，只需要将通道名称由系统通道修改为<code>mychannel</code>即可。本文便不再说明了。<br>而动态删除节点的过程与添加相似，只不过是从配置文件中删除节点证书。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric动态配置Raft节点&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

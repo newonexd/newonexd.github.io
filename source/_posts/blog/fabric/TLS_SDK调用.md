@@ -1,8 +1,8 @@
 ---
 title: Hyperledger Fabric 开启TLS调用Java SDK
 date: 2019-12-28 17:00:25
-tags: fabric-ca
-categories: fabric-ca应用
+tags: fabric
+categories: fabric应用
 ---
 # Hyperledger Fabric 开启TLS调用Java SDK
 之前更新的Fabric 1.4.1+版本之后新增了`etcdRaft`共识机制，而且官方文档明确指定了如果使用该共识机制就必须开启`TLS`，所以之前通过关闭`TLS`调用SDK的方式就不好用了，并且Fabric 2.0版本抛弃了`solo`，`kafka`模式，也就是默认都使用`etcdRaft`共识了，所以记录一下如何开开启`TLS`的情况下使用`SDK`.
