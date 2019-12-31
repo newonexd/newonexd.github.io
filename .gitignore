@@ -1,7 +1,10 @@
 node_modules
 .DS_Store
-.gitignore
 *.iml
 .idea
 
 deploy.sh
+
+public/*
+
+themes/fluid/_config.yml
