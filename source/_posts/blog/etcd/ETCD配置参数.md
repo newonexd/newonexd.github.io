@@ -200,7 +200,7 @@ etcd通过配置文件，多命令行参数和环境变量进行配置，
 * 默认值：[http://localhost:2379](http://localhost:2379)
 * 环境变量：ETCD_ADVERTISE_CLIENT_URLS
 * 示例："[http://example.com:2379](http://example.com:2379), [http://10.0.0.1:2379](http://10.0.0.1:2379)"
-* 如果从集群成员中发布诸如http://localhost:2379之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。
+* 如果从集群成员中发布诸如``http://localhost:2379``之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。
 
 
 **--discovery**

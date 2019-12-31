@@ -21,7 +21,9 @@
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
 
 
   <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
@@ -32,7 +34,7 @@
   <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
 
 
-</head>
+<meta name="generator" content="Hexo 4.2.0"></head>
 
 
 <body>
@@ -329,7 +331,7 @@
 <li>默认值：<a href="http://localhost:2379" target="_blank" rel="noopener">http://localhost:2379</a></li>
 <li>环境变量：ETCD_ADVERTISE_CLIENT_URLS</li>
 <li>示例：”<a href="http://example.com:2379" target="_blank" rel="noopener">http://example.com:2379</a>, <a href="http://10.0.0.1:2379" target="_blank" rel="noopener">http://10.0.0.1:2379</a>“</li>
-<li>如果从集群成员中发布诸如<a href="http://localhost:2379之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。" target="_blank" rel="noopener">http://localhost:2379之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。</a></li>
+<li>如果从集群成员中发布诸如<code>http://localhost:2379</code>之类的URL并使用etcd的代理功能，请小心。这将导致循环，因为代理将向其自身转发请求，直到其资源（内存，文件描述符）最终耗尽为止。</li>
 </ul>
 <p><strong>–discovery</strong></p>
 <ul>

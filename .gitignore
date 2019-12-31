@@ -1,10 +1,10 @@
 node_modules
-.DS_Store
+./.DS_Store
 *.iml
 .idea
 
-deploy.sh
+./deploy.sh
 
-public/*
+./public
 
-themes/fluid/_config.yml
+./themes/fluid/_config.yml
