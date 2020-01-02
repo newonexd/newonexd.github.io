@@ -99,3 +99,9 @@ deploy:
   repo: https://github.com/newonexd/newonexd.github.io
   # example, https://github.com/hexojs/hexojs.github.io
   branch: master
+  
+
+sitemap:
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
