@@ -136,6 +136,71 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/22/blog/linux/Linux%E5%91%BD%E4%BB%A4-grep_sed_awk/">
+        <p class="h4 index-header">Linux命令-grep,sed,awk</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">grep
+(global search regular expression[RE] and print out the line)正则表达式全局搜索并将行打印出来
+
+在文件中查找包含字符串”text”的行
+
+grep text local_file
+grep &quot;text&quot; local_file #另一种方式
+grep &quot;text&quot; local_file1 local_file2 ...  #查找多个文件
+在文件中查找不包含字符串”text”的行
+
+grep -v &quot;text&quot; local_file
+忽略大小写
+
+grep -i &quot;TeXt&quot; local_file
+grep -y &quot;TeXt&quot; local_file
+不显示错误信息，常用于脚本文件中
+
+grep -s &quot;text&quot; local_file
+只打印出匹配到的字符串
+
+grep -o &quot;text&quot; local_file
+统计文件中有多少行包含需要查找的字符串
+
+grep -c &quot;</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Linux%E5%91%BD%E4%BB%A4">Linux命令</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Linux">Linux</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    742 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/22/blog/linux/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
         <p class="h4 index-header">正则表达式</p>
         
@@ -630,55 +695,11 @@ Hello world使用SHA-1则会输出：
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/">
-        <p class="h4 index-header">IPFS学习-DNS链接</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">DNSLink什么是DNS链接DNS链接使用DNS TXT记录映射域名(如ipfs.io)到一个IPFS地址。因为你可以编辑自己的DNS记录，可以使他们总是指向最新版本的IPFS中的对象(如果修改了IPFS中的对象则IPFS中的对象地址也会改变)。由于DNS链接使用DNS记录，所以可以设计名字/路径/(子)域/任何容易分类，阅读和记的名字。一个DNS链接地址看起来像一个IPNS地址，但是DNS链接使用域名代替了被哈希的公钥:
-/ipns/myexampledomain.org就像普通的IPFS地址，可以包含链接到其他的文件-或者是其他类型的IPFS支持的资源，像目录和链接：
-/ipns/myexampledomain.org/media/使用子域名发布虽然您可以根据需要将TXT记录发布到确切的域，但是使用称为_dnslink的特殊子域来发布DNSLink记录会更有利。这使您可以提高自动设置的安全性，或将对DNSLink记录的控制权委派给第三方，而不必放弃对原始DNS区域的完全控制权。例如，docs.ipfs.io没有含有TXT记录，但是页面仍然可以加载因为TXT记录在_dnslink.</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/IPFS">IPFS</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    492 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><a class="page-number" href="/tags/5/">5</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -748,7 +769,7 @@ Hello world使用SHA-1则会输出：
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">129k</span> 字
+  全站共 <span class="post-count">130.9k</span> 字
   <br>
 
 

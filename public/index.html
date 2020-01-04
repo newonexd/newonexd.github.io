@@ -136,8 +136,64 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/04/blog/consensus/raft-election/">
+        <p class="h4 index-header">Raft算法之Leader选举</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">&emsp;&emsp;记录一下对Raft算法的理解，算法的内容比较多，所以准备将算法的全部过程分成四个部分来写。分别是
+
+Raft算法之Leader选举
+Raft算法之日志复制
+Raft算法之成员关系变化
+Raft算法之日志压缩
+
+该文章为第一部分。
+Raft算法之Leader选举简单介绍&emsp;&emsp;首先需要了解Raft中的一个关键词:Term,本文中以下部分简单称为任期。任期通过连续的整数编号表示并且是单调递增的，代表任意长度的一段时间。在网络中所有服务器都有自己的任期编号，在网络中大部分正常运行阶段，所有服务器的任期号都是相同的。Raft算法中服务器主要分为三种角色:Leader,Follower,Candidate，并且三种角色相互独立，也就是服务器在同一时间内只可能扮演其中一种角色。
+
+Leader:用于对所有用户的请求进行处理。以及之后要说明的日志的复制等等。
+Follower:不会主动发送消息，只响应来自Leader与Candidate的请求。
+Candidate:用于选举新的Leader。
+
+&emsp;&emsp;在本文介绍的范围内，网络状态分为两种情况:</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.9k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/04/blog/consensus/raft/">
-        <p class="h4 index-header">Raft算法(部分)</p>
+        <p class="h4 index-header">Raft算法论文(部分)</p>
         
         
           
@@ -572,76 +628,11 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/22/blog/linux/Linux%E5%91%BD%E4%BB%A4-grep_sed_awk/">
-        <p class="h4 index-header">Linux命令-grep,sed,awk</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">grep
-(global search regular expression[RE] and print out the line)正则表达式全局搜索并将行打印出来
-
-在文件中查找包含字符串”text”的行
-
-grep text local_file
-grep &quot;text&quot; local_file #另一种方式
-grep &quot;text&quot; local_file1 local_file2 ...  #查找多个文件
-在文件中查找不包含字符串”text”的行
-
-grep -v &quot;text&quot; local_file
-忽略大小写
-
-grep -i &quot;TeXt&quot; local_file
-grep -y &quot;TeXt&quot; local_file
-不显示错误信息，常用于脚本文件中
-
-grep -s &quot;text&quot; local_file
-只打印出匹配到的字符串
-
-grep -o &quot;text&quot; local_file
-统计文件中有多少行包含需要查找的字符串
-
-grep -c &quot;</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/Linux%E5%91%BD%E4%BB%A4">Linux命令</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Linux">Linux</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    742 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/tags/5/">5</a><a class="extend next" rel="next" href="/tags/2/"><i class="fas fa-angle-double-right"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/2/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -711,7 +702,7 @@ grep -c &quot;</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">129k</span> 字
+  全站共 <span class="post-count">130.9k</span> 字
   <br>
 
 

@@ -136,6 +136,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/25/blog/etcd/TLS/">
+        <p class="h4 index-header">TLS</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：TLSetcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.要启动并运行，首先要获得一个成员的CA证书和签名密钥对。 建议为集群中的每个成员创建并签名一个新的密钥对。为了方便起见，cfssl工具提供了一个简单的接口来生成证书，我们在此处提供了使用该工具的示例。 或者，尝试使用本指南生成自签名密钥对。
+基本设置
+etcd通过命令行参数或环境变量采用了几种与证书相关的配置选项：
+客户端到服务器的通信：--cert-file=&lt;path&gt;:用于SSL/TLS与etcd的连接的证书。设置此选项后，advertise-client-urls可以使用HTTPS模式。--key-file=&lt;path&gt;:证书的密钥。 必须未加密。--client-cert-auth:设置此选项后，etcd将检查所有传入的HTTPS请求以查找由受信任CA签名的客户端证书，不提供有效客户端证书的请求将失败。 如果启用了身份验证，则证书将为“公用名”字段指定的用户名提供凭据。--trusted-ca-file=&lt;path&gt;</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    4.8k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">
         <p class="h4 index-header">系统限制</p>
         
@@ -605,61 +650,11 @@ configtx.yaml         connect</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-        <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里深入解析Hyperledger Fabric启动的全过程。
-1.搭建Fabric的前置条件为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：
-#首先进行配置文件的备份
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#编辑配置文件
-sudo vim /etc/apt/sources.list在配置文件中开头添加以下内容(阿里源)：
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyu</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/tags/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/tags/5/">5</a><a class="extend next" rel="next" href="/tags/5/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/tags/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/tags/5/">5</a><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/5/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -729,7 +724,7 @@ deb http://mirrors.aliyu</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">129k</span> 字
+  全站共 <span class="post-count">130.9k</span> 字
   <br>
 
 
