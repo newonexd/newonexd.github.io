@@ -136,6 +136,50 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/04/blog/consensus/raft/">
+        <p class="h4 index-header">Raft算法(部分)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址-&gt;Raft算法
+摘要Raft是用于管理被复制的日志的共识算法。它与multi-Paxos算法产生的效果相同，并且和Paxos算法一样高效。但是结构与Paxos不同。这使得Raft算法比Paxos算法更容易理解。也为构建实际系统提供了更好的基础。为了加强理解，Raft将几个关键元素分离，比如leader选举，日志复制，安全性。并增强了一致性，以减少必须考虑的状态数。一项用户研究的结果表明，与Paxos相比，Raft算法更易于学生学习。Raft也提供了用于更新集群成员关系的新的机制。它使用重叠的多数来保证安全。
+1 介绍共识算法允许一组计算机的集合作为一个一致的的小组工作，这些小组可以承受某些成员的故障。正因为如此，共识机制在构建可信的大规模软件系统中起着至关重要的作用。在过去的十年中，Paxos一直主导着共识算法的讨论。很多共识算法都是基于Paxos或者受它的影响。Paxos称为了教受学生关于共识算法的主要工具。不幸的是，尽管进行了许多尝试以使Paxos更加平易近人，Paxos仍然非常难以理解。此外，其体系结构需要复杂的更改以支持实际系统。结果，系统构建者和学生都与Pax</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    15k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/31/blog/fabric/%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AERaft%E8%8A%82%E7%82%B9/">
         <p class="h4 index-header">Hyperledger Fabric动态配置Raft节点</p>
         
@@ -593,126 +637,6 @@ grep -c &quot;</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/22/blog/linux/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-        <p class="h4 index-header">正则表达式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">字符位置
-
-
-符号表示
-符号含义
-示例
-
-
-
-^str
-需要查找的字符在行首
-^a 查找以字符a开头
-
-
-str$
-需要查找的字符在行尾
-a$ 查找以字符a结尾
-
-
-字符表示
-
-
-符号表示
-符号含义
-示例
-
-
-
-\
-转义符
-将特殊字符变为普通字符如\^
-
-
-.
-说明一定有一个任意的字符
-a.b 说明字符a与b之间一定存在一个字符
-
-
-*
-说明存在零个或者多个前一个字符
-a*说明字符a后边可能存在0个或多个字符a .*表示存在任意字符
-
-
-+
-扩展正则说明存在一个或一个以上前一个字符
-a+说明字符a后边可能存在1个或多个字符a
-
-
-?
-扩展正则说明存在0个或一个前一个字符
-ab？查找字符ab或者是a
-
-
-`
-`
-或
-
-
-()
-扩展正则字符集合
-`(ab
-
-
-()+
-扩展正则多个重复字符集合
-(ab)+:查找具有一个以上ab子字符串的字符串
-
-
-[list]
-列出可能存在的字符
-a[bc]查找字符ab或者是ac
-
-
-[n1-n2]
-列出可能存在的字符区间
-[a-g] 查找字符区间a-g中任意字符
-
-
-[^list}
-列出不需要的字符即反向选择
-[^a] 查找字符中不存在a的字符
-
-
-\{n</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    474 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -787,7 +711,7 @@ a[bc]查找字符ab或者是ac
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">114k</span> 字
+  全站共 <span class="post-count">129k</span> 字
   <br>
 
 
