@@ -136,6 +136,62 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/05/blog/consensus/raft-log/">
+        <p class="h4 index-header">Raft算法之日志复制</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">上一篇文章:Raft算法之Leader选举&emsp;&emsp;之前说完了Raft算法中的Leader选举过程，本文将在上一篇文章的基础上说明日志复制。
+Raft算法之日志复制&emsp;&emsp;先看以下日志所包含的基本内容:
+
+可以被复制状态机执行的命令
+任期号 :创建该日志时Leader所处的当前任期号
+索引号 :整数，用于标识日志所在的位置
+
+日志的状态分为两种:未被提交，已被提交(日志为安全的，不会被删除或覆盖)。
+1 正常情况
+当Leader接收到由客户端发送的请求(请求中包含可以被复制状态机执行的命令)时，Leader将会把该请求作为新的内容添加到日志中(任期号为当前Leader所处的任期号，索引号为当前Leader本地存储的日志集合中的日志的最高索引号加1)。
+Leader在当前任期内最多只能创建一个给定索引号的日志(即不可能在一个任期内创建两个以上的具有相同索引的日志条目)
+
+
+然后将该日志通过AppendEntries RPC消息发送到网络中其他的服务器(以下简称Follower)，从而复制该日志。
+在网络中Follower接收到该日志消息后则会返回复制成功的回</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.5k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/04/blog/consensus/raft-election/">
         <p class="h4 index-header">Raft算法之Leader选举</p>
         
@@ -580,54 +636,6 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/23/blog/consensus/paxos/">
-        <p class="h4 index-header">Paxos算法</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">使Paxos变简单摘要Paxos算法，用英语说明时，变得非常简单。
-1 介绍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人们一直认为，用于实现容错分布式系统的Paxos算法难以理解，可能是因为最初的演示文稿对许多读者来说是希腊文.事实上，它是分布式算法中最简单，最有效的方法之一。它的核心是共识算法。下一节将说明这种共识算法几乎不可避免地遵循了我们希望它满足的特性。最后一部分介绍了完整的Paxos算法，该算法是通过将共识直接应用于构建分布式系统的状态机方法而获得的，这种方法应该是众所周知的，因为它是有关分布式系统理论的最常被引用的文章的主题。
-2 共识算法2.1 问题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假设有一个可以提出值的进程的集合。共识算法确保只有一个提出的值被选中。如果没有值被提出，则没有值应该被选中。如果一个值被选中，那么所有过程应该能够learn被选中的值。共识需要满足以下要求：
-
-只有被提出的值才可以被选中
-被选中的只有一个值
-除非一个值真正地被选中，否则某个进程不</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/consensus">consensus</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/algorithm">algorithm</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    6.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -702,7 +710,7 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">130.9k</span> 字
+  全站共 <span class="post-count">134.5k</span> 字
   <br>
 
 

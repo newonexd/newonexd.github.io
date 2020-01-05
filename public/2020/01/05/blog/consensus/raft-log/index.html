@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Raft算法之日志复制 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 一月 5日 2020, 1:45 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.5k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      12 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>上一篇文章:<a href="https://ifican.top/2020/01/04/blog/consensus/raft-election/" target="_blank" rel="noopener">Raft算法之Leader选举</a><br>&emsp;&emsp;之前说完了Raft算法中的Leader选举过程，本文将在上一篇文章的基础上说明日志复制。</p>
+<h1 id="Raft算法之日志复制"><a href="#Raft算法之日志复制" class="headerlink" title="Raft算法之日志复制"></a>Raft算法之日志复制</h1><p>&emsp;&emsp;先看以下日志所包含的基本内容:</p>
+<ol>
+<li>可以被复制状态机执行的命令</li>
+<li>任期号 :创建该日志时Leader所处的当前任期号</li>
+<li>索引号 :整数，用于标识日志所在的位置</li>
+</ol>
+<p>日志的状态分为两种:未被提交，已被提交(日志为安全的，不会被删除或覆盖)。</p>
+<h3 id="1-正常情况"><a href="#1-正常情况" class="headerlink" title="1 正常情况"></a>1 正常情况</h3><ul>
+<li>当<code>Leader</code>接收到由客户端发送的请求(请求中包含可以被复制状态机执行的命令)时，Leader将会把该请求作为新的内容添加到日志中(任期号为当前<code>Leader</code>所处的任期号，索引号为当前<code>Leader</code>本地存储的日志集合中的日志的最高索引号加1)。<ul>
+<li><code>Leader</code><strong>在当前任期内最多只能创建一个给定索引号的日志(即不可能在一个任期内创建两个以上的具有相同索引的日志条目)</strong></li>
+</ul>
+</li>
+<li>然后将该日志通过<code>AppendEntries RPC</code>消息发送到网络中其他的服务器(以下简称<code>Follower</code>)，从而复制该日志。</li>
+<li>在网络中<code>Follower</code>接收到该日志消息后则会返回复制成功的回复。</li>
+<li>在<code>Leader</code>接收到网络中大部分的<code>Follower</code>的成功复制的回复之后，<code>Leader</code>便认为该日志<strong>可以被提交</strong>。此时<code>Leader</code>将会同时做三件事：</li>
+</ul>
+<ol>
+<li>将该日志应用到<code>Leader</code>本地的复制状态机</li>
+<li>向所有<code>Follower</code>发送消息通知所有接收到该日志的<code>Follower</code>将该日志进行提交，然后应用到各自本地的复制状态机</li>
+<li>将执行结果通知客户端</li>
+</ol>
+<p>&emsp;&emsp;当该日志消息成功在网络中大部分<code>Follower</code>本地的复制状态机执行过后，则可认为该日志<strong>已被提交</strong>。在当前日志被提交的过程中，如果<code>Leader</code>先前的某些日志还没有被提交，则将会一同提交。<br>&emsp;&emsp;而网络中有些<code>Follower</code>可能由于网络状态原因反应缓慢或者崩溃，那么<code>Leader</code>将会无限次地尝试重复发送<code>AppendEntries RPC</code>消息到该<code>Follower</code>。直到成功为止。</p>
+<h4 id="1-1-日志的一致性检查"><a href="#1-1-日志的一致性检查" class="headerlink" title="1.1 日志的一致性检查"></a>1.1 日志的一致性检查</h4><p>&emsp;&emsp;在上面，我们说了<code>Follower</code>在接收到<code>AppendEntries RPC</code>消息后则会返回复制成功的回复。实际上在接收到消息后会首先进行日志的一致性检查(正常情况下<code>Leader</code>与<code>Follower</code>的日志会保持一致，所以一致性检查不会失败),<strong>一致性检查内容如下：</strong></p>
+<ul>
+<li>在<code>Leader</code>创建<code>AppendEntries RPC</code>消息时，消息中将会包含当前日志之前日志条目的任期号与索引号。</li>
+<li><code>Follower</code>在接受到<code>AppendEntries RPC</code>消息后，将会检查之前日志的任期号与索引号是否可以匹配到<ul>
+<li>如果匹配到则说明和<code>Leader</code>之前的日志是保持一致的。</li>
+<li>如果没有匹配则会拒绝<code>AppendEntries RPC</code>消息.</li>
+</ul>
+</li>
+</ul>
+<p>&emsp;&emsp;一致性检查是一个归纳的过程。<strong>正常情况下</strong>，网络中第一条日志一定满足日志的一致性检查，然后第二条日志中包含第一条日志的任期号与索引号，所以只要<code>Leader</code>与<code>Follower</code>的第一条日志保持一致，那么第二条日志也会满足一致性检查，从而之后的每一条日志都会满足一致性检查。</p>
+<p>&emsp;&emsp;从而得出了日志匹配属性:</p>
+<ul>
+<li>如果两个不同的日志实体具有相同的索引和任期号，那么他们存储有相同的命令。</li>
+<li>如果两个不同的日志实体具有相同的索引和任期号，则所有先前条目中的日志都相同。(由一致性检查结果得出)</li>
+</ul>
+<h3 id="2-特殊情况"><a href="#2-特殊情况" class="headerlink" title="2 特殊情况"></a>2 特殊情况</h3><p>&emsp;&emsp;而网络不可能一直处于正常情况。因为<code>Leader</code>或者某个<code>Follower</code>有可能会崩溃，从而导致日志不能一直保持一致。因此存在以下三种情况:</p>
+<ol>
+<li><p><code>Follower</code>缺失当前<code>Leader</code>上存在的日志条目。</p>
+</li>
+<li><p><code>Follower</code>存在当前<code>Leader</code>不存在的日志条目。(比如旧的<code>Leader</code>仅仅将<code>AppendEntries RPC</code>消息发送到一部分<code>Follower</code>就崩溃掉，然后新的当选<code>Leader</code>的服务器恰好是没有收到该<code>AppendEntries RPC</code>消息的服务器)</p>
+</li>
+<li><p>或者<code>Follower</code>即缺失当前<code>Leader</code>上存在的日志条目，也存在当前<code>Leader</code>不存在的日志条目</p>
+<img src="/img/blog/raft/7.png" srcset="undefined" width = "300" height = "180" alt="图" align=center />
+
+</li>
+</ol>
+<p>&emsp;&emsp;图中最上方是日志的索引号(1-12),每个方块代表一条日志信息，方块内数字代表该日志所处的任期号。图中当前<code>Leader</code>(图中最上方一行日志代表当前<code>Leader</code>日志)处于任期号为8的时刻。以此图说明以上三种情况存在的原因：</p>
+<ul>
+<li><code>Follower</code> <em>a,b</em>(<code>Follower</code>崩溃没有接收到<code>Leader</code>发送的<code>AppendEntries RPC</code>消息)满足以上说明的第一种情况。</li>
+<li>(<code>Follower</code><em>c</em>在任期为6的时刻，<code>Follower</code><em>d</em>在任期为7的时刻)为<code>Leader</code>,但没有完全完成日志的发送便崩溃了.满足以上说明的第三种情况。</li>
+<li><code>Follower</code><em>e</em>在任期为4的时刻,<code>Follower</code><em>f</em>在任期为2,3的时刻为<code>Leader</code>,,但没有完全完成日志的发送便崩溃了,同时在其他服务器当选<code>Leader</code>时刻也没有接收到新的<code>Leader</code>发送的<code>AppendEntries RPC</code>消息,满足第三种情况。</li>
+</ul>
+<h4 id="2-1-日志不一致的解决方案"><a href="#2-1-日志不一致的解决方案" class="headerlink" title="2.1 日志不一致的解决方案"></a>2.1 日志不一致的解决方案</h4><p>&emsp;&emsp;<code>Leader</code>通过强迫<code>Follower</code>的日志重复自己的日志来处理不一致之处。这意味着<code>Follower</code>日志中的冲突日志将被<code>Leader</code>日志中的条目覆盖。因此<code>Leader</code>必须找到与<code>Follower</code>最开始日志发生冲突的位置,然后删除掉<code>Follower</code>上所有与<code>Leader</code>发生冲突的日志。然后将自己的日志发送给<code>Follower</code>以解决冲突。<br><strong><code>Leader</code>不会删除或覆盖自己本地的日志条目</strong></p>
+<p>&emsp;&emsp;这些步骤从之前说到的日志的一致性检查开始。</p>
+<ul>
+<li><p>当发生日志冲突时，<code>Follower</code>将会拒绝由<code>Leader</code>发送的<code>AppendEntries RPC</code>消息，并返回一个响应消息告知<code>Leader</code>日志发生了冲突。</p>
+</li>
+<li><p><code>Leader</code>为每一个<code>Follower</code>维护一个<code>nextIndex</code>值。该值用于确定需要发送给该<code>Follower</code>的下一条日志的位置索引。(该值在当前服务器成功当选<code>Leader</code>后会重置为本地日志的最后一条索引号+1)</p>
+</li>
+<li><p>当<code>Leader</code>了解到日志发生冲突之后，便递减<code>nextIndex</code>值。并重新发送<code>AppendEntries RPC</code>到该<code>Follower</code>。并不断重复这个过程，一直到<code>Follower</code>接受该消息。</p>
+</li>
+<li><p>一旦<code>Follower</code>接受了<code>AppendEntries RPC</code>消息，<code>Leader</code>则根据<code>nextIndex</code>值可以确定发生冲突的位置，从而强迫<code>Follower</code>的日志重复自己的日志以解决冲突问题。</p>
+<img src="/img/blog/raft/8.png" srcset="undefined" width = "300" height = "160" alt="图" align=center />
+</li>
+<li><p>情况<em>a</em>: 如图，服务器<em>S1</em>在任期为2的时刻仅将日志<code>&lt;index:2,term:2&gt;</code>发送到了服务器<em>S2</em>便崩溃掉。</p>
+</li>
+<li><p>情况<em>b</em>: 服务器<em>S5</em>在任期为3的时刻当选<code>Leader</code>(<em>S5</em>的计时器率先超时，递增任期号为3因此高于服务器<em>S3,S4</em>，可以当选<code>Leader</code>)，但没来得及发送日志便崩溃掉。</p>
+</li>
+<li><p>情况<em>c</em>: 服务器<em>S1<em>在任期为4的时刻再次当选<code>Leader</code>(</em>S1<em>重启时，任期仍然为2，收到新的<code>Leader</code></em>S5<em>发送的心跳信息后更新任期为3，而在<code>Leader</code></em>S5<em>崩溃后，服务器</em>S1<em>为第一个计时器超时的，因此发起投票，任期更新为4，大于网络中其他服务器任期，成功当选<code>Leader</code>),同时将日志<code>&lt;index:2,term:2&gt;</code>发送到了服务器</em>S2,S3</em>,但还没有通知服务器对日志进行提交便崩溃掉。</p>
+</li>
+<li><p>情况<em>d</em>: 情况(<em>a-&gt;d</em>)如果在任期为2时服务器<em>S1</em>作为<code>Leader</code>崩溃掉，<em>S5</em>在任期为3的时刻当选<code>Leader</code>，由于日志<code>&lt;index:2,term:2&gt;</code>还没有被复制到大部分服务器上，并没有被提交，所以<em>S5</em>可以通过自己的日志<code>&lt;index:2,term:3&gt;</code>覆盖掉日志<code>&lt;index:2,term:2&gt;</code>。</p>
+</li>
+<li><p>情况<em>e</em>: 情况(<em>a-&gt;e</em>)而如果在任期为2时服务器<em>S1<em>作为<code>Leader</code>，并将<code>&lt;index:2,term:2&gt;</code>发送到</em>S2,S3</em>,成功复制到大多数成员服务器上。并且成功提交了该日志，那么即便<em>S1</em>崩溃掉，<em>S5</em>也无法成功当选<code>Leader</code>，因为<em>S5</em>不具备网络中最新的已被提交的日志条目(<strong>这里说明了上一篇文章<a href="https://ifican.top/2020/01/04/blog/consensus/raft-election/#%E9%80%89%E4%B8%BE%E9%98%B6%E6%AE%B5-gt-%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C%E9%98%B6%E6%AE%B5" target="_blank" rel="noopener">Raft算法之Leader选举</a>中选举<code>Leader</code>的要求中没有介绍的那一点要求</strong>).</p>
+</li>
+</ul>
+<h4 id="2-2-选举Leader的对日志的要求"><a href="#2-2-选举Leader的对日志的要求" class="headerlink" title="2.2 选举Leader的对日志的要求"></a>2.2 选举<code>Leader</code>的对日志的要求</h4><ul>
+<li>Raft使用投票程序来防止<code>Candidate</code>赢得选举，除非其日志中包含所有已提交的日志条目。</li>
+<li><code>Candidate</code>必须联系集群的大多数才能被选举，这意味着每个提交的条目都必须存在于其中至少一台服务器中。如果<code>Candidate</code>的日志至少与该多数服务器日志中的日志一样最新(以下精确定义了<strong>最新</strong>),则它将保存所有已提交的条目。</li>
+<li>Raft通过比较日志中最后一个条目的索引和任期来确定两个日志中哪个是最新的。如果日志中的最后一个条目具有不同的任期，则带有较新任期的日志是最新的。如果日志以相同的任期结尾，则以索引更大的日志为准。</li>
+</ul>
+<p>&emsp;&emsp;<strong>解决方案的优化</strong><br>&emsp;&emsp;在<code>Follower</code>拒绝<code>AppendEntries RPC</code>消息时，可以选择将发生冲突的日志的任期与该任期内的第一条日志索引包含在拒绝消息中返回给<code>Leader</code>，从而使得<code>Leader</code>可以快速定位到发生冲突的位置。有了这些信息，<code>Leader</code>可以递减<code>nextIndex</code>来绕过该任期中所有冲突的条目。每个具有<strong>冲突日志条目所处的任期</strong>都需要一个<code>AppendEntries RPC</code>消息，而不是每个日志条目都需要一个<code>AppendEntries RPC</code>消息。</p>
+<h3 id="3-日志复制安全性"><a href="#3-日志复制安全性" class="headerlink" title="3 日志复制安全性"></a>3 日志复制安全性</h3><p><strong>Raft保证任何时刻这里的每一条属性都成立</strong></p>
+<ul>
+<li><code>Leader</code>只追加特性:<code>Leader</code>从不覆盖或删除它的日志条目，只追加新的。</li>
+<li>日志匹配: 如果两个日志包含的实体具有相同的索引和任期，那么直到给定索引为止，所有条目中的日志都是相同的。</li>
+<li><code>Leader</code>完整性:如果一个日志提示在给定的任期内被提交，那么该条目将出现在所有任期更高的领导者的日志中.</li>
+<li>状态机安全:如果服务器应用一条给定索引的日志实体到它的状态机，那么没有其他服务器可以应用一条不同的日志到相同的索引位置。</li>
+</ul>
+<h4 id="3-1-Leader完整性证明"><a href="#3-1-Leader完整性证明" class="headerlink" title="3.1 Leader完整性证明"></a>3.1 <code>Leader</code>完整性证明</h4><p>&emsp;&emsp;假设<code>Leader</code>完整性不成立，然后证明是矛盾的。<br>&emsp;&emsp;假设任期为<em>T</em>的<code>Leader</code>提交了当前任期的日志条目，但是该日志没有被任期高于<em>T</em>的任期为<em>U</em>的未来的新的<code>Leader</code>所存储。</p>
+<ol>
+<li>被提交任期为<em>T</em>的日志必须不存在于将要选举的任期为<em>U</em>的<code>Leader</code>的复制状态机中(因为<code>Leader</code>从不覆盖或删除它的日志条目)。</li>
+<li>任期为<em>T</em>的<code>Leader</code>将日志复制到集群中的大部分成员本地。并且任期为<em>U</em>的<code>Leader</code>在选举阶段接收到集群中大部分成员的投票，因此至少集群中有一个成员(以下称为投票者)即接收到来自任期为<em>T</em>的<code>Leader</code>发送的日志，也为任期为<em>U</em>的<code>Leader</code>投了票。所以该投票者是证明矛盾的关键所在。</li>
+<li>投票者必须在为任期为<em>U</em>的<code>Leader</code>投票之前将任期为<em>T</em>的<code>Leader</code>的发送的日志提交。不然投票者将会拒绝任期为<em>T</em>的<code>Leader</code>的<code>AppendEntries PRC</code>请求(因为一旦接收到任期为<em>U</em>的<code>Leader</code>投票请求，投票者的任期将会高于<em>T</em>)。</li>
+<li>投票者当为任期为<em>U</em>的<code>Leader</code>投票时，将会一直存储该日志条目。假设在任期为<em>T</em>和<em>U</em>之间的每一个<code>Leader</code>都包含该日志条目(<code>Leader</code>从不删除日志条目，而<code>Follower</code>仅在与<code>Leader</code>冲突时才删除条目)。</li>
+<li>投票者为任期为<em>U</em>的<code>Leader</code>投票，所以任期为<em>U</em>的<code>Leader</code>日志必须至少和投票者的日志一样新。这将导致产生两个矛盾之中的一个矛盾。</li>
+<li>首先，如果投票者和任期为<em>U</em>的<code>Leader</code>具有相同的最新的日志任期。那么任期为<em>U</em>的<code>Leader</code>的日志至少和投票者的日志一样长。所以任期为<em>U</em>的<code>Leader</code>的日志将包含投票者所有的日志。这是一个矛盾，因为之前假设的投票者包含被提交的任期为<em>T</em>的日志，而任期为<em>U</em>的<code>Leader</code>不包含。</li>
+<li>否则，任期为<em>U</em>的<code>Leader</code>的最后一条日志的任期号必须大于投票者的最后一条日志的任期号。而且，它比<em>T</em>大，因为投票者的上一个日志任期号至少为<em>T</em>(它包含任期<em>T</em>中的所有已提交的条目)。创建任期为<em>U</em>的<code>Leader</code>的最后一个日志条目的较早的<code>Leader</code>必须在其日志中(通过假设)包含已提交的条目。然后，通过日志匹配属性，任期为<em>U</em>的<code>Leader</code>的日志还必须包含已提交的条目，这是矛盾的。</li>
+<li>这样就证明了矛盾，因此所有任期大于<em>T</em>的<code>Leader</code>都必须包含所有任期为<em>T</em>的被提交的日志。</li>
+<li>日志匹配属性保证未来的<code>Leader</code>还将包含间接提交的日志条目。</li>
+</ol>
+<p>下一篇文章:<a href="">Raft算法之成员关系变化</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/consensus">consensus</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Raft">Raft</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">134.5k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Raft算法之日志复制&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

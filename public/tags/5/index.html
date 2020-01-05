@@ -136,6 +136,52 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
+        <p class="h4 index-header">深入解析Hyperledger Fabric搭建的全过程</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">在这篇文章中，使用fabric-samples/first-network中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章Hyperledger Fabric环境搭建过程fabric网络：单机，solo类型，两个组织，分别有两个节点首先看一下该文件夹内有哪些文件：
+base                  connection-org2.json    docker-compose-cli.yaml           docker-compose-org3.yaml
+byfn.sh               connection-org2.yaml    docker-compose-couch-org3.yaml    eyfn.sh
+channel-artifacts     connection-org3.json    docker-compose-couch.yaml         org3-artifacts
+configtx.yaml         connect</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
         <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
         
@@ -631,58 +677,6 @@ ETCD</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%8D%95%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">单机集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：Setting up local clusters
-设置单节点集群对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考集群部分。
-本地单节点集群启动一个集群运行以下命令来部署一个单节点的etcd集群:
-$ ./etcd
-...如果etcd二进制文件不在当前工作目录，那可能位于$GOPATH/bin/etcd或者是/usr/local/bin/etcd.合适地运行命令。运行的etcd成员在localhost:2379监听客户端的请求。
-与集群进行交互使用etcdctl与运行中的集群进行交互操作    1.     例子：在集群中存储一个键值对：
-$ ./etcdctl put foo bar
-OK如果OK被打印在控制台，说明已经成功存储Key-Value对。    2.     获取键foo对应的值：
-$ ./etcdctl get foo
-bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同。
-本地多节点集群启动一个集群在etcd的git仓库中存在一个Procfile文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    789 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -757,7 +751,7 @@ bar如果bar被返回，说明与etcd集群的交互操作和期望中的相同�
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">130.9k</span> 字
+  全站共 <span class="post-count">134.5k</span> 字
   <br>
 
 
