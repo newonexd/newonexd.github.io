@@ -136,6 +136,58 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/ETCD%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+        <p class="h4 index-header">配置参数</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：Configuration flagsetcd通过配置文件，多命令行参数和环境变量进行配置，
+可重用的配置文件是YAML文件，其名称和值由一个或多个下面描述的命令行标志组成。为了使用此文件，请将文件路径指定为--config-file标志或ETCD_CONFIG_FILE环境变量的值。如果需要的话配置文件示例可以作为入口点创建新的配置文件。
+在命令行上设置的选项优先于环境中的选项。 如果提供了配置文件，则其他命令行标志和环境变量将被忽略。例如，etcd --config-file etcd.conf.yml.sample --data-dir /tmp将会忽略--data-dir参数。
+参数--my-flag的环境变量的格式为ETCD_MY_FLAG.它适用于所有参数。
+客户端请求官方的etcd端口为2379,2380是节点通信端口。可以将etcd端口设置为接受TLS流量，非TLS流量，或同时接受TLS和非TLS流量。
+要在Linux启动时使用自定义设置自动启动etcd，强烈建议使用systemd单元。
+成员标记
+–name
+
+人类可读的该成员的名字
+默认值：”default</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.9k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
         <p class="h4 index-header">深入解析Hyperledger Fabric搭建的全过程</p>
         
@@ -601,82 +653,6 @@ ctx, cancel := co</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">
-        <p class="h4 index-header">多机集群</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:cluster on multiple machines
-总览
-启动一个集群静态的要求是每一个集群中的成员需要知道其他成员的位置。在许多情况下，集群成员的IP可能无法提前知道。在这种情况下，etcd集群可以在发现服务的帮助下进行启动。一旦etcd集群已经启动，添加或移除成员可以通过运行时重新配置。在运行时重新配置之前，为了更好地理解设计，我们建议读运行时重新配置设计文档。这篇引导etcd集群的启动将包括以下机制：
-
-静态
-etcd发现
-DNS发现
-
-每种引导机制都将用于创建具有以下详细信息的三台计算机etcd集群：
-
-
-
-Name
-Address
-Hostname
-
-
-
-infra0
-10.0.1.10
-infra0.example.com
-
-
-infra1
-10.0.1.11
-infra1.example.com
-
-
-infra2
-10.0.1.12
-infra2.example.com
-
-
-静态集群的成员，在启动之前它们的地址和集群的大小，我们可以通过设置initial-cluster参数使用离线的启动配置。每一个机器将会通过以下的环境变量或命令行获得配置信息：
-ETCD</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.6k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -751,7 +727,7 @@ ETCD</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">134.5k</span> 字
+  全站共 <span class="post-count">136.8k</span> 字
   <br>
 
 

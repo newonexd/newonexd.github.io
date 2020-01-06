@@ -136,6 +136,55 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/06/blog/consensus/raft-relationship/">
+        <p class="h4 index-header">Raft算法之成员关系变化</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">上一篇文章:Raft算法之日志复制
+Raft算法之成员关系变化&emsp;&emsp;有时候可能会遇到需要对集群中的成员数量进行更新的操作，比较简单的做法将更新操作分为两个阶段进行，在第一个阶段将全部的使用旧的配置文件的集群C_old成员全部关闭，所以将不能对客户端的请求进行处理。然后在第二个阶段使用新的配置文件启动集群成员。一个很明显的劣势在于更新成员数量的时候有一段时间是无法对客户端请求进行处理的。&emsp;&emsp;Raft使用了一种新的方案对成员进行更新。在两阶段更新之间加入了一个配置转换阶段，称为联合共识。引入联合共识阶段，集群在进行成员关系变化的同时，不需要关闭集群成员，从而可以在更新成员数量的过程中也可以对客户端的请求进行处理。&emsp;&emsp;在联合共识阶段具有以下几点属性:
+
+日志条目均复制到使用两种配置的所有服务器。
+来自任一配置的任何服务器都可以充当领导者.
+选举和日志的提交需要分别来自新旧配置的大多数人接受。
+
+&emsp;&emsp;联合共识允许集群中的单个服务器在不同的时间从旧的配置转换为新的配置，从而不会影响安全性。并且在整个配置更新期间可以继续</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/05/blog/consensus/raft-log/">
         <p class="h4 index-header">Raft算法之日志复制</p>
         
@@ -593,49 +642,6 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-API/">
-        <p class="h4 index-header">CouchDB学习-API</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">APIAPI URL路径可以指定访问CouchDB服务器的某个组件。URL请求结果包括标识和访问的数据库中的高效的描述字段。与所有URL一样，各个组件之间用正斜杠分隔。通常，以_（下划线）字符开头的URL组件和JSON字段表示服务器或返回的对象中的特殊组件或实体。例如，URL片段/_all_dbs获取CouchDB实例中所有数据库的列表。该引用根据URL结构进行构造，如下所示。
-1 基本APICouchDB API是与CouchDB实例接口的主要方法。使用HTTP发出请求，请求用于从数据库请求信息，存储新数据以及对文档中存储的信息进行查看和格式化。对API的请求可以按您正在访问的CouchDB系统的不同区域以及用于发送请求的HTTP方法进行分类。不同的方法意味着不同的操作，例如，从数据库中检索信息通常由GET操作处理，而更新则由POST或PUT请求处理。不同方法必须提供的信息之间存在一些差异。有关基本HTTP方法和请求结构的指南，请参见请求格式和响应。对于几乎所有操作，都在JavaScript对象表示法（JSON）对象中定义了提交的数据和返回的数据结构。 JSON基础知识中提供了有关J</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    5.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -710,7 +716,7 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">134.5k</span> 字
+  全站共 <span class="post-count">136.8k</span> 字
   <br>
 
 

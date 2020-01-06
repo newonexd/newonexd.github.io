@@ -208,8 +208,7 @@
 <li><p><code>Follower</code>存在当前<code>Leader</code>不存在的日志条目。(比如旧的<code>Leader</code>仅仅将<code>AppendEntries RPC</code>消息发送到一部分<code>Follower</code>就崩溃掉，然后新的当选<code>Leader</code>的服务器恰好是没有收到该<code>AppendEntries RPC</code>消息的服务器)</p>
 </li>
 <li><p>或者<code>Follower</code>即缺失当前<code>Leader</code>上存在的日志条目，也存在当前<code>Leader</code>不存在的日志条目</p>
-<img src="/img/blog/raft/7.png" srcset="undefined" width = "300" height = "180" alt="图" align=center />
-
+<p><img src="/img/blog/raft/7.png" srcset="undefined" alt="图1"></p>
 </li>
 </ol>
 <p>&emsp;&emsp;图中最上方是日志的索引号(1-12),每个方块代表一条日志信息，方块内数字代表该日志所处的任期号。图中当前<code>Leader</code>(图中最上方一行日志代表当前<code>Leader</code>日志)处于任期号为8的时刻。以此图说明以上三种情况存在的原因：</p>
@@ -228,7 +227,7 @@
 <li><p>当<code>Leader</code>了解到日志发生冲突之后，便递减<code>nextIndex</code>值。并重新发送<code>AppendEntries RPC</code>到该<code>Follower</code>。并不断重复这个过程，一直到<code>Follower</code>接受该消息。</p>
 </li>
 <li><p>一旦<code>Follower</code>接受了<code>AppendEntries RPC</code>消息，<code>Leader</code>则根据<code>nextIndex</code>值可以确定发生冲突的位置，从而强迫<code>Follower</code>的日志重复自己的日志以解决冲突问题。</p>
-<img src="/img/blog/raft/8.png" srcset="undefined" width = "300" height = "160" alt="图" align=center />
+<p><img src="/img/blog/raft/8.png" srcset="undefined" alt="图2"></p>
 </li>
 <li><p>情况<em>a</em>: 如图，服务器<em>S1</em>在任期为2的时刻仅将日志<code>&lt;index:2,term:2&gt;</code>发送到了服务器<em>S2</em>便崩溃掉。</p>
 </li>
@@ -266,7 +265,7 @@
 <li>这样就证明了矛盾，因此所有任期大于<em>T</em>的<code>Leader</code>都必须包含所有任期为<em>T</em>的被提交的日志。</li>
 <li>日志匹配属性保证未来的<code>Leader</code>还将包含间接提交的日志条目。</li>
 </ol>
-<p>下一篇文章:<a href="">Raft算法之成员关系变化</a></p>
+<p>下一篇文章:<a href="https://ifican.top/2020/01/06/blog/consensus/raft-relationship/" target="_blank" rel="noopener">Raft算法之成员关系变化</a></p>
 
             <hr>
           </div>
@@ -399,7 +398,7 @@
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">134.5k</span> 字
+  全站共 <span class="post-count">136.8k</span> 字
   <br>
 
 

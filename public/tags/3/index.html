@@ -136,6 +136,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/">
+        <p class="h4 index-header">IPFS学习-IPNS</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">星际名称系统(IPNS)是一个创建个更新可变的链接到IPFS内容的系统，由于对象在IPFS中是内容寻址的，他们的内容变化将导致地址随之变化。对于多变的事物是有用的。但是很难获取某些内容的最新版本。
+在IPNS中名字是被哈希的公钥。它与一条记录相关联，该记录包含有关其链接的哈希的信息，该信息由相应的私钥签名。新的记录可以在任何时候被签名与发布。查看IPNS地址，使用了/ipns/前缀：
+/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJdIPNS不是在IPFS上创建可变地址的唯一方法。 您还可以使用DNSLink（当前比IPNS快得多，并且还使用更易读的名称）。 其他社区成员正在探索使用区块链存储通用名称记录的方法。
+例如：假设您要在IPFS下发布您的网站。 您可以使用Files API发布静态网站，然后获得一个可以链接到的CID。 但是，当您需要进行更改时，就会出现问题：您将获得一个新的CID，因为您现在拥有不同的内容。 而且，您不可能总是给别人新的地址。这是Name API派上用场的地方。 使用它，您可以创建一个稳定的IPNS地址，</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    464 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/">
         <p class="h4 index-header">IPFS学习-哈希</p>
         
@@ -447,6 +492,60 @@ cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
+1.整体架构
+架构图直接贴过来好了：
+官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
+
+三个组织
+Org0  -&gt; 组织0   
+Org1  -&gt; 组织1   
+Org2  -&gt; 组织2   
+
+
+组织中的成员
+Org0   一个Orderer节点，一个Org0的Admi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.7k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
         <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
         
@@ -504,60 +603,6 @@ Org</div>
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
-1.整体架构
-架构图直接贴过来好了：
-官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
-
-三个组织
-Org0  -&gt; 组织0   
-Org1  -&gt; 组织1   
-Org2  -&gt; 组织2   
-
-
-组织中的成员
-Org0   一个Orderer节点，一个Org0的Admi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.7k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/04/blog/fabric/%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE/">
         <p class="h4 index-header">Hyperledger Fabric私有数据</p>
         
@@ -596,52 +641,6 @@ Org0   一个Orderer节点，一个Org0的Admi</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     1.2k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/27/blog/fabric/%E9%93%BE%E7%A0%81%E6%B5%8B%E8%AF%95/">
-        <p class="h4 index-header">Hyperledger Fabric 最简单的方式测试你的链码</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">一直以来，写完链码进行测试都要先搭建一个Fabric环境，然后安装链码进行测试，实际上Fabric提供了最为简单的方式可以允许我们对编写的应用链码进行功能测试，不需要搭建一个完整的Fabeic环境。而且测试完直接停止网络也不会担心有残余的文件没有删除干净，以至于搭建正式环境的时候出现各种错误。进入正题好了，Fabric提供了一个开发模式，是专门用来对链码进行测试用的。
-其实，这些内容在Fabric官方文档中都是有的，但是一般我们都忽略掉了，所以简单说一下步骤官方文档地址：点这里
-1.先决条件首先，也是需要一些先决条件，比如Golang环境，Docker容器,docker-compose工具，等等，这些不再说明，可以看这里完成先决条件的安装。
-2.开始
-完成准备工作后，我们需要将Fabric-sample文件夹从Github上pull下来，地址在这里,最简单的方式是直接下载压缩文件，然后到本地解压出来，但是推荐使用IDE工具通过git工具从Github上拉取下来，具体方法自行百度。完成之后，会有一个fabric-sample文件夹，将该文件夹放在$GOPATH/src/github.co</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-27&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.1k 字
                   </span>&nbsp;
             
       </div>
@@ -722,7 +721,7 @@ Org0   一个Orderer节点，一个Org0的Admi</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">134.5k</span> 字
+  全站共 <span class="post-count">136.8k</span> 字
   <br>
 
 

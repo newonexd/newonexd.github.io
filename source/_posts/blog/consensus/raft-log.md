@@ -54,7 +54,7 @@ categories: consensus
 2. `Follower`存在当前`Leader`不存在的日志条目。(比如旧的`Leader`仅仅将`AppendEntries RPC`消息发送到一部分`Follower`就崩溃掉，然后新的当选`Leader`的服务器恰好是没有收到该`AppendEntries RPC`消息的服务器)
 3. 或者`Follower`即缺失当前`Leader`上存在的日志条目，也存在当前`Leader`不存在的日志条目
 
- <img src="/img/blog/raft/7.png" width = "300" height = "180" alt="图" align=center />
+ ![图1](/img/blog/raft/7.png)
 
 &emsp;&emsp;图中最上方是日志的索引号(1-12),每个方块代表一条日志信息，方块内数字代表该日志所处的任期号。图中当前`Leader`(图中最上方一行日志代表当前`Leader`日志)处于任期号为8的时刻。以此图说明以上三种情况存在的原因：
 
@@ -73,7 +73,7 @@ categories: consensus
 * 当`Leader`了解到日志发生冲突之后，便递减`nextIndex`值。并重新发送`AppendEntries RPC`到该`Follower`。并不断重复这个过程，一直到`Follower`接受该消息。
 * 一旦`Follower`接受了`AppendEntries RPC`消息，`Leader`则根据`nextIndex`值可以确定发生冲突的位置，从而强迫`Follower`的日志重复自己的日志以解决冲突问题。
 
- <img src="/img/blog/raft/8.png" width = "300" height = "160" alt="图" align=center />
+ ![图2](/img/blog/raft/8.png)
 
 * 情况*a*: 如图，服务器*S1*在任期为2的时刻仅将日志`<index:2,term:2>`发送到了服务器*S2*便崩溃掉。
 * 情况*b*: 服务器*S5*在任期为3的时刻当选`Leader`(*S5*的计时器率先超时，递增任期号为3因此高于服务器*S3,S4*，可以当选`Leader`)，但没来得及发送日志便崩溃掉。
@@ -112,4 +112,4 @@ categories: consensus
 8. 这样就证明了矛盾，因此所有任期大于*T*的`Leader`都必须包含所有任期为*T*的被提交的日志。
 9. 日志匹配属性保证未来的`Leader`还将包含间接提交的日志条目。
 
-下一篇文章:[Raft算法之成员关系变化]()
+下一篇文章:[Raft算法之成员关系变化](https://ifican.top/2020/01/06/blog/consensus/raft-relationship/)
