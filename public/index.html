@@ -136,6 +136,57 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/07/blog/consensus/raft-snapshot/">
+        <p class="h4 index-header">Raft算法之日志压缩</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Raft算法之日志压缩上一篇文章:Raft算法之成员关系变化
+最后的一部分是关于服务器日志压缩的，因为随着运行时间的增增长，日志信息也会变得越来越多，占有更多的空间。因此Raft采取了日志压缩的方法解决该问题，即将当前整个系统状态写入稳定存储的快照，然后该时间点之前的日志就可以丢弃掉，从而释放存储空间。
+1 快照结构从图中可见，快照包括以下几个部分内容:
+
+lastIncludedIndex: 表明快照中最后一条日志的索引值。也就是说日志一直压缩到该索引值的位置。该值以前连续若干个索引值的日志被压缩为快照，而该值以后的日志则不在快照中。
+lastIncludedTerm:表明快照中最后一条日志所在的任期值。
+state machine state:复制状态机的当前状态。
+
+集群中每一个服务器都可以独立地进行拍摄快照(只对已提交的日志进行快照的拍摄)，其中lastIncludedIndex与lastIncludedTerm值的存在时为了通过之前讲到的在日志复制中需要做的一致性检查。当服务器完成了该快照的写入之后，就可以将从快照中最后一条日志一直到先前所有的日志删除。
+2 快照的发送正常情</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-07&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/consensus">consensus</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/06/blog/consensus/raft-relationship/">
         <p class="h4 index-header">Raft算法之成员关系变化</p>
         
@@ -596,52 +647,6 @@ bin/detect</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/24/blog/fabric/%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97/">
-        <p class="h4 index-header">Hyperledger Fabric使用硬件安全模块(HSM)</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">使用硬件安全模块官方文档可以通过Fabric节点使用硬件安全模块(HSM)来产生和存储私钥。HSM用于保护私钥和处理加密操作。允许peer节点与orderer节点在不暴露他们的私钥的条件下去签名和背书交易，当前Fabric只支持使用PKCS11标准与HSM进行通信。
-配置HSM为了在Fabric节点上使用HSM，需要更新关于节点配置文件如core.yaml中的BCCSP(加密服务提供者)部分.在BCCSP部分，需要选择PKCS11作为提供者并提供需要使用的PKCS11库的路径。还需要提供为加密操作创建的令牌的标签和密码。可以使用令牌去生成和存储多个秘钥。预先构建的Hyperledger Fabric Docker镜像不能够使用PKCS11。如果使用Docker部署Fabric，需要通过以下的命令启动PKCS11构建自己的镜像。
-make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，挂载到容器内部或者通过节点安装后是可以使用的。
-示例接下来的示例说明了如何去配置一个可以使用HSM的Fabirc节点。
-首先，需要安装一个实现了PKCS11的接口。本</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.3k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -716,7 +721,7 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">136.8k</span> 字
+  全站共 <span class="post-count">138.1k</span> 字
   <br>
 
 

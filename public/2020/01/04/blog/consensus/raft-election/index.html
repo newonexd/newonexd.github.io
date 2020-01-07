@@ -168,7 +168,7 @@
 <li><a href="https://ifican.top/2020/01/04/blog/consensus/raft-election/" target="_blank" rel="noopener">Raft算法之Leader选举</a></li>
 <li><a href="https://ifican.top/2020/01/05/blog/consensus/raft-log/" target="_blank" rel="noopener">Raft算法之日志复制</a></li>
 <li><a href="https://ifican.top/2020/01/06/blog/consensus/raft-relationship/" target="_blank" rel="noopener">Raft算法之成员关系变化</a></li>
-<li><a href="">Raft算法之日志压缩</a></li>
+<li><a href="https://ifican.top/2020/01/07/blog/consensus/raft-snapshot/" target="_blank" rel="noopener">Raft算法之日志压缩</a></li>
 </ol>
 <p>该文章为第一部分。</p>
 <h1 id="Raft算法之Leader选举"><a href="#Raft算法之Leader选举" class="headerlink" title="Raft算法之Leader选举"></a>Raft算法之Leader选举</h1><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>&emsp;&emsp;首先需要了解Raft中的一个关键词:<code>Term</code>,本文中以下部分简单称为任期。任期通过连续的整数编号表示并且是单调递增的，代表任意长度的一段时间。在网络中所有服务器都有自己的任期编号，在网络中大部分正常运行阶段，所有服务器的任期号都是相同的。<br>Raft算法中服务器主要分为三种角色:<code>Leader</code>,<code>Follower</code>,<code>Candidate</code>，并且三种角色相互独立，也就是服务器在同一时间内只可能扮演其中一种角色。</p>
@@ -375,7 +375,7 @@
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">136.8k</span> 字
+  全站共 <span class="post-count">138.1k</span> 字
   <br>
 
 

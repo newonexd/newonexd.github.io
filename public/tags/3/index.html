@@ -136,6 +136,53 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/19/blog/other/CURL%E5%AD%A6%E4%B9%A0%E4%BA%8C/">
+        <p class="h4 index-header">CURL命令学习二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">-a, --append用于上传文件时，如果服务器上该文件不存在则创建，如果存在则追加到源文件。
+-K, --config &lt;file&gt;指定从某个文件读取curl参数。如果指定-为文件名则从输入读取参数。如：-K --config -
+--connect-timeout &lt;seconds&gt;指定连接超时时间，若指定多个时间则采用最后一个。
+-C --continue-at &lt;offset&gt;从给予的偏移量继续文件传输，用于断点续传，如果使用-C -则表明由curl自动获取从哪里开始继续传输。
+-c --cookie-jar &lt;filename&gt;指定将cookie写入的文件，如果指定文件名为-，则将cookie写入输出。
+-b --cookie &lt;data|filename&gt;将数据添加到Cookie header中传输到HTTP服务器。数据格式应该为name1=value1;name2=value2。如果文件名为-，则从输入读取数据。-b --cookie只用于输入cookie，并不会写cookie信息到本地，所以需要和-c --c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/curl">curl</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    449 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-IPNS/">
         <p class="h4 index-header">IPFS学习-IPNS</p>
         
@@ -599,54 +646,6 @@ Org</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/04/blog/fabric/%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE/">
-        <p class="h4 index-header">Hyperledger Fabric私有数据</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">官方文档:点这里
-
-1简介在同一个通道中，允许某一组织在对同一通道内其他组织保持部分的数据私有。也就是说有一部分被标识为私有的数据只能具有权限的组织查看和操作，而其余组织不具备查看和操作私有数据的权限。通常如果需要保持数据私有可以另外创建一个通道只为私有数据服务，但是如果涉及到多个业务方时，为每一个组织另外创建通道会增加额外的管理类开销。并且也不能在进行私有数据操作的时候，让其余没有权限的组织节点都知道有这么一笔交易发生。从Fabric 1.2开始，引入了一个私有数据集合的概念，它允许通道内的指定的某一个组织中的部分成员可以对私有数据进行操作，而其他没有权限的节点只能知道有这么一笔交易发生而不能了解交易的细节。
-1.1私有数据集合
-私有数据集合包括两个部分：
-
-私有数据实体：通过Gossip协议在具有权限的节点之间传输，并且只有具有权限的节点可以看到。这部分私有数据存储在具有权限的节点的私有的状态数据库中。可以通过链码API在具有权限的节点上进行访问。并且私有数据不涉及排序服务，因为是通过Peer节点间的Gossip协议进行传输的。所以要求每一个节点都需要设置参数CORE_PEER_G</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.2k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -721,7 +720,7 @@ Org</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">136.8k</span> 字
+  全站共 <span class="post-count">138.1k</span> 字
   <br>
 
 

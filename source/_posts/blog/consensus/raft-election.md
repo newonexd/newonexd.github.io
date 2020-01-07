@@ -9,7 +9,7 @@ categories: consensus
 1. [Raft算法之Leader选举](https://ifican.top/2020/01/04/blog/consensus/raft-election/)
 2. [Raft算法之日志复制](https://ifican.top/2020/01/05/blog/consensus/raft-log/)
 3. [Raft算法之成员关系变化](https://ifican.top/2020/01/06/blog/consensus/raft-relationship/)
-4. [Raft算法之日志压缩]()
+4. [Raft算法之日志压缩](https://ifican.top/2020/01/07/blog/consensus/raft-snapshot/)
 
 该文章为第一部分。
 

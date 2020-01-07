@@ -210,7 +210,7 @@
 <h3 id="3-1-问题一"><a href="#3-1-问题一" class="headerlink" title="3.1 问题一"></a>3.1 问题一</h3><p>&emsp;&emsp;针对该问题，Raft的做法是引入一个新的状态，即允许新的成员以一种不具备决策权(选举和参与日志提交)的身份加入集群，因此在选举<code>Leader</code>或者是统计日志是否已经分发到大部分成员时，将不会考虑该成员。一直到该成员的日志存储状态追赶上集群中的其他成员，再赋予该成员决策权。</p>
 <h3 id="3-2-问题二"><a href="#3-2-问题二" class="headerlink" title="3.2 问题二"></a>3.2 问题二</h3><p><strong>原因</strong>：&emsp;&emsp;该问题产生的原因是可能新添加到集群中的新成员的数量要远远多于旧集群的数量(<strong>个人理解，如果有错误欢迎指出</strong>)。由于之前说到的<em>C_n</em>配置日志文件需要发送到<em>C_new</em>中的大多数成员，而<code>Leader</code>并不属于<code>C_new</code>中的一员。所以在发送<em>C_n</em>配置日志文件的时段，<code>Leader</code>将会对<em>C_new</em>的成员进行管理。<br><strong>解决方案</strong>:&emsp;&emsp;当<em>C_n</em>日志成功完成提交时，该<code>Leader</code>自动转换身份为<code>Follower</code>，然后从<em>C_new</em>的成员中选举出一个新的<code>Leader</code>.</p>
 <h3 id="3-3-问题三"><a href="#3-3-问题三" class="headerlink" title="3.3 问题三"></a>3.3 问题三</h3><p><strong>原因</strong>:&emsp;&emsp;被删除的服务器如果没有关闭，那么他们将不会接收到心跳信息和日志信息，从而不断发生超时，最后导致任期不断增加(高于集群中所有成员的任期)，然后不断向集群中发送请求投票消息。集群中的<code>Leader</code>将变为<code>Follower</code>，集群中将不断开始新的选举。从而扰乱集群的正常运行。<br><strong>解决方案</strong>: &emsp;&emsp;Raft引入了一个最小选举超时时间，意思是如果集群中存在<code>Leader</code>时，并且接收到心跳信息之后在最小选举超时时间内接受到请求投票消息，那么将会忽略掉该投票消息。</p>
-<p>下一篇文章:<a href="">Raft算法之日志压缩</a></p>
+<p>下一篇文章:<a href="https://ifican.top/2020/01/07/blog/consensus/raft-snapshot/" target="_blank" rel="noopener">Raft算法之日志压缩</a></p>
 
             <hr>
           </div>
@@ -343,7 +343,7 @@
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">136.8k</span> 字
+  全站共 <span class="post-count">138.1k</span> 字
   <br>
 
 
