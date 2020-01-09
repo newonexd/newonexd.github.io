@@ -136,6 +136,63 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/09/blog/consensus/pbft-three_phase/">
+        <p class="h4 index-header">PBFT之三阶段提交</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">PBFT之三阶段提交1 前言&emsp;&emsp;Raft保证当复制状态机数量为3f+1时, 最多可以允许f个状态机虚假。&emsp;&emsp;一个view中只有一个primary 其他为副本。&emsp;&emsp;视图更改说明primary崩溃或失败。
+2 算法流程
+客户端发送请求到primary调用服务操作
+primary广播请求到所有节点
+节点执行请求并返回响应到客户端
+客户端等待从不同的节点发送的结果相同的f+1个响应。响应内容为操作的结果。
+
+算法对节点的要求：
+
+节点必须是确定性的(给予一系列参数执行操作必须产生相同的结果)。
+节点必须以相同的状态启动
+
+2.1 客户端c&emsp;&emsp;客户端通过发送消息 &lt;REQUEST,o,t,c&gt; 到primary请求状态机执行操作o。&emsp;&emsp;t:时间戳用于确保该操作只执行一次,并且所有的请求都按照时间戳先后排序。&emsp;&emsp;由节点发送到客户端的消息包括(当前视图号v，允许客户端去跟踪视图发现当前的primary).
+&emsp;&emsp;节点直接发送响应到客户端，响应内容包括&</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-09&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Pbft">Pbft</a>&nbsp;
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.1k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/09/blog/fabric/Fabric_index/">
         <p class="h4 index-header">Hyperledger Fabric博客汇总</p>
         
@@ -175,17 +232,15 @@ Raft算法之日志压缩
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          
             <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
             <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
           
         
             
@@ -230,11 +285,13 @@ state machine state:复制状态机的当前状态。
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/consensus">consensus</a>&nbsp;
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
           
             <a href="/tags/Raft">Raft</a>&nbsp;
           
@@ -279,11 +336,13 @@ Raft算法之成员关系变化&emsp;&emsp;有时候可能会遇到需要对集�
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/consensus">consensus</a>&nbsp;
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
           
             <a href="/tags/Raft">Raft</a>&nbsp;
           
@@ -335,11 +394,13 @@ Leader在当前任期内最多只能创建一个给定索引号的日志(即不�
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/consensus">consensus</a>&nbsp;
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
           
             <a href="/tags/Raft">Raft</a>&nbsp;
           
@@ -391,11 +452,13 @@ Candidate:用于选举新的Leader。
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/consensus">consensus</a>&nbsp;
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
           
             <a href="/tags/Raft">Raft</a>&nbsp;
           
@@ -435,11 +498,13 @@ Candidate:用于选举新的Leader。
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/consensus">consensus</a>&nbsp;
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
           
             <a href="/tags/Raft">Raft</a>&nbsp;
           
@@ -612,56 +677,6 @@ Hyperledger Fabric-sdk-java</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/26/blog/couchDB/CouchDB%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
-        <p class="h4 index-header">CouchDB基本操作</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">CouchDB操作判断数据库是否正常运行:
-curl http://localhost:5984/_up | jq .获取CouchDB唯一标识符(UUID):
-curl http://localhost:5984/_uuids | jq .获取CouchDB数据库信息:
-curl http://localhost:5984/ | jq .节点操作查询节点查询所有节点查询当前节点连接的所有节点以及集群中的节点：
-curl -u admin:admin http://localhost:5984/_membership查询单个节点状态curl -u admin:admin http://localhost:5984/_node/{node-name}/_stats
-# 查询本地节点状态
-curl -u admin:admin http://localhost:5984/_node/local/_stats 数据库操作查询数据库查询所有数据库:
-curl http://localhost:5984/_all_dbs | jq .查询某个数据库详细信息:
-curl http://localh</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%BA%94%E7%94%A8">CouchDb应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    920 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -736,7 +751,7 @@ curl http://localh</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">138.2k</span> 字
+  全站共 <span class="post-count">140.4k</span> 字
   <br>
 
 

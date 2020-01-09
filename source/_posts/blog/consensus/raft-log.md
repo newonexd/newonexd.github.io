@@ -1,8 +1,11 @@
 ---
 title: Raft算法之日志复制
 date: 2020-01-05 13:45:59
-tags: Raft
-categories: consensus
+tags: 
+- Raft
+- algorithm
+categories:
+- algorithm
 ---
 上一篇文章:[Raft算法之Leader选举](https://ifican.top/2020/01/04/blog/consensus/raft-election/)
 &emsp;&emsp;之前说完了Raft算法中的Leader选举过程，本文将在上一篇文章的基础上说明日志复制。

@@ -5,7 +5,6 @@ tags:
 - fabric-ca
 - fabric
 categories:
-- fabric-ca应用
 - fabric应用
 ---
 # Hyperledger Fabric

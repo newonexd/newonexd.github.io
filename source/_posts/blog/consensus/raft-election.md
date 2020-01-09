@@ -1,8 +1,11 @@
 ---
 title: Raft算法之Leader选举
 date: 2020-01-04 20:29:26
-tags: Raft
-categories: consensus
+tags: 
+- Raft
+- algorithm
+categories:
+- algorithm
 ---
 &emsp;&emsp;记录一下对Raft算法的理解，算法的内容比较多，所以准备将算法的全部过程分成四个部分来写。分别是
 

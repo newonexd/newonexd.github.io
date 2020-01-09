@@ -136,6 +136,63 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
+        <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">本文基于Hyperledger Fabric 1.4版本。官方文档地址:传送门
+动态添加一个组织到Fabric网络中也是一个比较重要的功能。官方文档写的已经很详细了，有能力的尽量还是看官方文档，本文只是根据官方文档进行整理同时兼翻译。
+1.前提条件
+这个不再解释了，前提条件自然是搭建Fabric的环境了并跑通官方的例子，具体的看这里.
+2.启动网络
+还是以官方的byfn为例好了，不多说，对Fabric有一定了解的都能明白，不明白的看上面文档:
+./byfn.sh up
+#或者是
+./byfn.sh up -s couchdb
+#区别不大，只不过换了一个数据库而已，对本文内容没多少关系动态添加组织官方脚本自动化操作就简单执行以下命令：
+./eyfn.sh up本文重点不在这里，因为自动化操作省略了所有的内容，固然简单，但是仍然不懂其中过程。所以本文的重点还是下一部分，手动地一步一步完成动态增加组织。
+3手动添加组织到网络中byfn网络中的节点为:
+
+Order -&gt; orderer.example.com
+Org1  -&gt; peer0.org1.example.com
+Org</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    4.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
         <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
         
@@ -167,16 +224,14 @@ Org0   一个Orderer节点，一个Org0的Admi</div>
           <i class="iconfont icon-inbox"></i>
           
             <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
             <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
           
         
             
@@ -546,81 +601,6 @@ sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0%E4%B8%80/">
-        <p class="h4 index-header">CouchDB学习一</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">端口
-
-
-端口号
-协议
-作用
-
-
-
-5984
-tcp
-标椎集群端口用于所有的HTTP API请求
-
-
-5986
-tcp
-用于管理员对节点与分片的管理
-
-
-4369
-tcp
-Erlang端口到daemon的映射
-
-
-配置介绍配置文件CouchDb从以下位置按顺序读取配置文件
-
-etc/fefault.ini
-etc/default.d/*.ini
-etc/local.ini
-etc/local.d/*.ini
-
-类UNIX系统：/opt/couchdb/Windows系统:C:\CouchDBmaxOS:Applications/Apache CouchDB.app/Contents/Resources/couchdbx-core/etc下的default.ini和default.d文件夹。/Users/youruser/Library/Application Support/CouchDB2/etc/couchdb下的default.ini和default.d文件夹.
-通过HTTP API修改参数集群：
-curl -X PUT http://localhost:5984/_node/n</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/etcd/etcd%E7%BD%91%E5%85%B3/">
         <p class="h4 index-header">etcd网关</p>
         
@@ -738,7 +718,7 @@ etcd网关是一个简单的TCP代理，可将网络数据转发到etcd集群。
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">138.2k</span> 字
+  全站共 <span class="post-count">140.4k</span> 字
   <br>
 
 

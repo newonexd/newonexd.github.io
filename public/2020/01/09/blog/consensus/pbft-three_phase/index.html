@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>gRPC代理 ~ 触不可及的官方网站</title>
+  <title>PBFT之三阶段提交 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -113,7 +113,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期日, 十一月 24日 2019, 2:35 下午
+                  星期四, 一月 9日 2020, 8:24 晚上
                 </p>
               
 
@@ -122,7 +122,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    2.2k 字
+                    2.1k 字
                   </span>&nbsp;
                 
 
@@ -130,7 +130,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      9 分钟
+                      8 分钟
                   </span>&nbsp;
                 
 
@@ -163,127 +163,77 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/grpc_proxy.md" target="_blank" rel="noopener">gRPC proxy</a><br>gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。<br>gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。</p>
-<h2 id="可扩展的监视-API"><a href="#可扩展的监视-API" class="headerlink" title="可扩展的监视 API"></a>可扩展的监视 API</h2><hr>
-<p>gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。<br>假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。<br>在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。</p>
-<pre><code>            +-------------+
-            | etcd 服务器 |
-            +------+------+
-                   ^ 监视 key A (s-watcher)
-                   |
-           +-------+-----+
-           | gRPC 代理  | &lt;-------+
-           |             |         |
-           ++-----+------+         |监视 key A (c-watcher)
-监视 key A ^     ^ 监视 key A    |
-(c-watcher) |     | (c-watcher)    |
-    +-------+-+  ++--------+  +----+----+
-    |  客户端 |  |  客户端 |  |  客户端 |
-    |         |  |         |  |         |
-    +---------+  +---------+  +---------+
-</code></pre><h3 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h3><p>为了有效地将多个客户端监视程序合并为一个监视程序，gRPC代理在可能的情况下将新的c-watcher合并为现有的s-watcher。 由于网络延迟或缓冲的未传递事件，此合并的s-watcher可能与etcd服务器不同步。 如果未指定监视版本，则gRPC代理将不能保证c-watcher从最近的存储修订版本开始监视。 例如，如果客户端从具有修订版1000的etcd服务器监视，则该监视程序将从修订版1000开始。如果客户端从gRPC代理监视，则可以从修订版990开始监视。<br>类似的限制也适用于取消。 取消观察者后，etcd服务器的修订版可能大于取消响应修订版。<br>对于大多数用例，这两个限制不应引起问题。 将来，可能会有其他选项强制观察者绕过gRPC代理以获得更准确的修订响应。</p>
-<h2 id="可扩展的租约-API"><a href="#可扩展的租约-API" class="headerlink" title="可扩展的租约 API"></a>可扩展的租约 API</h2><hr>
-<p>为了保持其租约有效，客户端必须至少向一个etcd服务器建立一个gRPC流，以发送定期的心跳信号。 如果etcd工作负载涉及大量租约活动分布在许多客户端上，则这些流可能会导致CPU使用率过高。 为了减少核心群集上的流总数，该代理支持租约流合并。<br>假设N个客户端正在更新租约，则单个gRPC代理将etcd服务器上的流负载从N减少到1。部署中可能具有其他gRPC代理，以进一步在多个代理之间分配流。<br>在以下示例中，三个客户端更新了三个独立的租约（L1，L2和L3）。 gRPC代理将三个客户端租约流（c-stream）合并为连接到etcd服务器的单个租约保持活动流（s-stream）。 代理将客户端租用心跳从c流转发到s流，然后将响应返回到相应的c流。</p>
-<pre><code>          +-------------+
-          | etcd 服务器 |
-          +------+------+
-                 ^
-                 | 心跳 L1, L2, L3
-                 | (s-stream)
-                 v
-         +-------+-----+
-         | gRPC 代理  +&lt;-----------+
-         +---+------+--+            | 心跳 L3
-             ^      ^               | (c-stream)
-心跳 L1 |      | 心跳 L2  |
-(c-stream)   v      v (c-stream)    v
-      +------+-+  +-+------+  +-----+--+
-      | 客户端 |  | 客户端 |  | 客户端 |
-      +--------+  +--------+  +--------+
-</code></pre><h3 id="客户保护滥用"><a href="#客户保护滥用" class="headerlink" title="客户保护滥用"></a>客户保护滥用</h3><p>gRPC代理在不违反一致性要求时会缓存请求的响应。 这可以保护etcd服务器免遭严密for循环中滥用客户端的侵害。</p>
-<h2 id="启动etcd-gRPC代理"><a href="#启动etcd-gRPC代理" class="headerlink" title="启动etcd gRPC代理"></a>启动etcd gRPC代理</h2><hr>
-<p>考虑一个etcd集群包括以下几个静态端点：<br>|名字|地址|主机名|<br>|—|—|—|<br>|infra0|10.0.1.10|infra0.example.com|<br>|infra1|10.0.1.11|infra1.example.com|<br>|infra2|10.0.1.12|infra2.example.com|<br>通过以下命令使用静态节点启动gRPC代理：</p>
-<pre><code>$ etcd grpc-proxy start --endpoints=infra0.example.com,infra1.example.com,infra2.example.com --listen-addr=127.0.0.1:2379</code></pre><p>etcd gRPC启动并监听端口2379.它将客户端请求转发到上面提供的三个端点之一。<br>通过代理发送请求：</p>
-<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 put foo bar
-OK
-$ ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 get foo
-foo
-bar</code></pre><h2 id="客户端端点同步和名称解析"><a href="#客户端端点同步和名称解析" class="headerlink" title="客户端端点同步和名称解析"></a>客户端端点同步和名称解析</h2><hr>
-<p>代理支持通过写入用户定义的端点来注册其端点以进行发现。 这有两个目的。 首先，它允许客户端将其端点与一组代理端点同步，以实现高可用性。 其次，它是etcd <a href="https://newonexd.github.io/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">gRPC命名</a>的端点提供程序。<br>通过提供用户定义的前缀来注册代理：</p>
-<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
-  --listen-addr=127.0.0.1:23790 \
-  --advertise-client-url=127.0.0.1:23790 \
-  --resolver-prefix=&quot;___grpc_proxy_endpoint&quot; \
-  --resolver-ttl=60
+            <h1 id="PBFT之三阶段提交"><a href="#PBFT之三阶段提交" class="headerlink" title="PBFT之三阶段提交"></a>PBFT之三阶段提交</h1><h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><p>&emsp;&emsp;Raft保证当复制状态机数量为<em>3f+1<em>时, 最多可以允许</em>f<em>个状态机虚假。<br>&emsp;&emsp;一个</em>view<em>中只有一个</em>primary</em> 其他为副本。<br>&emsp;&emsp;视图更改说明<em>primary</em>崩溃或失败。</p>
+<h2 id="2-算法流程"><a href="#2-算法流程" class="headerlink" title="2 算法流程"></a>2 算法流程</h2><ol>
+<li>客户端发送请求到<em>primary</em>调用服务操作</li>
+<li><em>primary</em>广播请求到所有节点</li>
+<li>节点执行请求并返回响应到客户端</li>
+<li>客户端等待从不同的节点发送的结果相同的<em>f+1</em>个响应。响应内容为操作的结果。</li>
+</ol>
+<p>算法对节点的要求：</p>
+<ol>
+<li>节点必须是确定性的(给予一系列参数执行操作必须产生相同的结果)。</li>
+<li>节点必须以相同的状态启动</li>
+</ol>
+<h3 id="2-1-客户端c"><a href="#2-1-客户端c" class="headerlink" title="2.1 客户端c"></a>2.1 客户端<em>c</em></h3><p>&emsp;&emsp;客户端通过发送消息 <code>&lt;REQUEST,o,t,c&gt;</code> 到<em>primary<em>请求状态机执行操作</em>o<em>。<br>&emsp;&emsp;</em>t</em>:时间戳用于确保该操作只执行一次,并且所有的请求都按照时间戳先后排序。<br>&emsp;&emsp;由节点发送到客户端的消息包括(当前视图号<em>v</em>，允许客户端去跟踪视图发现当前的<em>primary</em>).</p>
+<p>&emsp;&emsp;节点直接发送响应到客户端，响应内容包括<code>&lt;REPLY,v,t,c,i,r&gt;</code>.<br><em>v</em>:当前视图号。<br><em>t</em>:响应请求的时间戳。<br><em>i</em>:节点ID<br><em>r</em>:执行操作得到的结果。</p>
+<ul>
+<li>客户端等待由不同的节点返回的具有相同的<em>t</em>和<em>r</em>的响应消息。</li>
+<li>如果客户端没有接收到足够的响应，将广播请求到所有节点。如果请求已经被处理，节点只简单地重新发送响应。</li>
+<li>节点保留发送到每一个客户端的最新的响应消息。</li>
+<li>否则，如果节点不是<em>primary<em>，将会重定向请求到</em>primary</em>,如果<em>primary</em>没有多播请求到集群，将会被怀疑是错误节点。如果有足够多的节点怀疑则会发生视图更新。</li>
+</ul>
+<h2 id="3-正常情况下三阶段提交"><a href="#3-正常情况下三阶段提交" class="headerlink" title="3 正常情况下三阶段提交"></a>3 正常情况下三阶段提交</h2><p>&emsp;&emsp;每一个节点的状态包括服务的状态。消息日志包括节点被接受的信息，以及节点当前的视图。<br>&emsp;&emsp;当<em>primary</em>接受到客户端的请求<em>m</em>，将开始三个阶段的协议进行自动多播请求到节点。<br>&emsp;&emsp;除非消息的数量超出协议中给定的最大消息数量否则<em>primary</em>立即开始该三阶段协议。如果消息超过最大消息数，将会将请求放置缓冲区。</p>
+<p>&emsp;&emsp;三阶段分为<code>pre-prepare,prepare,commit</code>。</p>
+<ul>
+<li><code>pre-prepare</code>和<code>prepare</code>阶段用于对在同一视图中发送的请求完全排序，即使提出请求排序的<em>primary</em>为虚假节点也是如此。</li>
+<li><code>prepare</code>和<code>commit</code>阶段用于确保在视图之间对提交的请求进行完全排序</li>
+</ul>
+<h3 id="3-1-PRE-PREPARE阶段"><a href="#3-1-PRE-PREPARE阶段" class="headerlink" title="3.1 PRE-PREPARE阶段"></a>3.1 PRE-PREPARE阶段</h3><p>&emsp;&emsp;在<code>pre-prepare</code>阶段，<em>primary</em>定义了一个序列号<em>n</em>，到请求消息中。多播一个<code>pre-prepare</code>消息并联合消息<em>m</em>到所有节点。并将该消息添加到日志中。该消息内容为 <code>&lt;&lt;PRE-PREPARE,v,n,d&gt;_s,m&gt;</code> (<code>_s</code>代表签名)这里的<em>v</em>表明被发送的消息处于的视图。<em>m</em>是客户端的请求消息。<em>d</em>为<em>m</em>的摘要。<br>&emsp;&emsp;为了保持消息较小。请求没有包括在<code>pre-prepare</code>消息中。这是很重要的因为<code>pre-prepare</code>消息用于作为该请求定义的序列号<em>n</em>在视图<em>v</em>中的证明。另外，它将协议与协议完全分离，以将请求传输到节点；允许我们为协议消息使用针对小消息优化的传输，对于大型请求针对大消息使用优化的传输。<br>&emsp;&emsp;节点接收到提供的<em>pre-prepare</em>消息后:</p>
+<ul>
+<li>请求中的签名和<code>pre-prepare</code>消息是有效的，并且<em>d</em>是<em>m</em>的摘要。</li>
+<li>视图<em>v</em>是有效的。</li>
+<li>在视图<em>v</em>中没有接收到其他的具有序列号<em>n</em>的包含不同摘要的消息。</li>
+<li><code>pre-prepare</code>消息中的序列号在低的阈值<em>h</em>与高阈值<em>H</em>之间。</li>
+</ul>
+<p>&emsp;&emsp;最后一个条件用于阻止错误的<em>primary</em>为了耗尽序列号空间而选择一个非常大的值。</p>
+<p>&emsp;&emsp;如果节点<em>i</em>接受了 <code>&lt;&lt;PRE-PREPARE,v,n,d&gt;_s,m&gt;</code> 消息。节点将会进入<code>prepare</code>阶段，并多播 <code>&lt;PREPARE,v,n,d,i&gt;_s</code> 消息到所有其他的节点，并将该消息添加到它的日志中。否则将什么也不做。</p>
+<h3 id="3-2-PREPARE阶段"><a href="#3-2-PREPARE阶段" class="headerlink" title="3.2 PREPARE阶段"></a>3.2 PREPARE阶段</h3><p>&emsp;&emsp;节点(包括<em>primary</em>)接收了<code>prepare</code>消息：</p>
+<ul>
+<li>签名是有效的</li>
+<li>视图号与节点当前视图相同</li>
+<li>序列号在<em>h</em>与<em>H</em>之间</li>
+</ul>
+<p>&emsp;&emsp;并添加他们到自己的日志中。</p>
+<p>&emsp;&emsp;只有当节点<em>i</em>已将以下消息添加到它的日志：</p>
+<ul>
+<li>请求<em>m</em></li>
+<li>在视图<em>v</em>中具有序列号<em>n</em>且是请求<em>m</em>的<code>pre-prepare</code>消息(来自不同节点<em>2f</em>个)</li>
+</ul>
+<p>&emsp;&emsp;并且节点通过检查<code>prepare</code>消息与<code>pre-prepare</code>消息具有相同的视图，序列号和签名,才认为<code>prepared (m,v,n,i)</code> 消息为有效的。</p>
+<p>&emsp;&emsp;算法的<code>pre-prepare</code>和<code>prepare</code>阶段保证诚实节点同意视图中请求的总顺序。更准确的，确保以下的变量:</p>
+<ul>
+<li>对于任意的诚实节点<em>j</em>(包括<em>i=j</em>),如果<code>prepared (m,v,n,i)</code> 消息是有效的，那么<code>prepared (m’,v,n,j)</code> 消息是无效的。并且任何<em>D(m’)</em> 不等于<em>D(m)</em>.</li>
+<li>因为<code>prepared (m,v,n,i)</code> 消息和 <em>R=3f+1</em>表明至少有<em>f+1</em>个诚实节点在视图<em>v</em>中发送了序列号为<em>n</em>的<code>pre-prepare</code>消息或者是<code>prepare</code>消息。</li>
+<li>因此，对于<code>prepared (m’,v,n,j)</code> 消息如果是有效的，那么需要至少一个诚实节点必须发送两个冲突的<code>prepare</code>消息(或者是视图为<em>v</em>的<code>primary</code>发送<code>pre-prepare</code>消息)，两个<code>prepare</code>消息具有相同的视图和序列号但是具有不同的摘要信息。但是这是不可能的因为节点不是虚假节点。</li>
+<li>最后，关于消息摘要强度的假设可确保<em>m</em>不等于 <em>m’</em> 并且 <em>D(m)</em> 等于 <em>D(m’)</em> 是不可能的。</li>
+</ul>
+<h3 id="3-3-COMMIT阶段"><a href="#3-3-COMMIT阶段" class="headerlink" title="3.3 COMMIT阶段"></a>3.3 COMMIT阶段</h3><p>&emsp;&emsp;当<code>prepared (m,v,n,i)</code> 消息为有效的那么节点<em>i</em>多播 <code>&lt;COMMIT,v,n,D(m),i&gt;_s</code> 消息到其他节点.这个过程为<code>commit</code>阶段。节点接收<code>commit</code>消息并添加该信息到日志中。</p>
+<ul>
+<li>签名是有效的</li>
+<li>消息中的视图号等于节点当前视图号</li>
+<li>序列号在<em>h</em>与<em>H</em>之间</li>
+</ul>
+<p>&emsp;&emsp;如果并且只有当对于所有在<em>f+1</em>诚实节点中的节点<em>i</em>，<code>prepared (m,v,n,i)</code> 消息都是有效的，那么<code>committed (m,v,n,i)</code> 消息则是有效的。<br>&emsp;&emsp;如果并且只有当节点<em>i</em>从不同的节点接收到<em>2f+1</em>个<code>commit</code>消息(可能包括自己)，并且与请求<em>m</em>的<code>pre-prepare</code>消息匹配(具有相同的视图，序列号和摘要)。则<code>committed-local (m,v,n,i)</code> 消息是有效的。</p>
+<p><code>commit</code>阶段确保以下变量:</p>
+<ul>
+<li>如果对于一些诚实节点<em>i</em>，<code>committed-local (m,v,n,i)</code> 消息是有效的。那么<code>committed(m,v,n)</code> 消息是有效的。</li>
+<li>诚实节点同意本地提交的请求的序列号，即使它们在每个节点上以不同的视图提交，进一步，在诚实节点上本地提交的任何请求最终都将在1个或多个诚实节点上提交。</li>
+</ul>
+<p>&emsp;&emsp;每一个节点<em>i</em>在当<code>committed-local(m,v,n,i)</code> 消息是有效的，并且<em>i</em>的状态反应了在所有请求中该请求的序列号是最小的情况下将会执行该操作。确保了所有诚实节点可以以相同的顺序执行请求，保证了安全性。在执行完请求操作后，节点将返回一个响应到客户端。<br>&emsp;&emsp;当请求的时间戳小于最后一次回复的时间戳时节点抛弃该请求。保证只执行一次。</p>
+<p>&emsp;&emsp;不依赖消息顺序交付。因此可能节点乱序提交请求。这是无所谓的，因为节点保持了<code>pre-prepare</code>,<code>prepare</code>,和<code>commit</code>消息日志一直到该请求被执行。</p>
+<p>图展示了该算法的以一种正常的例子(没有<em>primary</em>虚假)的操作。节点0为<em>primary</em>，节点3为虚假节点。<em>C</em>为客户端.<br><img src="https://img2018.cnblogs.com/blog/1652302/202001/1652302-20200109200834147-1525925002.png" srcset="undefined" alt="图"></p>
 
-$ etcd grpc-proxy start --endpoints=localhost:2379 \
-  --listen-addr=127.0.0.1:23791 \
-  --advertise-client-url=127.0.0.1:23791 \
-  --resolver-prefix=&quot;___grpc_proxy_endpoint&quot; \
-  --resolver-ttl=60</code></pre><p>代理将会列出成员列表中的所有成员：</p>
-<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://localhost:23790 member list --write-out table
-
-+----+---------+--------------------------------+------------+-----------------+
-| ID | STATUS  |              NAME              | PEER ADDRS |  CLIENT ADDRS   |
-+----+---------+--------------------------------+------------+-----------------+
-|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23791 |
-|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23790 |
-+----+---------+--------------------------------+------------+-----------------+</code></pre><p>这使客户端可以通过Sync自动发现代理端点：</p>
-<pre><code>cli, err := clientv3.New(clientv3.Config{
-    Endpoints: []string{&quot;http://localhost:23790&quot;},
-})
-if err != nil {
-    log.Fatal(err)
-}
-defer cli.Close()
-
-// fetch registered grpc-proxy endpoints
-if err := cli.Sync(context.Background()); err != nil {
-    log.Fatal(err)
-}</code></pre><p>注意，如果配置的代理没有解析程序前缀，</p>
-<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
-  --listen-addr=127.0.0.1:23792 \
-  --advertise-client-url=127.0.0.1:23792</code></pre><p>grpc-proxy的成员列表API返回其自己的<code>advertise-client-url</code>：</p>
-<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://localhost:23792 member list --write-out table
-
-+----+---------+--------------------------------+------------+-----------------+
-| ID | STATUS  |              NAME              | PEER ADDRS |  CLIENT ADDRS   |
-+----+---------+--------------------------------+------------+-----------------+
-|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23792 |
-+----+---------+--------------------------------+------------+-----------------+</code></pre><h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><hr>
-<p>假设一个应用程序期望对整个键空间有完全控制，但是etcd集群与其他应用程序共享。 为了使所有应用程序都不会相互干扰地运行，代理可以对etcd键空间进行分区，以便客户端可以访问完整的键空间。 当给代理提供标志<code>--namespace</code>时，所有进入代理的客户端请求都将转换为在键上具有用户定义的前缀。 对etcd集群的访问将在前缀下，而来自代理的响应将删除该前缀；对于客户端，显然根本没有前缀。<br>要为代理命名空间，请通过<code>--namespace</code>启动：</p>
-<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
-  --listen-addr=127.0.0.1:23790 \
-  --namespace=my-prefix/</code></pre><p>现在，对代理的访问在etcd集群上透明地加上前缀：</p>
-<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=localhost:23790 put my-key abc
-# OK
-$ ETCDCTL_API=3 etcdctl --endpoints=localhost:23790 get my-key
-# my-key
-# abc
-$ ETCDCTL_API=3 etcdctl --endpoints=localhost:2379 get my-prefix/my-key
-# my-prefix/my-key
-# abc</code></pre><h2 id="TLS终端"><a href="#TLS终端" class="headerlink" title="TLS终端"></a>TLS终端</h2><hr>
-<p>使用来自安全etcd群集的TLS的gRPC代理终端为未加密的本地端点提供服务.<br>使用客户端https启动单个成员etcd集群尝试：</p>
-<pre><code>$ etcd --listen-client-urls https://localhost:2379 --advertise-client-urls https://localhost:2379 --cert-file=peer.crt --key-file=peer.key --trusted-ca-file=ca.crt --client-cert-auth</code></pre><p>确认客户端端口正在提供https：</p>
-<pre><code># fails
-$ ETCDCTL_API=3 etcdctl --endpoints=http://localhost:2379 endpoint status
-# works
-$ ETCDCTL_API=3 etcdctl --endpoints=https://localhost:2379 --cert=client.crt --key=client.key --cacert=ca.crt endpoint status</code></pre><p>接下来，通过使用客户端证书连接到etcd端点<code>https://localhost2379</code>在<code>localhost:12379</code>上启动gRPC代理：</p>
-<pre><code>$ etcd grpc-proxy start --endpoints=https://localhost:2379 --listen-addr localhost:12379 --cert client.crt --key client.key --cacert=ca.crt --insecure-skip-tls-verify &amp;</code></pre><p>最后，通过在http上将密钥放入代理来测试TLS终端：</p>
-<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=http://localhost:12379 put abc def
-# OK</code></pre><h2 id="指标和健康"><a href="#指标和健康" class="headerlink" title="指标和健康"></a>指标和健康</h2><hr>
-<p>gRPC代理为<code>--endpoints</code>定义的etcd成员公开了<code>/health</code>和Prometheus<code>/metrics</code>端点。 另一种方法是定义一个附加URL，该URL将使用<code>--metrics-addr</code>参数来响应<code>/metrics</code>和<code>/health</code>端点。</p>
-<pre><code>$ etcd grpc-proxy start \
-  --endpoints https://localhost:2379 \
-  --metrics-addr https://0.0.0.0:4443 \
-  --listen-addr 127.0.0.1:23790 \
-  --key client.key \
-  --key-file proxy-server.key \
-  --cert client.crt \
-  --cert-file proxy-server.crt \
-  --cacert ca.pem \
-  --trusted-ca-file proxy-ca.pem</code></pre><h3 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a>已知问题</h3><p>代理的主接口同时服务于HTTP2和HTTP/1.1。如果如上例所示，使用TLS设置了代理，则在监听接口上使用诸如cURL之类的客户端时，将要求在返回<code>/metrics</code>或<code>/health</code>的请求上将协议显式设置为HTTP/1.1。通过使用<code>--metrics-addr</code>参数，辅助接口将没有此要求。</p>
-<pre><code> $ curl --cacert proxy-ca.pem --key proxy-client.key --cert proxy-client.crt https://127.0.0.1:23790/metrics --http1.1</code></pre>
             <hr>
           </div>
           <br>
@@ -293,7 +243,7 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://localhost:2379 --cert=client.crt --k
               <span>
                 <i class="iconfont icon-inbox"></i>
                 
-                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  <a class="hover-with-bg" href="/categories/algorithm">algorithm</a>
                   &nbsp;
                 
               </span>&nbsp;&nbsp;
@@ -302,7 +252,9 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://localhost:2379 --cert=client.crt --k
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                  <a class="hover-with-bg" href="/tags/Pbft">Pbft</a>
+                
+                  <a class="hover-with-bg" href="/tags/algorithm">algorithm</a>
                 
               </span>
             
@@ -527,7 +479,7 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://localhost:2379 --cert=client.crt --k
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "gRPC代理&nbsp;",
+        "PBFT之三阶段提交&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

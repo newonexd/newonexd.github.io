@@ -1,8 +1,11 @@
 ---
 title: Raft算法论文(部分)
 date: 2020-01-04 15:07:35
-tags: Raft
-categories: consensus
+tags: 
+- Raft
+- algorithm
+categories:
+- algorithm
 ---
 原文地址->[Raft算法](https://raft.github.io/raft.pdf)
 

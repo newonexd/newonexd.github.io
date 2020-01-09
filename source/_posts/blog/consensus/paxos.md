@@ -1,8 +1,10 @@
 ---
 title: Paxos算法
 date: 2019-12-23 13:26:27
-tags: algorithm
-categories: consensus
+tags: 
+- algorithm
+categories:
+- algorithm
 ---
 # 使Paxos变简单
 

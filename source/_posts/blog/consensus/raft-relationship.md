@@ -1,8 +1,11 @@
 ---
 title: Raft算法之成员关系变化
 date: 2020-01-06 21:01:07
-tags: Raft
-categories: consensus
+tags: 
+- Raft
+- algorithm
+categories:
+- algorithm
 ---
 上一篇文章:[Raft算法之日志复制](https://ifican.top/2020/01/05/blog/consensus/raft-log/)
 

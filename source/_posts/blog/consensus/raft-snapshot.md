@@ -1,8 +1,11 @@
 ---
 title: Raft算法之日志压缩
 date: 2020-01-07 15:43:46
-tags: Raft
-categories: consensus
+tags: 
+- Raft
+- algorithm
+categories:
+- algorithm
 ---
 
 # Raft算法之日志压缩
