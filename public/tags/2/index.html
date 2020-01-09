@@ -136,6 +136,58 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/24/blog/fabric/%E5%A4%96%E9%83%A8%E9%93%BE%E7%A0%81%E6%9E%84%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C/">
+        <p class="h4 index-header">Hyperledger Fabric外部链码构建与运行</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">外部链码构建与运行
+官方文档在Hyperledger Fabric 2.0版本之前，链码的构建和运行是节点实现的一部分，并且定制化是困难的。所有链码在节点上实例化是通过”构建“即根据语言指定的逻辑在节点上硬编码。构建过程将生成Docker容器镜像作为客户端连接节点用来运行可执行的链码。这种方法将链代码实现限制为只能使用几种语言实现，要求Docker成为部署环境的一部分，并阻止将链代码作为长时间运行的服务器进程运行。
+外部构建模式Hyperledger Fabric外部构建器和启动器大致基于Heroku Buildpacks。buildpack实现只是将程序归档转换为可以运行的程序或脚本的集合。buildpack模型已针对链码包进行了调整，并扩展为支持链码执行和发现。
+外部构建和运行API外部构建和运行由4个脚本程序组成：
+
+bin/detect:确定是否应使用此buildpack来构建chaincode程序包并启动它
+bin/build:转换链码包为可执行的链码
+bin/release(可选):为peer节点提供关于链码的元数据
+bin/run(可选):运行链码
+
+bin/detect</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.5k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/24/blog/fabric/%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97/">
         <p class="h4 index-header">Hyperledger Fabric使用硬件安全模块(HSM)</p>
         
@@ -649,51 +701,6 @@ CouchDB1文档存储CouchDB服务器主机是一个存储文档的数据库。�
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/19/blog/fabric/Fabric1.4%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%93%BE%E7%A0%81%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/">
-        <p class="h4 index-header">Fabric1.4源码解析：链码容器启动过程</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">想写点东西记录一下最近看的一些Fabric源码,本文使用的是fabric1.4的版本，所以对于其他版本的fabric，内容可能会有所不同。其实我仅仅知道Go语言一些语法的使用，并不太熟悉Go语言，所以解析的内容可能会有误，欢迎大家批评指正。本文想针对Fabric中链码容器的启动过程进行源码的解析。这里的链码指的是用户链码不是系统链码,顺便回顾一下系统链码:lscc(Life Cycle System ChainCode)生命周期系统链码cscc(Configuration System ChainCode)配置系统链码escc(Endorser System ChainCode)背书系统链码qscc(Query System ChainCode)查询系统链码vscc(Verification System ChainCode)验证系统链码本文主要解析的是用户链码的启动过程。
-1 起点#这是用户端链码的main方法，也是整个流程的入口点，调用了shim包中的Start(cc Chaincode)方法.
-func main(){
-    err :=shim.Start(new(Chain</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-19&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90">fabric源码解析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.6k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -768,7 +775,7 @@ func main(){
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">138.1k</span> 字
+  全站共 <span class="post-count">138.2k</span> 字
   <br>
 
 

@@ -15,7 +15,7 @@
   <meta name="description" content="学习区块链技术ing...">
   <meta name="author" content="任晓东">
   <meta name="keywords" content="blockchain fabric">
-  <title>实验特性和APIs ~ 触不可及的官方网站</title>
+  <title>fabric应用 ~ 触不可及的官方网站</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
@@ -38,7 +38,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 80vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -98,7 +98,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/1.jpg')no-repeat center center;
+         style="background: url('/img/3.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -108,41 +108,6 @@
               
             </span>
 
-            
-              <br>
-              
-                <p class="mt-3">
-                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期日, 十一月 24日 2019, 1:11 下午
-                </p>
-              
-
-              <p>
-                
-                  
-                  &nbsp;<i class="far fa-chart-bar"></i>
-                  <span class="post-count">
-                    263 字
-                  </span>&nbsp;
-                
-
-                
-                  
-                  &nbsp;<i class="far fa-clock"></i>
-                  <span class="post-count">
-                      1 分钟
-                  </span>&nbsp;
-                
-
-                
-                  <!-- 不蒜子统计文章PV -->
-                  
-                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
-                  <span id="busuanzi_container_page_pv">
-                    <span id="busuanzi_value_page_pv"></span> 次
-                  </span>&nbsp;
-                
-              </p>
             
           </div>
 
@@ -154,99 +119,44 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <!--<p class="h4">共计 2 篇文章</p>-->
+  <hr>
+  
+    
       
+      <p class="h5">2020</p>
+    
+    <a href="/2020/01/09/blog/fabric/Fabric_index/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Hyperledger Fabric博客汇总</span>
+      <span style="float: right;">01-09</span>
+    </a>
+  
+    
+      
+      <p class="h5">2019</p>
+    
+    <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Hyperledger Fabric手动生成CA证书搭建Fabric网络</span>
+      <span style="float: right;">12-08</span>
+    </a>
+  
+</div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="py-5 z-depth-3" id="board">
-        <div class="post-content mx-auto" id="post">
-          <div class="markdown-body">
-            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/experimental_apis.md" target="_blank" rel="noopener">Experimental features and APIs</a><br>大多数情况下，etcd项目是稳定的，但我们仍在快速发展！ 我们相信快速发布理念。 我们希望获得有关仍在开发和稳定中的功能的早期反馈。 因此，存在并且将会有更多的实验性功能和API。 我们计划根据社区的早期反馈来改进这些功能，如果兴趣不足，请在接下来的几个版本中放弃这些功能。 请不要在生产环境中依赖任何实验性功能或API。</p>
-<h2 id="当前实验API-特性是："><a href="#当前实验API-特性是：" class="headerlink" title="当前实验API/特性是："></a><strong>当前实验API/特性是：</strong></h2><hr>
-<ul>
-<li><a href="https://godoc.org/github.com/etcd-io/etcd/clientv3/ordering" target="_blank" rel="noopener">键值对排序</a>包装器：<br>当etcd客户端切换端点时，如果新端点落后于集群的其余部分，则对可序列化读取的响应可能推迟。排序包装器从响应标头缓存当前集群修订版。 如果响应修订版本小于缓存修订版本，则客户端选择另一个端点并重新发出读取。在grpcproxy中启动<code>--experimental-serializable-ordering</code>.</li>
-</ul>
 
-            <hr>
-          </div>
-          <br>
-          <div>
-            <p>
-            
-              <span>
-                <i class="iconfont icon-inbox"></i>
-                
-                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
-                  &nbsp;
-                
-              </span>&nbsp;&nbsp;
-            
-            
-              <span>
-                <i class="iconfont icon-tag"></i>
-                
-                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
-                
-              </span>
-            
-            </p>
-            
-              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
-            
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="d-none d-lg-block col-lg-2 toc-container">
-      
-  <div id="toc">
-    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
-    <div id="tocbot"></div>
-  </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- custom -->
-
-
-<!-- Comments -->
-<div class="col-lg-7 mx-auto nopadding-md">
-  <div class="container comments mx-auto" id="comments">
-    
-      <br><br>
-      
-      
-  <div id="gitalk-container"></div>
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
-  <script type="text/javascript">
-    var gitalk = new Gitalk({
-      clientID: '61f05c79f7a13c277323',
-      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
-      repo: 'newonexd.github.io',
-      owner: 'newonexd',
-      admin: 'newonexd',
-      id: md5(location.pathname),
-      language: 'zh-CN',
-      perPage: 15,
-      pagerDirection: 'last',
-      createIssueManually: 'true',
-      distractionFreeMode: 'false'
-    });
-
-    gitalk.render('gitalk-container')
-  </script>
-
-
-    
-  </div>
-</div>
-
     
   </main>
 
@@ -341,11 +251,6 @@
 
 
 
-  
-    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
-  
-  <script src="/js/post.js" ></script>
-
 
 
   <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
@@ -412,7 +317,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "实验特性和APIs&nbsp;",
+        "fabric应用&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

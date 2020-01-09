@@ -136,6 +136,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/gRPC%E4%BB%A3%E7%90%86/">
+        <p class="h4 index-header">gRPC代理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址:gRPC proxygRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。
+可扩展的监视 API
+gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。
+ </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/etcd/%E5%AE%9E%E9%AA%8C%E7%89%B9%E6%80%A7%E5%92%8CAPIs/">
         <p class="h4 index-header">实验特性和APIs</p>
         
@@ -599,53 +644,6 @@ conn, g</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">
-        <p class="h4 index-header">与etcd进行交互</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：Interacting with etcd
-与etcd进行交互用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。用于与etcd交互的API版本可以通过环境变量ETCDCTL_API设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API etcdctl get获取V2 的Key将返回0并退出，这是预料之中的情况。
-export ETCDCTL_API=3发现版本使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。这里的命令可用于发现版本信息：
-$ etcdctl version
-etcdctl version:3.1.0-alpha.0+git
-API version:3.1写入一个KEY应用程序通过向</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -720,7 +718,7 @@ API version:3.1写入一个KEY应用程序通过向</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">138.1k</span> 字
+  全站共 <span class="post-count">138.2k</span> 字
   <br>
 
 

@@ -1,8 +1,12 @@
 ---
 title: Hyperledger Fabric手动生成CA证书搭建Fabric网络
 date: 2019-12-08 17:14:38
-tags: fabric-ca
-categories: fabric-ca应用
+tags: 
+- fabric-ca
+- fabric
+categories:
+- fabric-ca应用
+- fabric应用
 ---
 之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具`cryptogen`直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。
 所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。
