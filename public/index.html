@@ -136,6 +136,58 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/10/blog/consensus/pbft-view/">
+        <p class="h4 index-header">PBFT之视图更新</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">PBFT之视图更新1 检查点为了保证安全，除非消息中的请求至少已由f+1个无故障的副本节点执行，并且可以从视图更新中向其他节点证明，否则消息必须保留在副本节点日志中。另外，如果某些副本丢失了所有非故障副本节点丢弃的消息，则需要通过转移全部或部分服务状态来使消息更新。因此，副本也需要一些证明状态正确的证据。在执行完所有操作之后生成这些证据的代价是昂贵的。相反，当执行的请求序列号可被某个常数(例如100)整除时，这些证据会定期生成。由执行完这些请求后根据状态机的状态产生的称为检查点，稳定的检查点就是该证据。副本节点维护一些服务状态的逻辑拷贝:最新的稳定的检查点，零个或多个不稳定的检查点，还有当前状态。写时复制技术可以用于减少存储额外状态拷贝的空间负载。作为证据的正确的检查点由以下步骤产生:
+
+当一个副本节点i生成了检查点，将会多播一个消息&lt;CHECKPOINT,n,d,i&gt;_s到其他副本节点。
+n为状态中最新的被执行的请求序列号
+d为状态的摘要
+
+
+每一个副本节点都会收集检查点信息，直到收集到2f+1个来自不同副本节点签名的具有相同序列号以及相同摘要d的消息
+将它们添加到日志中</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Pbft">Pbft</a>&nbsp;
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.8k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/09/blog/consensus/pbft-three_phase/">
         <p class="h4 index-header">PBFT之三阶段提交</p>
         
@@ -238,9 +290,9 @@ Raft算法之日志压缩
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
             <a href="/tags/fabric">fabric</a>&nbsp;
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
           
         
             
@@ -626,57 +678,6 @@ Hyperledger Fabric-sdk-java</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/">
-        <p class="h4 index-header">Hyperledger Fabric链码作为外部服务</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">链码作为外部服务Fabric v2.0支持链码在Fabric环境外部署和执行。允许用户管理与节点保持独立的链码运行。这种方案激励了Fabric中的链码云部署，例如Kubernetes。代替了在每一个节点上面构建与运行链码。链码可以作为一个服务运行，它的生命周期将可以在Fabric环境外进行管理。这种措施利用Fabirc v2.0的外部构建和运行功能。其功能具有允许操作者通过程序构建，运行，发现链码对节点进行扩展。在读取本文内容之前，应该对外部构建与扩展较为熟悉。
-在外部构建功能可以使用之前，链码包内容要求指定的编程语言的源代码进行构建并作为链码二进制文件运行。新的外部构建和运行功能允许用户有选择地定制化构建过程。将链码作为外部服务运行。构建过程允许指定链码运行服务的端点信息。因此包内容可以简单地由外部链码运行服务端点信息和用于安全通信的TLS归档组成。TLS是可选的，但是除了简单的测试环境以外，强烈建议所有环境都使用TLS。
-接下来的部分将描述如何将链码配置为外部服务：
-
-打包链码
-配置节点对外部链码进行处理
-外部构建和运行的简单脚本文件
-编写链码作为外部服务运行
-部署链码
-将链码作为</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-27&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -751,7 +752,7 @@ Hyperledger Fabric-sdk-java</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">140.4k</span> 字
+  全站共 <span class="post-count">142.2k</span> 字
   <br>
 
 

@@ -108,4 +108,4 @@ categories:
 &emsp;&emsp;不依赖消息顺序交付。因此可能节点乱序提交请求。这是无所谓的，因为节点保持了`pre-prepare`,`prepare`,和`commit`消息日志一直到该请求被执行。
 
 图展示了该算法的以一种正常的例子(没有*primary*虚假)的操作。节点0为*primary*，节点3为虚假节点。*C*为客户端.
-![图](https://img2018.cnblogs.com/blog/1652302/202001/1652302-20200109200834147-1525925002.png)
+![图](/img/blog/pbft/1.png)

@@ -232,7 +232,7 @@
 </ul>
 <p>&emsp;&emsp;每一个节点<em>i</em>在当<code>committed-local(m,v,n,i)</code> 消息是有效的，并且<em>i</em>的状态反应了在所有请求中该请求的序列号是最小的情况下将会执行该操作。确保了所有诚实节点可以以相同的顺序执行请求，保证了安全性。在执行完请求操作后，节点将返回一个响应到客户端。<br>&emsp;&emsp;当请求的时间戳小于最后一次回复的时间戳时节点抛弃该请求。保证只执行一次。</p>
 <p>&emsp;&emsp;不依赖消息顺序交付。因此可能节点乱序提交请求。这是无所谓的，因为节点保持了<code>pre-prepare</code>,<code>prepare</code>,和<code>commit</code>消息日志一直到该请求被执行。</p>
-<p>图展示了该算法的以一种正常的例子(没有<em>primary</em>虚假)的操作。节点0为<em>primary</em>，节点3为虚假节点。<em>C</em>为客户端.<br><img src="https://img2018.cnblogs.com/blog/1652302/202001/1652302-20200109200834147-1525925002.png" srcset="undefined" alt="图"></p>
+<p>图展示了该算法的以一种正常的例子(没有<em>primary</em>虚假)的操作。节点0为<em>primary</em>，节点3为虚假节点。<em>C</em>为客户端.<br><img src="/img/blog/pbft/1.png" srcset="undefined" alt="图"></p>
 
             <hr>
           </div>
@@ -367,7 +367,7 @@
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">140.4k</span> 字
+  全站共 <span class="post-count">142.2k</span> 字
   <br>
 
 
