@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Hyperledger Fabric链码作为外部服务 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期五, 十二月 27日 2019, 2:17 凌晨
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.4k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      9 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="链码作为外部服务"><a href="#链码作为外部服务" class="headerlink" title="链码作为外部服务"></a>链码作为外部服务</h1><p>Fabric v2.0支持链码在Fabric环境外部署和执行。允许用户管理与节点保持独立的链码运行。这种方案激励了Fabric中的链码云部署，例如<code>Kubernetes</code>。代替了在每一个节点上面构建与运行链码。链码可以作为一个服务运行，它的生命周期将可以在Fabric环境外进行管理。这种措施利用Fabirc v2.0的外部构建和运行功能。其功能具有允许操作者通过程序构建，运行，发现链码对节点进行扩展。在读取本文内容之前，应该对<a href="https://ifican.top/2019/12/24/blog/fabric/%E5%A4%96%E9%83%A8%E9%93%BE%E7%A0%81%E6%9E%84%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C/" target="_blank" rel="noopener">外部构建与扩展</a>较为熟悉。</p>
+<p>在外部构建功能可以使用之前，链码包内容要求指定的编程语言的源代码进行构建并作为链码二进制文件运行。新的外部构建和运行功能允许用户有选择地定制化构建过程。将链码作为外部服务运行。构建过程允许指定链码运行服务的端点信息。因此包内容可以简单地由外部链码运行服务端点信息和用于安全通信的TLS归档组成。TLS是可选的，但是除了简单的测试环境以外，强烈建议所有环境都使用TLS。</p>
+<p>接下来的部分将描述如何将链码配置为外部服务：</p>
+<ul>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#打包链码" target="_blank" rel="noopener">打包链码</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#配置节点对外部链码进行处理" target="_blank" rel="noopener">配置节点对外部链码进行处理</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#外部构建和运行的脚本文件模板" target="_blank" rel="noopener">外部构建和运行的简单脚本文件</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#编写链码作为外部服务运行" target="_blank" rel="noopener">编写链码作为外部服务运行</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#部署链码" target="_blank" rel="noopener">部署链码</a></li>
+<li><a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#将链码作为外部服务运行" target="_blank" rel="noopener">将链码作为外部服务运行</a></li>
+</ul>
+<h2 id="打包链码"><a href="#打包链码" class="headerlink" title="打包链码"></a>打包链码</h2><p>通过Fabric V2.0版本的<code>chaincode lifecycle</code>，链码可以被打包并以<code>.tar.gz</code>格式进行安装。下面的<code>myccpackage.tgz</code>归档说明了要求的结构：</p>
+<pre><code>tar xvfz myccpackage.tgz
+code.tar.gz
+metadata.json</code></pre><h3 id="code-tar-gz归档要求"><a href="#code-tar-gz归档要求" class="headerlink" title="code.tar.gz归档要求"></a><code>code.tar.gz</code>归档要求</h3><p><code>code.tar.gz</code>归档必须包含链码端点的连接信息。该信息将在<code>/bin/release</code>步骤处打包进<code>connection.json</code>(见下面)。在这里直接将<code>connection.json</code>打包进<code>code.tar.gz</code>，所以<code>release</code>步骤可以直接从这里复制。</p>
+<ul>
+<li><code>address -</code>可以被<code>peer</code>节点访问的链码服务端点，必须指定以<code>:</code>格式。</li>
+<li><code>dial_timeout -</code>等待连接完成的间隔时间，字符串类型并需要指定单位，如<code>&quot;10s&quot;,&quot;500ms&quot;,&quot;1m&quot;</code>,默认为<code>&quot;3s&quot;</code>.</li>
+<li><code>tls_required -</code>是否使用<code>TLS</code>加密。如果为<code>false</code>则不要求使用下面四个属性</li>
+<li><code>client_auth_required -</code>如果为<code>true</code>则需要是定客户端权限认证的<code>key_path</code>,<code>cert_path</code>.默认为<code>false</code>.</li>
+<li><code>key_path -</code>秘钥文件的路径</li>
+<li><code>cert_path -</code>证书文件的路径</li>
+<li><code>root_cert_path -</code>根证书文件路径。</li>
+</ul>
+<p>例如：</p>
+<pre><code>{
+  &quot;address&quot;: &quot;your.chaincode.host.com:9999&quot;,
+  &quot;dial_timeout&quot;: &quot;10s&quot;,
+  &quot;tls_required&quot;: true,
+  &quot;client_auth_required&quot;: &quot;true&quot;,
+  &quot;key_path&quot;: &quot;path/rooted/in/release/directory/key.pem&quot;,
+  &quot;cert_path&quot;: &quot;path/rooted/in/release/directory/cert.pem&quot;,
+  &quot;root_cert_path&quot;: &quot;path/rooted/in/release/directory/rootcert.pem&quot;
+}</code></pre><p><code>TLS</code>文件可以放在<code>code.tar.gz</code>归档的任何地方，因为<code>.tar.gz</code>文件夹内的文件内容将会提供给外部链码构建脚本。<code>bin/release</code>脚本，将会将文件移动到合适的位置。</p>
+<h3 id="metadata-json文件要求"><a href="#metadata-json文件要求" class="headerlink" title="metadata.json文件要求"></a><code>metadata.json</code>文件要求</h3><p>当使用链码作为外部服务时，需要在<code>metadata.json</code>文件中设置<code>type</code>字段，为了指定使用的是外部服务，例如：</p>
+<pre><code>{&quot;path&quot;:&quot;&quot;,&quot;type&quot;:&quot;external&quot;,&quot;label&quot;:&quot;mycc&quot;}</code></pre><h2 id="配置节点对外部链码进行处理"><a href="#配置节点对外部链码进行处理" class="headerlink" title="配置节点对外部链码进行处理"></a>配置节点对外部链码进行处理</h2><p>这个过程和<a href="https://ifican.top/2019/12/24/blog/fabric/%E5%A4%96%E9%83%A8%E9%93%BE%E7%A0%81%E6%9E%84%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C/" target="_blank" rel="noopener">外部构建与扩展</a>介绍的内容是相似的。利用这些脚本来定义外部链码信息。这些脚本位于<code>peer</code>节点的文件系统并且可以访问并处理<code>peer</code>节点处的<code>core.yaml</code>文件中<code>chaincode</code>部分定义的<code>externalBuilders</code>元素。</p>
+<h3 id="创建peer节点上的外部构建器和运行器脚本"><a href="#创建peer节点上的外部构建器和运行器脚本" class="headerlink" title="创建peer节点上的外部构建器和运行器脚本"></a>创建<code>peer</code>节点上的外部构建器和运行器脚本</h3><p> 为了配置链码作为外部服务，必须使用以下脚本文件:</p>
+<ul>
+<li><code>detect -</code>检测<code>metadata.json</code>文件中<code>type</code>是否设置为<code>external</code>并接受链码包。</li>
+<li><code>build -</code>构建链码并将构建的归档放置在<code>BUILD_OUTPUT_DIR</code>位置。脚本提取<code>connection.json</code>文件中的链码端点信息并将<code>code.tar.gz</code>文件中的其他归档文件放置在指定位置。</li>
+<li><code>release -</code>拷贝被构建的归档(在<code>connection.sjon</code>文件中)到指定位置。</li>
+</ul>
+<p>注意到对于链码作为外部服务，没有要求外部构建器和运行器<code>bin/run</code>脚本。<br>脚本文件要求存在<code>peer</code>节点的文件夹内:</p>
+<pre><code>    &lt;peer的环境下完全正确的路径&gt;
+    └── bin
+        ├── build
+        ├── detect
+        └── release</code></pre><h3 id="使peer节点的core-yaml文件包括externalBuilder"><a href="#使peer节点的core-yaml文件包括externalBuilder" class="headerlink" title="使peer节点的core.yaml文件包括externalBuilder"></a>使<code>peer</code>节点的<code>core.yaml</code>文件包括<code>externalBuilder</code></h3><p>最后，为了让<code>peer</code>节点能够使用外部构建器和运行器脚本，需要修改位于<code>peer</code>节点的<code>core.yaml</code>文件中的<code>chaincode</code>部分，使它包括<code>externalBuilder</code>配置元素。</p>
+<pre><code>externalBuilders:
+     - name: myexternal
+       path: &lt;peer的环境下完全正确的路径&gt; #就是上面的那个路径</code></pre><h2 id="外部构建和运行的脚本文件模板"><a href="#外部构建和运行的脚本文件模板" class="headerlink" title="外部构建和运行的脚本文件模板"></a>外部构建和运行的脚本文件模板</h2><p>为了帮助理解在链码作为外部服务时，每一个脚本需要包含哪些工作，这一部分包含<code>bin/detect,bin/build,bin/release</code>脚本示例。<br>这些例子使用<code>jq</code>命令对<code>json</code>个数数据进行转换，可以通过运行<code>jq --version</code>检查是否安装该工具。否则，需要安装<code>jq</code>或者对脚本文件进行适当的修改。</p>
+<h3 id="bin-detect"><a href="#bin-detect" class="headerlink" title="/bin/detect"></a><strong>/bin/detect</strong></h3><p><code>bin/detect</code>脚本的职责是决定是否使用<code>buildpack</code>对链码包进行构建和运行。对于链码作为外部服务，脚本需要检测<code>metadata.json</code>文件中的<code>type</code>是否被设置为<code>external</code>。<code>peer</code>节点通过两个参数调用该脚本:</p>
+<pre><code>bin/detect CHAINCODE_SOURCE_DIR CHAINCODE_METADATA_DIR</code></pre><p>一个典型的<code>detect</code>脚本应该包含:</p>
+<pre><code>#!/bin/bash
+
+set -euo pipefail
+
+if [ &quot;$#&quot; -ne 2 ]; then
+    &gt;&amp;2 echo &quot;Expected 2 directories got $#&quot;
+    exit 2
+fi
+
+#检测`type`是否被设置为`external`
+if [ &quot;$(jq -r .type &quot;$2/metadata.json&quot;)&quot; == &quot;external&quot; ]; then
+    exit 0
+fi
+
+exit 1</code></pre><p><code>metadata.json</code>文件应该包含以下关键点:</p>
+<pre><code>{&quot;path&quot;:&quot;&quot;,&quot;type&quot;:&quot;external&quot;,&quot;label&quot;:&quot;mycc&quot;}</code></pre><h3 id="bin-build"><a href="#bin-build" class="headerlink" title="/bin/build"></a><strong>/bin/build</strong></h3><p><code>bin/build</code>脚本的职责是构建，编译，以及转换链码包内容到可以被<code>release</code>和<code>run</code>使用的归档中。对于链码作为外部服务，该脚本拷贝<code>connection.json</code>文件到<code>BUILD_OUTPUT_DIR</code>.<code>peer</code>节点通过三个参数调用该脚本:</p>
+<pre><code>bin/build CHAINCODE_SOURCE_DIR CHAINCODE_METADATA_DIR BUILD_OUTPUT_DIR</code></pre><p>一个典型的<code>build</code>脚本应该包含:</p>
+<pre><code>#!/bin/bash
+
+set -euo pipefail
+
+if [ &quot;$#&quot; -ne 3 ]; then
+    &gt;&amp;2 echo &quot;Expected 3 directories got $#&quot;
+    exit 1
+fi
+
+SOURCE=$1
+OUTPUT=$3
+
+#检查connection.json文件是否存在
+if [ ! -f &quot;$SOURCE/connection.json&quot; ]  ; then
+    &gt;&amp;2 echo &quot;$SOURCE/connection.json not found&quot;
+    exit 1
+fi
+
+#如果需要的话在这里做更多验证
+
+#简单拷贝端点信息到指定的输出位置
+cp $SOURCE/connection.json $OUTPUT/connection.json
+
+exit 0</code></pre><h3 id="bin-release"><a href="#bin-release" class="headerlink" title="/bin/release"></a><strong>/bin/release</strong></h3><p><code>bin/release</code>脚本的职责是为<code>peer</code>节点提供链码元数据。对于链码作为外部服务，<code>bin/release</code>脚本作用是为<code>peer</code>提供放置在<code>RELEASE_OUTPUT_DIR</code>位置的<code>connection.json</code>文件。<code>peer</code>节点通过两个参数调用该脚本:</p>
+<pre><code>bin/release BUILD_OUTPUT_DIR RELEASE_OUTPUT_DIR</code></pre><p>一个典型的<code>release</code>脚本应该包含:</p>
+<pre><code>#!/bin/bash
+
+set -euo pipefail
+
+set -x
+
+if [ &quot;$#&quot; -ne 2 ]; then
+    &gt;&amp;2 echo &quot;Expected 2 directories got $#&quot;
+    exit 2
+fi
+
+BLD=&quot;$1&quot;
+RELEASE=&quot;$2&quot;
+
+#外部链码期望归档被放置在&quot;$RELEASE&quot;/chaincode/server路径下
+if [ -f $BLD/connection.json ]; then
+   mkdir -p &quot;$RELEASE&quot;/chaincode/server
+   cp $BLD/connection.json &quot;$RELEASE&quot;/chaincode/server
+   exit 0
+fi
+
+exit 1</code></pre><h2 id="编写链码作为外部服务运行"><a href="#编写链码作为外部服务运行" class="headerlink" title="编写链码作为外部服务运行"></a>编写链码作为外部服务运行</h2><p>当前，将链码作为外部服务运行模板只支持GO语言链码shim.在Fabric v2.0，Go shim API添加了<code>ChaincodeServer</code>类型。开发者可以使用它创建链码服务。<code>Invoke</code>和<code>Query</code>API不受影响。开发者需要写<code>shim.ChaincodeServer</code>API，然后选择构建链码并在外部环境中运行。这里有一个简单的链码程序模板用来说明这种模式:</p>
+<pre><code>package main
+
+import (
+        &quot;fmt&quot;
+
+        &quot;github.com/hyperledger/fabric-chaincode-go/shim&quot;
+        pb &quot;github.com/hyperledger/fabric-protos-go/peer&quot;
+)
+
+// SimpleChaincode 模板简单链码实现
+type SimpleChaincode struct {
+}
+
+func (s *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
+        // 初始化代码
+}
+
+func (s *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+        // 调用代码
+}
+
+//NOTE - ccid 和端点信息参数很难在这里编码说明，可以通过多种标准方式指定
+func main() {
+       //ccid 设计用来安装链码实例 (使用“peer lifecycle chaincode install &lt;package&gt;” 命令) for instance
+        ccid := &quot;mycc:fcbf8724572d42e859a7dd9a7cd8e2efb84058292017df6e3d89178b64e6c831&quot;
+
+        server := &amp;shim.ChaincodeServer{
+                        CCID: ccid,
+                        Address: &quot;myhost:9999&quot;
+                        CC: new(SimpleChaincode),
+                        TLSProps: shim.TLSProperties{
+                                Disabled: true,
+                        },
+                }
+        err := server.Start()
+        if err != nil {
+                fmt.Printf(&quot;Error starting Simple chaincode: %s&quot;, err)
+        }
+}</code></pre><p>将链码作为外部服务运行关键的是使用<code>shim.ChaincodeServer</code>.使用的新的链码服务<code>shim</code>API<code>shim.ChaincodeServer</code>属性描述如下:</p>
+<ul>
+<li><strong>CCID</strong>(string):CCID应该匹配<code>peer</code>节点上的链码包。<code>CCID</code>与被安装的链码关联，在使用<code>peer lifecycle chaincode install &lt;package&gt;</code>CLI命令返回。这可以在安装后使用<code>peer lifecycle chaincode queryinstalled</code>命令获得。</li>
+<li><strong>Address</strong>(string):链码服务的监听地址。</li>
+<li><strong>CC</strong>(Chaincode):处理初始化和调用的链码</li>
+<li><strong>TLSProps</strong>(TLSProperties):链码服务的TLS属性。</li>
+<li><strong>KaOpts</strong>(keepalive.ServerParameters):保持连接选项，默认为空</li>
+</ul>
+<h2 id="部署链码"><a href="#部署链码" class="headerlink" title="部署链码"></a>部署链码</h2><p>当GO语言链码准备好部署后，可以通过<a href="https://hyperledger-fabric.readthedocs.io/en/latest/cc_service.html#packaging-chaincode" target="_blank" rel="noopener">Packageing chaincode</a>部分解释的内容对链码进行打包。并通过<a href="https://hyperledger-fabric.readthedocs.io/en/latest/chaincode4noah.html#chaincode-lifecycle" target="_blank" rel="noopener">chaincode lifecycle</a>部分内容对链码进行部署。</p>
+<h2 id="将链码作为外部服务运行"><a href="#将链码作为外部服务运行" class="headerlink" title="将链码作为外部服务运行"></a>将链码作为外部服务运行</h2><p>根据指定的<a href="https://ifican.top/2019/12/27/blog/fabric/%E9%93%BE%E7%A0%81%E4%BD%9C%E4%B8%BA%E5%A4%96%E9%83%A8%E6%9C%8D%E5%8A%A1/#编写链码作为外部服务运行" target="_blank" rel="noopener">编写链码作为外部服务运行</a>部分创建链码，并选择构建可运行的链码环境如<code>Kubernetes</code>或者直接在<code>peer</code>主机上运行。</p>
+<p>使用链码作为外部服务模板，将不再要求在每一个节点上安装链码。当链码端点在<code>peer</code>节点上部署并运行后，可以继续正常地实例化和调用链码。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.3k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric链码作为外部服务&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

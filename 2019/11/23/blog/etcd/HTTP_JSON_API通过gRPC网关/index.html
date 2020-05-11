@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>HTTP_JSON_API通过gRPC网关 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 12:32 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      7 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_grpc_gateway.md" target="_blank" rel="noopener">HTTP JSON API through the gRPC gateway</a><br>etcd v3 使用 gRPC 作为消息协议。etcd项目包括一个基于gRPC的<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%AE%A2%E6%88%B7%E7%AB%AFv3/">Go客户端</a>和一个命令行工具，<a href="https://github.com/etcd-io/etcd/tree/master/etcdctl" target="_blank" rel="noopener">etcdctl</a>,通过gRPC与etcd集群进行交互.对于没有gRPC支持的语言，etcd提供JSON <a href="https://github.com/grpc-ecosystem/grpc-gateway" target="_blank" rel="noopener">gRPC网关</a>，这个网关提供一个RESTful风格的代理可以将HTTP/JSON请求转换为gRPC消息。</p>
+<h3 id="使用-gRPC网关"><a href="#使用-gRPC网关" class="headerlink" title="使用 gRPC网关"></a>使用 gRPC网关</h3><p>这个网关接受一个到etcd’s buffer协议消息定义的JSON格式的映射,注意<code>Key</code>和<code>Value</code>字段定义为byte 数组，因此JSON必须使用base64编码,下面的例子使用<code>curl</code>,但是每个HTTP/JSON客户端的工作原理都和例子相同。<br><strong>注意</strong><br>gRPC网关节点从etcd v3.3发生变化：</p>
+<ul>
+<li>etcd v3.2以及之前版本只使用<code>[CLIENT-URL]/v3alpha/*</code>。</li>
+<li>etcd v3.3使用<code>[CLIENT-URL]/v3beta/*</code>保持<code>[CLIENT-URL]/v3alpha/*</code>使用。</li>
+<li>etcd v3.4使用<code>[CLIENT-URL]/v3/*</code>保持<code>[CLIENT-URL]/v3beta/*</code>使用。<ul>
+<li><code>[CLIENT-URL]/v3alpha/*</code>被抛弃使用。</li>
+</ul>
+</li>
+<li>etcd v3.5以及最新版本只使用<code>[CLIENT-URL]/v3/*</code>。<ul>
+<li><code>[CLIENT-URL]/v3beta/*</code>被抛弃使用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="存储和获取Keys"><a href="#存储和获取Keys" class="headerlink" title="存储和获取Keys"></a>存储和获取Keys</h3><p>使用<code>/v3/kv/range</code>和<code>/v3/kv/put</code>服务读和写Keys:</p>
+<pre><code>&lt;&lt;COMMENThttps://www.base64encode.org/foo is &#39;Zm9v&#39; in Base64bar is &#39;YmFy&#39;COMMENT
+
+curl -L http://localhost:2379/v3/kv/put \
+  -X POST -d &#39;{&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;}}
+
+curl -L http://localhost:2379/v3/kv/range \
+  -X POST -d &#39;{&quot;key&quot;: &quot;Zm9v&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;},&quot;kvs&quot;:[{&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;}],&quot;count&quot;:&quot;1&quot;}
+
+# get all keys prefixed with &quot;foo&quot;
+curl -L http://localhost:2379/v3/kv/range \
+  -X POST -d &#39;{&quot;key&quot;: &quot;Zm9v&quot;, &quot;range_end&quot;: &quot;Zm9w&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;3&quot;},&quot;kvs&quot;:[{&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;}],&quot;count&quot;:&quot;1&quot;}</code></pre><h3 id="查看-Keys"><a href="#查看-Keys" class="headerlink" title="查看 Keys"></a>查看 Keys</h3><p>使用<code>/v3/watch</code>服务查看Keys:</p>
+<pre><code>curl -N http://localhost:2379/v3/watch \
+  -X POST -d &#39;{&quot;create_request&quot;: {&quot;key&quot;:&quot;Zm9v&quot;} }&#39; &amp;# {&quot;result&quot;:{&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;},&quot;created&quot;:true}}
+
+curl -L http://localhost:2379/v3/kv/put \
+  -X POST -d &#39;{&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;}&#39; &gt;/dev/null 2&gt;&amp;1# {&quot;result&quot;:{&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;2&quot;},&quot;events&quot;:[{&quot;kv&quot;:{&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;2&quot;,&quot;version&quot;:&quot;1&quot;,&quot;value&quot;:&quot;YmFy&quot;}}]}}</code></pre><h3 id="交易"><a href="#交易" class="headerlink" title="交易"></a>交易</h3><p>使用``/v3/kv/txn`发行一个交易：</p>
+<pre><code># 目标创建
+curl -L http://localhost:2379/v3/kv/txn \
+  -X POST \
+  -d &#39;{&quot;compare&quot;:[{&quot;target&quot;:&quot;CREATE&quot;,&quot;key&quot;:&quot;Zm9v&quot;,&quot;createRevision&quot;:&quot;2&quot;}],&quot;success&quot;:[{&quot;requestPut&quot;:{&quot;key&quot;:&quot;Zm9v&quot;,&quot;value&quot;:&quot;YmFy&quot;}}]}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;12585971608760269493&quot;,&quot;member_id&quot;:&quot;13847567121247652255&quot;,&quot;revision&quot;:&quot;3&quot;,&quot;raft_term&quot;:&quot;2&quot;},&quot;succeeded&quot;:true,&quot;responses&quot;:[{&quot;response_put&quot;:{&quot;header&quot;:{&quot;revision&quot;:&quot;3&quot;}}}]}</code></pre><pre><code># 目标版本
+curl -L http://localhost:2379/v3/kv/txn \
+  -X POST \
+  -d &#39;{&quot;compare&quot;:[{&quot;version&quot;:&quot;4&quot;,&quot;result&quot;:&quot;EQUAL&quot;,&quot;target&quot;:&quot;VERSION&quot;,&quot;key&quot;:&quot;Zm9v&quot;}],&quot;success&quot;:[{&quot;requestRange&quot;:{&quot;key&quot;:&quot;Zm9v&quot;}}]}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;6&quot;,&quot;raft_term&quot;:&quot;3&quot;},&quot;succeeded&quot;:true,&quot;responses&quot;:[{&quot;response_range&quot;:{&quot;header&quot;:{&quot;revision&quot;:&quot;6&quot;},&quot;kvs&quot;:[{&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:&quot;2&quot;,&quot;mod_revision&quot;:&quot;6&quot;,&quot;version&quot;:&quot;4&quot;,&quot;value&quot;:&quot;YmF6&quot;}],&quot;count&quot;:&quot;1&quot;}}]}</code></pre><h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3><p>使用<code>/v3/auth</code>设置权限：</p>
+<pre><code># 创建root用户
+curl -L http://localhost:2379/v3/auth/user/add \
+  -X POST -d &#39;{&quot;name&quot;: &quot;root&quot;, &quot;password&quot;: &quot;pass&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;}}
+
+# 创建root角色
+curl -L http://localhost:2379/v3/auth/role/add \
+  -X POST -d &#39;{&quot;name&quot;: &quot;root&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;}}
+
+# 授予root角色
+curl -L http://localhost:2379/v3/auth/user/grant \
+  -X POST -d &#39;{&quot;user&quot;: &quot;root&quot;, &quot;role&quot;: &quot;root&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;}}
+
+# 开启认证
+curl -L http://localhost:2379/v3/auth/enable -X POST -d &#39;{}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;}}</code></pre><p>通过<code>/v3/auth/authenticate</code>服务使用一个认证令牌进行认证:</p>
+<pre><code># 为根用户获取认证令牌
+curl -L http://localhost:2379/v3/auth/authenticate \
+  -X POST -d &#39;{&quot;name&quot;: &quot;root&quot;, &quot;password&quot;: &quot;pass&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;1&quot;,&quot;raft_term&quot;:&quot;2&quot;},&quot;token&quot;:&quot;sssvIpwfnLAcWAQH.9&quot;}</code></pre><p>使用认证证书设置认证头部到认证令牌获取Keys：</p>
+<pre><code>curl -L http://localhost:2379/v3/kv/put \
+  -H &#39;Authorization : sssvIpwfnLAcWAQH.9&#39; \
+  -X POST -d &#39;{&quot;key&quot;: &quot;Zm9v&quot;, &quot;value&quot;: &quot;YmFy&quot;}&#39;# {&quot;header&quot;:{&quot;cluster_id&quot;:&quot;14841639068965178418&quot;,&quot;member_id&quot;:&quot;10276657743932975437&quot;,&quot;revision&quot;:&quot;2&quot;,&quot;raft_term&quot;:&quot;2&quot;}}</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.3k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "HTTP_JSON_API通过gRPC网关&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

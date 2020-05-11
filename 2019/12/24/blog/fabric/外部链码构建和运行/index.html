@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Hyperledger Fabric外部链码构建与运行 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 十二月 24日 2019, 7:42 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.5k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      9 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="外部链码构建与运行"><a href="#外部链码构建与运行" class="headerlink" title="外部链码构建与运行"></a>外部链码构建与运行</h1><hr>
+<p><a href="https://hyperledger-fabric.readthedocs.io/en/latest/cc_launcher.html" target="_blank" rel="noopener">官方文档</a><br>在Hyperledger Fabric 2.0版本之前，链码的构建和运行是节点实现的一部分，并且定制化是困难的。所有链码在节点上实例化是通过”构建“即根据语言指定的逻辑在节点上硬编码。构建过程将生成<code>Docker</code>容器镜像作为客户端连接节点用来运行可执行的链码。<br>这种方法将链代码实现限制为只能使用几种语言实现，要求<code>Docker</code>成为部署环境的一部分，并阻止将链代码作为长时间运行的服务器进程运行。</p>
+<h1 id="外部构建模式"><a href="#外部构建模式" class="headerlink" title="外部构建模式"></a>外部构建模式</h1><p>Hyperledger Fabric外部构建器和启动器大致基于Heroku <a href="https://devcenter.heroku.com/articles/buildpack-api" target="_blank" rel="noopener">Buildpacks</a>。<code>buildpack</code>实现只是将程序归档转换为可以运行的程序或脚本的集合。<code>buildpack</code>模型已针对链码包进行了调整，并扩展为支持链码执行和发现。</p>
+<h2 id="外部构建和运行API"><a href="#外部构建和运行API" class="headerlink" title="外部构建和运行API"></a>外部构建和运行API</h2><p>外部构建和运行由4个脚本程序组成：</p>
+<ul>
+<li><code>bin/detect</code>:确定是否应使用此<code>buildpack</code>来构建<code>chaincode</code>程序包并启动它</li>
+<li><code>bin/build</code>:转换链码包为可执行的链码</li>
+<li><code>bin/release(可选)</code>:为<code>peer</code>节点提供关于链码的元数据</li>
+<li><code>bin/run(可选)</code>:运行链码</li>
+</ul>
+<h3 id="bin-detect"><a href="#bin-detect" class="headerlink" title="bin/detect"></a><code>bin/detect</code></h3><p><code>bin/detect</code>脚本决定是否应使用此<code>buildpack</code>来构建<code>chaincode</code>程序包并启动它,<code>peer</code>节点通过两个参数调用<code>detect</code>:</p>
+<pre><code>bin/detect CHAINCOD_SOURCE_DIR CHAINCODE_METADATA_DIR</code></pre><p>当<code>detect</code>被调用，<code>CHAINCOD_SOURCE_DIR</code>包含的链码资源以及<code>CHAINCODE_METADATA_DIR</code>包含的<code>metadata.json</code>文件将从链码包中安装到节点。<code>CHAINCOD_SOURCE_DIR</code>和<code>CHAINCODE_METADATA_DIR</code>应该被作为只读输入。如果将<code>buildpack</code>应用于<code>chaincode</code>源程序包，<code>detect</code>必须返回退出码0；否则，其他任何退出代码都将指示<code>buildpack</code>不应用内于<code>chaincode</code>源程序包。<br>下面是一个简单的用于<code>go</code>语言链码的<code>detect</code>脚本例子：</p>
+<pre><code>#!/bin/bash
+
+CHAINCODE_METADATA_DIR=&quot;$2&quot;
+
+# 使用jq工具从metadata.json中获取链码类型，如果链码类型为golang，则成功退出
+if [ &quot;$(jq -r .type &quot;$CHAINCODE_METADATA_DIR/metadata.json&quot; | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39;)&quot; = &quot;golang&quot; ]; then
+    exit 0
+fi
+
+exit 1</code></pre><h3 id="bin-build"><a href="#bin-build" class="headerlink" title="bin/build"></a><code>bin/build</code></h3><p><code>bin/build</code>脚本用于构建，编译，或者转换链码包的内容到可以被<code>release</code>和<code>run</code>使用的类型。节点通过三个参数调用<code>build</code>:</p>
+<pre><code>bin/build CHAINCODE_SOURCE_DIR CHAINCODE_METADATA_DIR BUILD_OUTPUT_DIR</code></pre><p>当<code>build</code>被调用，<code>CHAINCOD_SOURCE_DIR</code>包含的链码资源以及<code>CHAINCODE_METADATA_DIR</code>包含的<code>metadata.json</code>文件将从链码包中安装到节点。<code>BUILD_OUTPUT_DIR</code>是一个文件夹用于存放<code>release</code>和<code>run</code>需要的文件。<code>build</code>脚本应该将<code>CHAINCOD_SOURCE_DIR</code>和<code>CHAINCODE_METADATA_DIR</code>作为只读输入，<code>BUILD_OUTPUT_DIR</code>作为可写输出。</p>
+<p>下面是一个简单的用于<code>go</code>语言链码的<code>build</code>脚本例子：</p>
+<pre><code>#!/bin/bash
+
+CHAINCODE_SOURCE_DIR=&quot;$1&quot;
+CHAINCODE_METADATA_DIR=&quot;$2&quot;
+BUILD_OUTPUT_DIR=&quot;$3&quot;
+
+# 从 metadata.json获取包内容
+GO_PACKAGE_PATH=&quot;$(jq -r .path &quot;$CHAINCODE_METADATA_DIR/metadata.json&quot;)&quot;
+if [ -f &quot;$CHAINCODE_SOURCE_DIR/src/go.mod&quot; ]; then
+    cd &quot;$CHAINCODE_SOURCE_DIR/src&quot;
+    go build -v -mod=readonly -o &quot;$BUILD_OUTPUT_DIR/chaincode&quot; &quot;$GO_PACKAGE_PATH&quot;
+else
+    GO111MODULE=off go build -v  -o &quot;$BUILD_OUTPUT_DIR/chaincode&quot; &quot;$GO_PACKAGE_PATH&quot;
+fi
+
+# 存储状态数据库索引元数据提供给release
+if [ -d &quot;$CHAINCODE_SOURCE_DIR/META-INF&quot; ]; then
+    cp -a &quot;$CHAINCODE_SOURCE_DIR/META-INF&quot; &quot;$BUILD_OUTPUT_DIR/&quot;
+fi</code></pre><h3 id="bin-release"><a href="#bin-release" class="headerlink" title="bin/release"></a><code>bin/release</code></h3><p><code>bin/release</code>脚本为节点提供链码元数据。该脚本是可选的。如果没有提供，这一步将会跳过。节点通过两个参数调用<code>release</code>：</p>
+<pre><code>bin/release BUILD_OUTPUT_DIR RELEASE_OUTPUT_DIR</code></pre><p>调用<code>release</code>时，<code>BUILD_OUTPUT_DIR</code>包含构建程序填充的归档，应将其视为只读输入。<code>RELEASE_OUTPUT_DIR</code>是<code>release</code>必须放置归档以供节点使用的目录。</p>
+<p>当<code>release</code>执行完成，节点将会从<code>RELEASE_OUTPUT_DIR</code>消费两种类型的元数据:</p>
+<ul>
+<li>CouchDB定义的状态数据库索引。</li>
+<li>外部链码服务连接信息(<code>chaincode/server/connection.json</code>)</li>
+</ul>
+<p>如果链码要求CouchDB索引定义，<code>release</code>需要将索引放置在<code>RELEASE_OUTPUT_DIR</code>下的<code>state/couchdb/indexes</code>文件夹内。索引必须含有<code>.json</code>扩展名。</p>
+<p>在使用链码服务器实现的情况下，<code>release</code>负责使用链码服务器的地址以及与链码通信所需的任何TLS资产来填充<code>chaincode/server/connection.json</code>。将服务器连接信息提供给节点时，将不会调用<code>run</code>。</p>
+<p>下面是一个简单的用于<code>go</code>语言链码的<code>release</code>脚本例子：</p>
+<pre><code>#!/bin/bash
+
+BUILD_OUTPUT_DIR=&quot;$1&quot;
+RELEASE_OUTPUT_DIR=&quot;$2&quot;
+
+# 从 META-INF/* 拷贝索引文件到输出文件夹
+if [ -d &quot;$BUILD_OUTPUT_DIR/META-INF&quot; ] ; then
+   cp -a &quot;$BUILD_OUTPUT_DIR/META-INF/&quot;* &quot;$RELEASE_OUTPUT_DIR/&quot;
+fi</code></pre><h3 id="bin-run"><a href="#bin-run" class="headerlink" title="bin/run"></a><code>bin/run</code></h3><p><code>bin/run</code>脚本用于链码的运行。节点通过两个参数调用<code>run</code>：</p>
+<pre><code>bin/run BUILD_OUTPUT_DIR RUN_METADATA_DIR</code></pre><p>当<code>BUILD_OUTPUT_DIR</code>包含<code>build</code>程序填充的归档，而<code>RUN_METADATA_DIR</code>包含有一个名为<code>chaincode.json</code>的文件，该文件包含链码连接和注册到节点所需的信息，<code>run</code>将被调用。<code>bin/run</code>脚本对于<code>BUILD_OUTPUT_DIR</code>以及<code>RUN_METADATA_DIR</code>文件夹应为只读输入。<code>chaincode.json</code>文件包含的关键信息有：</p>
+<ul>
+<li><code>chaincode_id:</code>连接到链码包的唯一ID</li>
+<li><code>peer_address:``peer</code>节点的<code>ChaincodeSupport</code>中的gRPC服务端点主机地址，格式为<code>host:port</code>.</li>
+<li><code>client_cert:</code>由<code>peer</code>生成的<code>PEM</code>编码的TLS客户端证书。当链码与节点建立连接时将会被使用。</li>
+<li><code>client_key:</code>由<code>peer</code>生成的<code>PEM</code>编码的客户端秘钥。当链码与节点建立连接时将会被使用。</li>
+<li><code>root_cert:</code>由<code>peer</code>节点的<code>ChaincodeSupport</code>中的gRPC服务端点主机使用的<code>PEM</code>编码的<code>TLS</code>根证书。</li>
+</ul>
+<p>当<code>run</code>停止时，与<code>peer</code>连接的链码也会终止。如果另一个请求访问链码，节点将会尝试通过调用<code>run</code>启动链码的另一个实例。在调用链码时，<code>chaincode.json</code>文件内容不能够被缓存。</p>
+<p>下面是一个简单的用于<code>go</code>语言链码的<code>run</code>脚本例子：</p>
+<pre><code>#!/bin/bash
+
+BUILD_OUTPUT_DIR=&quot;$1&quot;
+RUN_METADATA_DIR=&quot;$2&quot;
+
+# 为go语言链码shim包配置环境变量
+export CORE_CHAINCODE_ID_NAME=&quot;$(jq -r .chaincode_id &quot;$RUN_METADATA_DIR/chaincode.json&quot;)&quot;
+export CORE_PEER_TLS_ENABLED=&quot;true&quot;
+export CORE_TLS_CLIENT_CERT_FILE=&quot;$RUN_METADATA_DIR/client.crt&quot;
+export CORE_TLS_CLIENT_KEY_FILE=&quot;$RUN_METADATA_DIR/client.key&quot;
+export CORE_PEER_TLS_ROOTCERT_FILE=&quot;$RUN_METADATA_DIR/root.crt&quot;
+
+# 为go语言链码shim包获取秘钥和证书材料
+jq -r .client_cert &quot;$RUN_METADATA_DIR/chaincode.json&quot; &gt; &quot;$CORE_TLS_CLIENT_CERT_FILE&quot;
+jq -r .client_key  &quot;$RUN_METADATA_DIR/chaincode.json&quot; &gt; &quot;$CORE_TLS_CLIENT_KEY_FILE&quot;
+jq -r .root_cert   &quot;$RUN_METADATA_DIR/chaincode.json&quot; &gt; &quot;$CORE_PEER_TLS_ROOTCERT_FILE&quot;
+if [ -z &quot;$(jq -r .client_cert &quot;$RUN_METADATA_DIR/chaincode.json&quot;)&quot; ]; then
+    export CORE_PEER_TLS_ENABLED=&quot;false&quot;
+fi
+
+# 执行链码并使用链码进程替代脚本
+exec &quot;$BUILD_OUTPUT_DIR/chaincode&quot; -peer.address=&quot;$(jq -r .peer_address &quot;$ARTIFACTS/chaincode.json&quot;)&quot;</code></pre><h2 id="外部构建和运行的配置"><a href="#外部构建和运行的配置" class="headerlink" title="外部构建和运行的配置"></a>外部构建和运行的配置</h2><p>在<code>core.yaml</code>的<code>chaincode</code>配置区域下添加一个<code>externalBuilder</code>元素配置节点以使用外部构建器.每一个外部构建器的定义必须包含名字(用于日志)和包含构建器脚本的<code>bin</code>文件夹的上一级路径。</p>
+<p>调用外部构建器脚本时还可以从节点获取环境变量名称的可选列表。</p>
+<p>下面的示例定义了两个外部构建器：</p>
+<pre><code>chaincode:
+  externalBuilders:
+  - name: my-golang-builder
+    path: /builders/golang
+    environmentWhitelist:
+    - GOPROXY
+    - GONOPROXY
+    - GOSUMDB
+    - GONOSUMDB
+  - name: noop-builder
+    path: /builders/binary</code></pre><p>在这个示例中，实现的构建器<code>my-golang-builder</code>被包含在<code>/builders/golang</code>文件夹内，它的脚本文件位于<code>/builders/golang/bin</code>.当节点调用任何与<code>my-golang-builder</code>相关的构建脚本时，将只会传播白名单内的环境变量的值。</p>
+<p>这些环境变量总是传播到外部构建器：</p>
+<ul>
+<li>LD_LIBRARY_PATH</li>
+<li>LIBPATH</li>
+<li>PATH</li>
+<li>TMPDIR</li>
+</ul>
+<p>当<code>externalBuilder</code>配置存在时，节点将会迭代按顺序排列的构建器的列表。调用<code>/bin/detect</code>直到其中的一个成功执行。<br>如果没有构建器成功执行<code>detect</code>脚本，节点将会回滚使用初始的<code>Docker</code>通过节点实现构建进程。这说明外部的构建器是完全可选的。</p>
+<p>在上面的示例中，节点将试图使用<code>my-golang-builder</code>，如果无效的话则使用<code>noop-builder</code>，还是无效的话最后使用节点内部构建进程。</p>
+<h2 id="链码包"><a href="#链码包" class="headerlink" title="链码包"></a>链码包</h2><p>Fabric 2.0引入了新的生命周期链码。链码包的格式从序列号协议缓冲消息变为了由<code>gzip</code>压缩的<code>POSIX tape</code>归档。链码包通过使用<code>peer lifecycle chaincode package</code>创建新的格式。</p>
+<h3 id="Lifecycle链码包内容"><a href="#Lifecycle链码包内容" class="headerlink" title="Lifecycle链码包内容"></a><code>Lifecycle</code>链码包内容</h3><p><code>lifecycle</code>链码包包含两个文件，第一个文件<code>code.tar.gz</code>是一个使用<code>gzip</code>压缩的<code>POSIX tape</code>归档。这个文件包括链码的源归档。由节点<code>CLI</code>创建并将链码的实现源码放置在<code>src</code>文件夹下，链码的元数据(如CouchDB索引文件)放置在<code>META-INF</code>文件夹。</p>
+<p>第二个文件<code>metadata.json</code>是一个<code>JSON</code>格式的文档包含三个键：</p>
+<ul>
+<li><code>type</code>:链码的类型(例如<code>GOLANG</code>,<code>JAVA</code>,<code>NODE</code>)</li>
+<li><code>path</code>:对于go语言链码，则是<code>GOPATH</code>或者<code>GOMOD</code>到主链码包的相对路径，其他类型的链码未定义。</li>
+<li><code>label</code>:用于生成包ID的链码标签，在新的链码<code>lifecycle</code>过程中用于标识包的身份。</li>
+</ul>
+<p><code>type</code>和<code>path</code>字段仅由<code>Docker</code>平台构建使用。</p>
+<h3 id="链码包以及外部构建器"><a href="#链码包以及外部构建器" class="headerlink" title="链码包以及外部构建器"></a>链码包以及外部构建器</h3><p>当链码包安装在节点上后，<code>code.tar.gz</code>和<code>metadata.json</code>的内容将不能调用外部构建器处理。除了<code>label</code>字段用于新的<code>lifecycle</code>对包ID进行计算。为用户提供了很大的灵活性，使他们可以打包将由外部构建者和启动者处理的源和元数据。</p>
+<p>例如，可以构造一个自定义的链码包，该代码包在<code>code.tar.gz</code>中包含一个预编译的链码实现，并带有一个<code>metadata.json</code>文件，允许二进制构建包检测该自定义包，验证哈希值并作为链码运行。</p>
+<p>另一个示例是chaincode程序包，其中仅包含状态数据库索引定义以及外部启动程序连接到正在运行的<code>chaincode</code>服务器所需的数据。在这种情况下，<code>build</code>过程将仅从过程中提取元数据，然后将其<code>release</code>给节点。</p>
+<p>唯一的要求是<code>code.tar.gz</code>只能包含常规文件和目录条目，并且这些条目不能包含会导致文件写入链码包根路径逻辑外。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.3k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric外部链码构建与运行&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

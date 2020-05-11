@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>gRPC代理 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十一月 24日 2019, 2:35 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      9 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>原文地址:<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/grpc_proxy.md" target="_blank" rel="noopener">gRPC proxy</a><br>gRPC代理是在gRPC层（L7）运行的无状态etcd反向代理。代理旨在减少核心etcd群集上的总处理负载。对于水平可伸缩性，它合并了监视和租约API请求。 为了保护集群免受滥用客户端的侵害，它会缓存关键范围请求。<br>gRPC代理支持多个etcd服务器端点。 代理启动时，它会随机选择一个etcd服务器端点来使用.该端点将处理所有请求，直到代理检测到端点故障为止。 如果gRPC代理检测到端点故障，它将切换到其他端点（如果有）以向其客户端隐藏故障。 将来可能会支持其他重试策略，例如加权轮询。</p>
+<h2 id="可扩展的监视-API"><a href="#可扩展的监视-API" class="headerlink" title="可扩展的监视 API"></a>可扩展的监视 API</h2><hr>
+<p>gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）合并为连接到etcd服务器的单个监视程序（s-watcher）。 代理将所有事件从S-watcher广播到其c-watcher。<br>假设N个客户端监视相同的密钥，则一个gRPC代理可以将etcd服务器上的监视负载从N减少到1。用户可以部署多个gRPC代理来进一步分配服务器负载。<br>在以下示例中，三个客户端监视键A。gRPC代理将三个监视程序合并，从而创建一个附加到etcd服务器的监视程序。</p>
+<pre><code>            +-------------+
+            | etcd 服务器 |
+            +------+------+
+                   ^ 监视 key A (s-watcher)
+                   |
+           +-------+-----+
+           | gRPC 代理  | &lt;-------+
+           |             |         |
+           ++-----+------+         |监视 key A (c-watcher)
+监视 key A ^     ^ 监视 key A    |
+(c-watcher) |     | (c-watcher)    |
+    +-------+-+  ++--------+  +----+----+
+    |  客户端 |  |  客户端 |  |  客户端 |
+    |         |  |         |  |         |
+    +---------+  +---------+  +---------+
+</code></pre><h3 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h3><p>为了有效地将多个客户端监视程序合并为一个监视程序，gRPC代理在可能的情况下将新的c-watcher合并为现有的s-watcher。 由于网络延迟或缓冲的未传递事件，此合并的s-watcher可能与etcd服务器不同步。 如果未指定监视版本，则gRPC代理将不能保证c-watcher从最近的存储修订版本开始监视。 例如，如果客户端从具有修订版1000的etcd服务器监视，则该监视程序将从修订版1000开始。如果客户端从gRPC代理监视，则可以从修订版990开始监视。<br>类似的限制也适用于取消。 取消观察者后，etcd服务器的修订版可能大于取消响应修订版。<br>对于大多数用例，这两个限制不应引起问题。 将来，可能会有其他选项强制观察者绕过gRPC代理以获得更准确的修订响应。</p>
+<h2 id="可扩展的租约-API"><a href="#可扩展的租约-API" class="headerlink" title="可扩展的租约 API"></a>可扩展的租约 API</h2><hr>
+<p>为了保持其租约有效，客户端必须至少向一个etcd服务器建立一个gRPC流，以发送定期的心跳信号。 如果etcd工作负载涉及大量租约活动分布在许多客户端上，则这些流可能会导致CPU使用率过高。 为了减少核心群集上的流总数，该代理支持租约流合并。<br>假设N个客户端正在更新租约，则单个gRPC代理将etcd服务器上的流负载从N减少到1。部署中可能具有其他gRPC代理，以进一步在多个代理之间分配流。<br>在以下示例中，三个客户端更新了三个独立的租约（L1，L2和L3）。 gRPC代理将三个客户端租约流（c-stream）合并为连接到etcd服务器的单个租约保持活动流（s-stream）。 代理将客户端租用心跳从c流转发到s流，然后将响应返回到相应的c流。</p>
+<pre><code>          +-------------+
+          | etcd 服务器 |
+          +------+------+
+                 ^
+                 | 心跳 L1, L2, L3
+                 | (s-stream)
+                 v
+         +-------+-----+
+         | gRPC 代理  +&lt;-----------+
+         +---+------+--+            | 心跳 L3
+             ^      ^               | (c-stream)
+心跳 L1 |      | 心跳 L2  |
+(c-stream)   v      v (c-stream)    v
+      +------+-+  +-+------+  +-----+--+
+      | 客户端 |  | 客户端 |  | 客户端 |
+      +--------+  +--------+  +--------+
+</code></pre><h3 id="客户保护滥用"><a href="#客户保护滥用" class="headerlink" title="客户保护滥用"></a>客户保护滥用</h3><p>gRPC代理在不违反一致性要求时会缓存请求的响应。 这可以保护etcd服务器免遭严密for循环中滥用客户端的侵害。</p>
+<h2 id="启动etcd-gRPC代理"><a href="#启动etcd-gRPC代理" class="headerlink" title="启动etcd gRPC代理"></a>启动etcd gRPC代理</h2><hr>
+<p>考虑一个etcd集群包括以下几个静态端点：<br>|名字|地址|主机名|<br>|—|—|—|<br>|infra0|10.0.1.10|infra0.example.com|<br>|infra1|10.0.1.11|infra1.example.com|<br>|infra2|10.0.1.12|infra2.example.com|<br>通过以下命令使用静态节点启动gRPC代理：</p>
+<pre><code>$ etcd grpc-proxy start --endpoints=infra0.example.com,infra1.example.com,infra2.example.com --listen-addr=127.0.0.1:2379</code></pre><p>etcd gRPC启动并监听端口2379.它将客户端请求转发到上面提供的三个端点之一。<br>通过代理发送请求：</p>
+<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 put foo bar
+OK
+$ ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 get foo
+foo
+bar</code></pre><h2 id="客户端端点同步和名称解析"><a href="#客户端端点同步和名称解析" class="headerlink" title="客户端端点同步和名称解析"></a>客户端端点同步和名称解析</h2><hr>
+<p>代理支持通过写入用户定义的端点来注册其端点以进行发现。 这有两个目的。 首先，它允许客户端将其端点与一组代理端点同步，以实现高可用性。 其次，它是etcd <a href="https://newonexd.github.io/2019/11/23/blog/etcd/gRPC%E5%91%BD%E5%90%8D%E4%B8%8E%E5%8F%91%E7%8E%B0/">gRPC命名</a>的端点提供程序。<br>通过提供用户定义的前缀来注册代理：</p>
+<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
+  --listen-addr=127.0.0.1:23790 \
+  --advertise-client-url=127.0.0.1:23790 \
+  --resolver-prefix=&quot;___grpc_proxy_endpoint&quot; \
+  --resolver-ttl=60
+
+$ etcd grpc-proxy start --endpoints=localhost:2379 \
+  --listen-addr=127.0.0.1:23791 \
+  --advertise-client-url=127.0.0.1:23791 \
+  --resolver-prefix=&quot;___grpc_proxy_endpoint&quot; \
+  --resolver-ttl=60</code></pre><p>代理将会列出成员列表中的所有成员：</p>
+<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://localhost:23790 member list --write-out table
+
++----+---------+--------------------------------+------------+-----------------+
+| ID | STATUS  |              NAME              | PEER ADDRS |  CLIENT ADDRS   |
++----+---------+--------------------------------+------------+-----------------+
+|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23791 |
+|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23790 |
++----+---------+--------------------------------+------------+-----------------+</code></pre><p>这使客户端可以通过Sync自动发现代理端点：</p>
+<pre><code>cli, err := clientv3.New(clientv3.Config{
+    Endpoints: []string{&quot;http://localhost:23790&quot;},
+})
+if err != nil {
+    log.Fatal(err)
+}
+defer cli.Close()
+
+// fetch registered grpc-proxy endpoints
+if err := cli.Sync(context.Background()); err != nil {
+    log.Fatal(err)
+}</code></pre><p>注意，如果配置的代理没有解析程序前缀，</p>
+<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
+  --listen-addr=127.0.0.1:23792 \
+  --advertise-client-url=127.0.0.1:23792</code></pre><p>grpc-proxy的成员列表API返回其自己的<code>advertise-client-url</code>：</p>
+<pre><code>ETCDCTL_API=3 etcdctl --endpoints=http://localhost:23792 member list --write-out table
+
++----+---------+--------------------------------+------------+-----------------+
+| ID | STATUS  |              NAME              | PEER ADDRS |  CLIENT ADDRS   |
++----+---------+--------------------------------+------------+-----------------+
+|  0 | started | Gyu-Hos-MBP.sfo.coreos.systems |            | 127.0.0.1:23792 |
++----+---------+--------------------------------+------------+-----------------+</code></pre><h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><hr>
+<p>假设一个应用程序期望对整个键空间有完全控制，但是etcd集群与其他应用程序共享。 为了使所有应用程序都不会相互干扰地运行，代理可以对etcd键空间进行分区，以便客户端可以访问完整的键空间。 当给代理提供标志<code>--namespace</code>时，所有进入代理的客户端请求都将转换为在键上具有用户定义的前缀。 对etcd集群的访问将在前缀下，而来自代理的响应将删除该前缀；对于客户端，显然根本没有前缀。<br>要为代理命名空间，请通过<code>--namespace</code>启动：</p>
+<pre><code>$ etcd grpc-proxy start --endpoints=localhost:2379 \
+  --listen-addr=127.0.0.1:23790 \
+  --namespace=my-prefix/</code></pre><p>现在，对代理的访问在etcd集群上透明地加上前缀：</p>
+<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=localhost:23790 put my-key abc
+# OK
+$ ETCDCTL_API=3 etcdctl --endpoints=localhost:23790 get my-key
+# my-key
+# abc
+$ ETCDCTL_API=3 etcdctl --endpoints=localhost:2379 get my-prefix/my-key
+# my-prefix/my-key
+# abc</code></pre><h2 id="TLS终端"><a href="#TLS终端" class="headerlink" title="TLS终端"></a>TLS终端</h2><hr>
+<p>使用来自安全etcd群集的TLS的gRPC代理终端为未加密的本地端点提供服务.<br>使用客户端https启动单个成员etcd集群尝试：</p>
+<pre><code>$ etcd --listen-client-urls https://localhost:2379 --advertise-client-urls https://localhost:2379 --cert-file=peer.crt --key-file=peer.key --trusted-ca-file=ca.crt --client-cert-auth</code></pre><p>确认客户端端口正在提供https：</p>
+<pre><code># fails
+$ ETCDCTL_API=3 etcdctl --endpoints=http://localhost:2379 endpoint status
+# works
+$ ETCDCTL_API=3 etcdctl --endpoints=https://localhost:2379 --cert=client.crt --key=client.key --cacert=ca.crt endpoint status</code></pre><p>接下来，通过使用客户端证书连接到etcd端点<code>https://localhost2379</code>在<code>localhost:12379</code>上启动gRPC代理：</p>
+<pre><code>$ etcd grpc-proxy start --endpoints=https://localhost:2379 --listen-addr localhost:12379 --cert client.crt --key client.key --cacert=ca.crt --insecure-skip-tls-verify &amp;</code></pre><p>最后，通过在http上将密钥放入代理来测试TLS终端：</p>
+<pre><code>$ ETCDCTL_API=3 etcdctl --endpoints=http://localhost:12379 put abc def
+# OK</code></pre><h2 id="指标和健康"><a href="#指标和健康" class="headerlink" title="指标和健康"></a>指标和健康</h2><hr>
+<p>gRPC代理为<code>--endpoints</code>定义的etcd成员公开了<code>/health</code>和Prometheus<code>/metrics</code>端点。 另一种方法是定义一个附加URL，该URL将使用<code>--metrics-addr</code>参数来响应<code>/metrics</code>和<code>/health</code>端点。</p>
+<pre><code>$ etcd grpc-proxy start \
+  --endpoints https://localhost:2379 \
+  --metrics-addr https://0.0.0.0:4443 \
+  --listen-addr 127.0.0.1:23790 \
+  --key client.key \
+  --key-file proxy-server.key \
+  --cert client.crt \
+  --cert-file proxy-server.crt \
+  --cacert ca.pem \
+  --trusted-ca-file proxy-ca.pem</code></pre><h3 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a>已知问题</h3><p>代理的主接口同时服务于HTTP2和HTTP/1.1。如果如上例所示，使用TLS设置了代理，则在监听接口上使用诸如cURL之类的客户端时，将要求在返回<code>/metrics</code>或<code>/health</code>的请求上将协议显式设置为HTTP/1.1。通过使用<code>--metrics-addr</code>参数，辅助接口将没有此要求。</p>
+<pre><code> $ curl --cacert proxy-ca.pem --key proxy-client.key --cert proxy-client.crt https://127.0.0.1:23790/metrics --http1.1</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.3k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "gRPC代理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
