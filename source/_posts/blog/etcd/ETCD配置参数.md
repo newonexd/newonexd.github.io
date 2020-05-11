@@ -26,7 +26,7 @@ etcd通过配置文件，多命令行参数和环境变量进行配置，
 
 * 人类可读的该成员的名字
 * 默认值："default"
-* 环境变量：ETCD_DATA_DIR
+* 环境变量：ETCD_NAME
 * 该值被该节点吃的`--initial-cluster`参数引用(例如 `default=http://localhost:2380`).如果使用[静态引导程序]()，则需要与标志中使用的键匹配。当使用发现服务时，每一个成员需要有唯一的名字。`Hostname`或者`machine-id`是好的选择。
     
 **--data-dir**

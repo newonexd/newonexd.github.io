@@ -136,6 +136,52 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/11/blog/other/bloom/">
+        <p class="h4 index-header">布隆过滤器(Bloom Filter)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">布隆过滤器(Bloom Filter)是一种基于Hash的高效查找数据结构，它能够快速答复“某个元素是否存在”的问题。布隆过滤器只能用于添加元素与查询元素，不能够用于删除元素。
+在布隆过滤器之前，使用的是基于Hash的快速查找算法。Hash可以将一个元素进行哈希，然后根据哈希值映射到数组的某一个位置。并且根据Hash算法的优劣，不同元素映射到相同位置的可能性不同。但是如果基于Hash的快速查找算法的数组大小被限制在一定的范围内，那么发生哈希冲突的概率将会变大。并且数组范围越小，冲突概率将越大。因此布隆过滤器采用了使用多个hash函数进行运算来提高空间利用率。
+Bloom过滤器原理布隆过滤器是由一个可变长度为N的二进制数组与一组数量可变M的哈希函数构成。其中，哈希函数为确定性函数，所有哈希函数的输出值都在1~N之间，与二进制数组相对应。因此，每一个元素使用布隆过滤器的哈希函数进行运算都将会得到相同的结果。
+
+插入一个元素假设我们需要插入一个元素到布隆过滤器中，我们需要使用不同的哈希函数进行运算生成不同的哈希值，并且根据生成的哈希值将二进制数组对应的Bit位置为1.例如插入字符串&quot</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/other">other</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/bloom">bloom</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.1k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/10/blog/consensus/pbft-view/">
         <p class="h4 index-header">PBFT之视图更新</p>
         
@@ -625,59 +671,6 @@ Candidate:用于选举新的Leader。
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/28/blog/fabric/TLS_SDK%E8%B0%83%E7%94%A8/">
-        <p class="h4 index-header">Hyperledger Fabric 开启TLS调用Java SDK</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Hyperledger Fabric 开启TLS调用Java SDK之前更新的Fabric 1.4.1+版本之后新增了etcdRaft共识机制，而且官方文档明确指定了如果使用该共识机制就必须开启TLS，所以之前通过关闭TLS调用SDK的方式就不好用了，并且Fabric 2.0版本抛弃了solo，kafka模式，也就是默认都使用etcdRaft共识了，所以记录一下如何开开启TLS的情况下使用SDK.
-在之前，本文是直接使用了Fabric v2.0.0-beta版本的环境，并且JAVA SDK版本也是直接用了v2.0.0的版本，所以如果Fabric以及SDK不会在正式版的2.0.0版本发生重大更新的话，本文的方案应该是可以满足v2.0.0+版本的使用的。
-先说一下运行环境：
-
-Hyperledger Fabric v2.0.0-beta
-Hyperledger Fabric-sdk-java v2.0.0-SNAPSHOT
-Java 1.8
-
-本文分成两个部分:
-
-Hyperledger Fabric v2.0.0-beta版本的安装
-Hyperledger Fabric-sdk-java</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-28&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    3.3k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -752,7 +745,7 @@ Hyperledger Fabric-sdk-java</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">142.2k</span> 字
+  全站共 <span class="post-count">143.3k</span> 字
   <br>
 
 

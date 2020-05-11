@@ -254,7 +254,7 @@ about:  # 以下仅为页面顶部的基本信息，更多内容请在 ./pages/a
   banner_img: /img/5.jpg
   banner_img_height: 80  # available: 0 - 100
   avatar: /img/icon.jpg # 头像
-  name: 任**
+  name: 触不可及
   introduce: 学生 / 95后 / 男 # 支持 HTML
   icons: # 更多图标可从 https://fontawesome.com/icons 查找，并以 "图标名: url" 的格式添加在下方
     "fab fa-github": https://github.com/newonexd

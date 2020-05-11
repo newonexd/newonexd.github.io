@@ -136,6 +136,60 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/21/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
+        <p class="h4 index-header">CouchDB学习-集群管理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">官方文档
+集群管理理论在etc/fefault.ini文件中有以下部分：
+[cluster]
+q=8
+n=3
+q - 分片的数量
+n - 每一份文档的拷贝数量(加上原文档一共几份副本)
+
+创建数据库时可以通过覆盖该值修改为自己的值。在集群操作中，获取操作中CouchDB返回状态码200或者是写操作返回状态码201即为大多数成员达成一致。大多数成员定义为相关拷贝的数量的一半。对于“读写”操作，“相关副本”的定义稍有不同。对于读操作，相关副本的数量是保存请求数据的当前可访问分片的数量，这意味着在发生故障或网络分区的情况下，相关副本的数量可能少于集群中的副本数量。 可以使用r参数设置读取份数。对于写操作，相关副本的数量始终为n，即集群中的副本数量。 对于写操作，可以使用w参数设置份数。 如果少于此数量的可用节点，则返回202。
+节点管理查看所有节点curl -u admin:adminpw -X GET http://localhost:5984/_membership
+{
+    &quot;all_nodes&quot;:[   # 当前节点所知道的节点
+        &quot;no</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/21/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%89/">
         <p class="h4 index-header">CURL命令学习三</p>
         
@@ -564,63 +618,6 @@ Buckets由每一个节点维护的DHT的子集被称为”桶“，一个桶映�
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/17/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%80/">
-        <p class="h4 index-header">CURL命令学习一</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">每天学习一点点。。。。
-
-直接获取页面数据：
-
-curl http://www.xxx.com/[可以指定具体的路径获取某个文件]用户名(密码):curl -u username http://www.xxx.com
-curl -u username:pwsswd http://www.xxx.com
-curl http://name:passwd@xxx.domain/filepath/下载页面数据：#以`demo.html`文件保存
-curl -o demo.html http://www.xxx.com/
-下载某个页面数据保存到本地并以源页面名称为默认命名(可以指定多个页面)：
-
-curl -O http://www.xxx.com/index.html/. [-O http://www.xxx2.com/html/]
-代理 
-
-curl -x proxy:port http://www.xxx.com/
-#如果代理需要名字和密码，用-U指定(-u)指定页面需要的用户名密码
-curl -U user:passwd -x proxy:port http://www.xxx.com/</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-17&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/curl">curl</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/curl%E5%AD%A6%E4%B9%A0">curl学习</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    558 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
@@ -695,7 +692,7 @@ curl -U user:passwd -x proxy:port http://www.xxx.com/</div>
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">142.2k</span> 字
+  全站共 <span class="post-count">143.3k</span> 字
   <br>
 
 
