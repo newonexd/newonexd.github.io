@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>单机集群 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 12:31 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    789 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/local_cluster.md" target="_blank" rel="noopener">Setting up local clusters</a></p>
+<h2 id="设置单节点集群"><a href="#设置单节点集群" class="headerlink" title="设置单节点集群"></a>设置单节点集群</h2><p>对于测试环境与开发环境，最快速与简单的方式是配置一个本地集群。对于生产环境，参考<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E5%A4%9A%E6%9C%BA%E9%9B%86%E7%BE%A4/">集群</a>部分。</p>
+<h3 id="本地单节点集群"><a href="#本地单节点集群" class="headerlink" title="本地单节点集群"></a>本地单节点集群</h3><h5 id="启动一个集群"><a href="#启动一个集群" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>运行以下命令来部署一个单节点的etcd集群:</p>
+<pre><code>$ ./etcd
+...</code></pre><p>如果<code>etcd</code>二进制文件不在当前工作目录，那可能位于<code>$GOPATH/bin/etcd</code>或者是<code>/usr/local/bin/etcd</code>.合适地运行命令。<br>运行的<code>etcd</code>成员在<code>localhost:2379</code>监听客户端的请求。</p>
+<h5 id="与集群进行交互"><a href="#与集群进行交互" class="headerlink" title="与集群进行交互"></a>与集群进行交互</h5><p>使用<code>etcdctl</code>与运行中的集群进行交互操作<br>    1.     例子：在集群中存储一个键值对：</p>
+<pre><code>$ ./etcdctl put foo bar
+OK</code></pre><p>如果<code>OK</code>被打印在控制台，说明已经成功存储Key-Value对。<br>    2.     获取键<code>foo</code>对应的值：</p>
+<pre><code>$ ./etcdctl get foo
+bar</code></pre><p>如果<code>bar</code>被返回，说明与<code>etcd</code>集群的交互操作和期望中的相同。</p>
+<h3 id="本地多节点集群"><a href="#本地多节点集群" class="headerlink" title="本地多节点集群"></a>本地多节点集群</h3><h5 id="启动一个集群-1"><a href="#启动一个集群-1" class="headerlink" title="启动一个集群"></a>启动一个集群</h5><p>在<code>etcd</code>的<code>git</code>仓库中存在一个<code>Procfile</code>文件提供一种简单的方式可以对本地多节点集群进行配置。在启动多节点集群之前，将工作目录导向<code>etcd</code>的根目录并执行以下操作：</p>
+<pre><code>1.    安装`goreman`控制基于`Procfile`的应用：
+```
+$ go get github.com/mattn/goreman
+```
+2.    使用 `etcd`的配置文件`Procfile`通过`goreman`启动一个集群：
+```
+$ goreman -f Procfile start
+```
+集群成员已经启动了，并在`localhost:2379`,localhost:22379`,localhost:32379`监听客户端的请求。</code></pre><h5 id="与集群进行交互-1"><a href="#与集群进行交互-1" class="headerlink" title="与集群进行交互"></a>与集群进行交互</h5><p>使用<code>etcdctl</code>与运行中的集群进行交互操作:</p>
+<pre><code>1. 打印成员列表：
+$ `etcdctl --write-out=table --endpoints=localhost:2379 member list`
+`etcd`集群中的成员列表显示如下：</code></pre><table>
+<thead>
+<tr>
+<th align="left">ID</th>
+<th align="left">STATUS</th>
+<th align="left">NAME</th>
+<th align="left">PEER ADDRS</th>
+<th align="left">CLIENT ADDRS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">8211f1d0f64f3269</td>
+<td align="left">started</td>
+<td align="left">infra1</td>
+<td align="left"><a href="http://127.0.0.1:2380" target="_blank" rel="noopener">http://127.0.0.1:2380</a></td>
+<td align="left"><a href="http://127.0.0.1:2379" target="_blank" rel="noopener">http://127.0.0.1:2379</a></td>
+</tr>
+<tr>
+<td align="left">91bc3c398fb3c146</td>
+<td align="left">started</td>
+<td align="left">infra1</td>
+<td align="left"><a href="http://127.0.0.1:22380" target="_blank" rel="noopener">http://127.0.0.1:22380</a></td>
+<td align="left"><a href="http://127.0.0.1:22379" target="_blank" rel="noopener">http://127.0.0.1:22379</a></td>
+</tr>
+<tr>
+<td align="left">fd422379fda50e48</td>
+<td align="left">started</td>
+<td align="left">infra1</td>
+<td align="left"><a href="http://127.0.0.1:32380" target="_blank" rel="noopener">http://127.0.0.1:32380</a></td>
+<td align="left"><a href="http://127.0.0.1:32379" target="_blank" rel="noopener">http://127.0.0.1:32379</a></td>
+</tr>
+</tbody></table>
+<pre><code>2.     例子：在集群中存储一个Key-Value对：</code></pre><pre><code>$ ./etcdctl put foo bar
+OK</code></pre><p>如果<code>OK</code>被打印在控制台，说明已经成功存储键-值对。</p>
+<h5 id="容错测试"><a href="#容错测试" class="headerlink" title="容错测试"></a>容错测试</h5><p>关闭一个成员然后尝试通过键获取值来进行容错测试：</p>
+<ol>
+<li>获取一个运行中的成员的名字然后停止它：<br> <code>Procfile</code>列出了多节点集群的属性信息。例如，名称为<code>etcd2</code>的运行中的成员。</li>
+<li>停止该成员：<pre><code>#kill etcd2
+$ goreman run stop etcd2</code></pre></li>
+<li>存储一个键：<pre><code>$ etcdctl put key hello
+OK</code></pre></li>
+<li>获取前一步所存储的键： <pre><code>$ etcdctl get key
+hello</code></pre></li>
+<li>从已经停止的成员处获取键：<pre><code>$ etcdctl --endpoints=localhost:22379 get key</code></pre>该命令应该由于连接失败展示一个错误：<pre><code>2017/06/18 23:07:35 grpc: Conn.resetTransport failed to create client transport: connection error: desc = &quot;transport: dial tcp 127.0.0.1:22379: getsockopt: connection refused&quot;; Reconnecting to &quot;localhost:22379&quot;
+Error:  grpc: timed out trying to connect</code></pre></li>
+<li>重启停止的成员：<pre><code>$ goreman run restart etcd2</code></pre></li>
+<li>从重启的成员处获取键：<pre><code>$ etcdctl --endpoints=localhost:22379 get key
+hello</code></pre>重启的成员重新建立了连接.<code>etcdctl</code>将能够成功地从重启的成员处接受键,读<a href="https://newonexd.github.io/2019/11/23/blog/etcd/%E4%B8%8Eetcd%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92/">与etcd进行交互</a>部分学习更多关于与etcd交互的内容。</li>
+</ol>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "单机集群&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

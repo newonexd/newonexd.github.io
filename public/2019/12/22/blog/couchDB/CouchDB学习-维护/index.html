@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>CouchDB学习-维护 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十二月 22日 2019, 12:26 中午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    4.5k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      17 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p><a href="https://docs.couchdb.org/en/stable/maintenance/index.html" target="_blank" rel="noopener">官方文档</a></p>
+<h1 id="1-压缩"><a href="#1-压缩" class="headerlink" title="1 压缩"></a>1 压缩</h1><hr>
+<p>压缩操作是通过从数据库或者视图索引文件中移除无用的和老的数据减少硬盘使用空间.操作非常简单类似于其他数据库(SQLite等)管理系统。<br>在压缩目标期间，CouchDB将创建扩展名为.compact的新文件，并将仅实际数据传输到该文件中。 因此，CouchDB首先检查可用磁盘空间-它应比压缩文件的数据大两倍。<br>当所有实际数据都成功传输到压缩文件后，CouchDB用目标文件替换目标文件。</p>
+<h2 id="1-1-数据库压缩"><a href="#1-1-数据库压缩" class="headerlink" title="1.1 数据库压缩"></a>1.1 数据库压缩</h2><p>数据库压缩通过删除更新期间创建的未使用的文件部分来压缩数据库文件。 旧文档修订版被少量称为<code>tombstone</code>的元数据代替，该元数据用于复制期间的冲突解决。 可以使用<code>_revs_limit</code>URL配置存储的修订版本（以及<code>tombstone</code>）的数量。<br>压缩是每个数据库手动触发的操作，并作为后台任务运行。要针对特定的数据库启动它，需要发送目标数据库的HTTP POST<code>/{db}/_compact</code>子资源：</p>
+<pre><code>curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984/my_db/_compact</code></pre><p>成功的话，将立即返回HTTP 状态码<code>202 Accepted</code>。</p>
+<pre><code>HTTP/1.1 202 Accepted
+Cache-Control: must-revalidate Content-Length: 12
+Content-Type: text/plain; charset=utf-8 Date: Wed, 19 Jun 2013 09:43:52 GMT Server: CouchDB (Erlang/OTP)</code></pre><pre><code>{&quot;ok&quot;:true}</code></pre><p>尽管未使用请求主体，但仍必须为请求指定带有<code>application/json</code>值的<code>Content-Type</code>标头。否则，您会知道HTTP状态<code>415不支持的媒体类型响应</code>：</p>
+<pre><code>HTTP/1.1 415 Unsupported Media Type
+Cache-Control: must-revalidate 
+Content-Length: 78
+Content-Type: application/json 
+Date: Wed, 19 Jun 2013 09:43:44 GMT 
+Server: CouchDB (Erlang/OTP)
+{&quot;error&quot;:&quot;bad_content_type&quot;,&quot;reason&quot;:&quot;Content-Type must be application/json&quot;}</code></pre><p>当压缩成功启动并运行时，可以通过数据库信息资源获取有关压缩的信息：</p>
+<pre><code>curl http://localhost:5984/my_db</code></pre><pre><code>HTTP/1.1 200 OK
+Cache-Control: must-revalidate 
+Content-Length: 246
+Content-Type: application/json 
+Date: Wed, 19 Jun 2013 16:51:20 GMT 
+Server: CouchDB (Erlang/OTP)
+{
+    &quot;committed_update_seq&quot;: 76215, 
+    &quot;compact_running&quot;: true, 
+    &quot;data_size&quot;: 3787996, 
+    &quot;db_name&quot;: &quot;my_db&quot;, 
+    &quot;disk_format_version&quot;: 6, 
+    &quot;disk_size&quot;: 17703025, 
+    &quot;doc_count&quot;: 5091, 
+    &quot;doc_del_count&quot;: 0, 
+    &quot;instance_start_time&quot;: &quot;0&quot;, 
+    &quot;purge_seq&quot;: 0,
+    &quot;update_seq&quot;: 76215
+}</code></pre><p>请注意，<code>compaction_running</code>字段为<code>true</code>，指示压缩实际上正在运行。 要跟踪压缩进度，可以查询<code>_active_tasks</code>资源：</p>
+<pre><code>curl http://localhost:5984/_active_tasks</code></pre><pre><code>HTTP/1.1 200 OK
+Cache-Control: must-revalidate
+Content-Length: 175
+Content-Type: application/json 
+Date: Wed, 19 Jun 2013 16:27:23 GMT 
+Server: CouchDB (Erlang/OTP)
+[
+    {
+        &quot;changes_done&quot;: 44461, 
+        &quot;database&quot;: &quot;my_db&quot;,
+        &quot;pid&quot;: &quot;&lt;0.218.0&gt;&quot;, 
+        &quot;progress&quot;: 58,
+        &quot;started_on&quot;: 1371659228, 
+        &quot;total_changes&quot;: 76215, 
+        &quot;type&quot;: &quot;database_compaction&quot;, 
+        &quot;updated_on&quot;: 1371659241
+    }
+]</code></pre><h2 id="1-2-视图压缩"><a href="#1-2-视图压缩" class="headerlink" title="1.2 视图压缩"></a>1.2 视图压缩</h2><p>与数据库视图不同，视图也需要像数据库一样进行压缩，这与按每个设计文档按组对数据库视图进行压缩不同。要启动其压缩，需要发送HTTP POST<code>/{db}/_compact/{ddoc}</code>请求：</p>
+<pre><code>curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984/dbname/_compact/designname</code></pre><pre><code>{&quot;ok&quot;:true}</code></pre><p>这将从指定设计文档的当前版本压缩视图索引。 HTTP响应代码<code>202 Accepted</code>(类似于数据库的压缩)，并且将创建压缩后台任务。</p>
+<h3 id="1-2-1视图清理"><a href="#1-2-1视图清理" class="headerlink" title="1.2.1视图清理"></a>1.2.1视图清理</h3><p>磁盘上的视图索引以视图定义的MD5哈希命名。更改视图时，旧索引仍保留在磁盘上。要清除所有过时的视图索引（以视图的MD5表示形式命名的文件，该文件不再存在），可以触发视图清除：</p>
+<pre><code>curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984/dbname/_view_cleanup</code></pre><pre><code>{&quot;ok&quot;:true}</code></pre><h2 id="1-3-自动压缩"><a href="#1-3-自动压缩" class="headerlink" title="1.3 自动压缩"></a>1.3 自动压缩</h2><p>虽然需要手动触发数据库和视图的压缩，但也可以配置自动压缩，以便基于各种条件自动触发数据库和视图的压缩。 在CouchDB的配置文件中配置了自动压缩。<br>守护程序<code>/compaction_daemon</code>负责触发压缩。 默认情况下启用它并自动启动。在压缩部分中配置了触发压缩的条件。</p>
+<h1 id="2-性能"><a href="#2-性能" class="headerlink" title="2 性能"></a>2 性能</h1><hr>
+<p>无论您如何编写代码，即使有了成千上万的文档，通常都会发现CouchDB可以很好地执行。但是一旦开始阅读数百万个文档，您需要更加小心。</p>
+<h2 id="2-1-硬盘IO"><a href="#2-1-硬盘IO" class="headerlink" title="2.1 硬盘IO"></a>2.1 硬盘IO</h2><h3 id="2-1-1-文件大小"><a href="#2-1-1-文件大小" class="headerlink" title="2.1.1 文件大小"></a>2.1.1 文件大小</h3><p>文件大小越小，I/O操作将越少，CouchDB和操作系统可以缓存的文件越多，复制，备份等的速度就越快。因此，您应该仔细检查所要存储的数据储存。例如，使用长度为数百个字符的键会很愚蠢，但是如果仅使用单个字符键，则程序将很难维护。通过将其放在视图中来仔细考虑重复的数据。</p>
+<h3 id="2-1-2-硬盘和文件系统性能"><a href="#2-1-2-硬盘和文件系统性能" class="headerlink" title="2.1.2 硬盘和文件系统性能"></a>2.1.2 硬盘和文件系统性能</h3><p>使用更快的磁盘，条带化RAID阵列和现代文件系统都可以加快CouchDB部署。但是，当磁盘性能成为瓶颈时，有一种方法可以提高CouchDB服务器的响应速度。 从文件模块的Erlang文档中：<br>在具有线程支持的操作系统上，可以让文件操作在其自己的线程中执行，从而允许其他Erlang进程继续与文件操作并行执行。 请参阅erl(1)中的命令行标志+A。<br>将此参数设置为大于零的数字可以使您的CouchDB安装保持响应状态，即使在磁盘使用率很高的时期也是如此。设置此选项的最简单方法是通过<code>ERL_FLAGS</code>环境变量。例如，要为Erlang提供执行I/O操作的四个线程，请将以下内容添加到<code>(prefix)/etc/defaults/couchdb</code>（或等效项）中：</p>
+<pre><code>export ERL_FLAGS=&quot;+A 4&quot;</code></pre><h2 id="2-2-系统资源限制"><a href="#2-2-系统资源限制" class="headerlink" title="2.2 系统资源限制"></a>2.2 系统资源限制</h2><p>管理员在其部署变大时会遇到的问题之一是系统和应用程序配置施加的资源限制。 提高这些限制可以使您的部署超出默认配置所支持的范围。</p>
+<h3 id="2-2-1-CouchDB配置选项"><a href="#2-2-1-CouchDB配置选项" class="headerlink" title="2.2.1 CouchDB配置选项"></a>2.2.1 CouchDB配置选项</h3><h4 id="delayed-commits"><a href="#delayed-commits" class="headerlink" title="delayed_commits"></a><code>delayed_commits</code></h4><p>延迟的提交允许在某些工作负载下实现更好的写入性能，同时牺牲少量的持久性。 该设置使CouchDB在更新后提交新数据之前要等待一整秒。如果服务器在写入标头之前崩溃，则自上次提交以来的所有写入都将丢失。 启用此选项需要您自担风险。</p>
+<h4 id="max-dbs-open"><a href="#max-dbs-open" class="headerlink" title="max_dbs_open"></a><code>max_dbs_open</code></h4><p>在配置(<code>local.ini</code>或类似版本)中,或者地址<code>couchdb/max_dbs_open</code>：</p>
+<pre><code>[couchdb]
+max_dbs_open = 100</code></pre><p>此选项将一次可以打开的数据库数量设置为上限。CouchDB引用对内部数据库访问进行计数，并在必要时关闭空闲数据库。有时有必要一次保持超过默认值的速度，例如在许多数据库将被连续复制的部署中。</p>
+<h4 id="Erlang"><a href="#Erlang" class="headerlink" title="Erlang"></a><code>Erlang</code></h4><p>即使增加了CouchDB允许的最大连接数，默认情况下，Erlang运行时系统也将不允许超过1024个连接。 将以下指令添加到<code>(prefix)/etc/default/couchdb</code>(或等效文件)将增加此限制(在这种情况下，增加到4096)：</p>
+<pre><code>export ERL_MAX_PORTS=4096</code></pre><p>高达1.1.x的CouchDB版本还会为每个复制创建<code>Erlang Term Storage</code>(ETS)表。如果您使用的CouchDB版本早于1.2，并且必须支持许多复制，则还应设置<code>ERL_MAX_ETS_TABLES</code>变量。 默认值是大约1400表。<br>请注意，在Mac OS X上，Erlang实际上不会将文件描述符限制增加到超过1024（即系统标头定义的FD_SETSIZE值）。 </p>
+<h4 id="打开文件描述的最大数量-无限制"><a href="#打开文件描述的最大数量-无限制" class="headerlink" title="打开文件描述的最大数量(无限制)"></a>打开文件描述的最大数量(无限制)</h4><p>大多数<code>*nix</code>操作系统在每个进程上都有各种资源限制。增加这些限制的方法因初始化系统和特定的OS版本而异。许多操作系统的默认值为1024或4096。在具有许多数据库或视图的系统上，CouchDB可以非常迅速地达到此限制。<br>如果您的系统设置为使用可插拔身份验证模块(<code>PAM</code>)系统（几乎所有现代Linux都是这种情况），则增加此限制很简单。例如，创建具有以下内容的名为<code>/etc/security/limits.d/100-couchdb.conf</code>的文件将确保CouchDB可以一次打开多达10000个文件描述符：</p>
+<pre><code>#&lt;domain&gt;  &lt;type&gt;    &lt;item&gt;  &lt;value&gt;
+couchdb    hard      nofile  10000 
+couchdb    soft      nofile  10000</code></pre><p>如果使用的是Debian/Ubuntu sysvinit脚本(<code>/etc/init.d/couchdb</code>，则还需要提高root用户的限制：</p>
+<pre><code>#&lt;domain&gt;    &lt;type&gt;   &lt;item&gt;  &lt;value&gt;
+root         hard    nofile   10000
+root         soft    nofile   10000</code></pre><p>您可能还需要编辑<code>/etc/pam.d/common-session</code>和<code>/etc/pam.d/common-session-noninteractive</code>文件以添加以下行：</p>
+<pre><code>session required pam_limits.so</code></pre><p>如果还不存在。<br>对于基于系统的Linux（例如CentOS/RHEL 7，Ubuntu 16.04 +，Debian 8或更高版本）,假设您要从systemd启动CouchDB，则还必须通过创建文件<code>/etc/systemd/system/&lt;servicename&gt;.d/override.conf</code>添加以下内容：</p>
+<pre><code>[Service]
+LimitNOFILE=#######</code></pre><p>并将<code>#######</code>替换为文件描述符的上限CouchDB允许立即保持打开状态。<br>如果您的系统不使用<code>PAM</code>，通常可以在自定义脚本中使用<code>ulimit</code>命令来启动<br>CouchDB具有增加的资源限制。 典型的语法类似于<code>ulimit -n 10000</code>。<br>通常，类似UNIX的现代系统每个进程可以处理大量文件句柄（例如100000）<br>没有问题。 不要害怕增加系统限制。</p>
+<h2 id="2-3-网络"><a href="#2-3-网络" class="headerlink" title="2.3 网络"></a>2.3 网络</h2><p>产生和接收每个请求/响应都有延迟开销。通常，您应该分批执行请求。大多数API具有某种批处理机制，通常是通过在请求正文中提供文档或键的列表来进行的。请注意为批次选择的大小。较大的批处理需要更多的时间来使客户将项目编码为  <code>JSON</code>，并将更多的时间用于解码该数量的响应。使用您自己的配置和典型数据进行一些基准测试，以找到最佳位置。 它可能在一到一万个文档之间。<br>如果您拥有快速的I/O系统，那么您也可以使用并发-同时具有多个请求/响应。这减轻了组装JSON，进行网络连接和解码<code>JSON</code>所涉及的延迟。<br>从CouchDB 1.1.0开始，与旧版本相比，用户经常报告文档的写入性能较低。主要原因是此版本随附HTTP服务器库<code>MochiWeb</code>的最新版本，该库默认情况下将<code>TCP</code>套接字选项<code>SO_NODELAY</code>设置为<code>false</code>。这意味着发送到TCP套接字的小数据（例如对文档写请求的答复（或读取非常小的文档）的答复）不会立即发送到网络<code>TCP</code>将对其缓冲一会儿，希望它会被询问通过同一套接字发送更多数据，然后一次发送所有数据以提高性能。 可以通过<code>httpd/socket_options</code>禁用此<code>TCP</code>缓冲行为：</p>
+<pre><code>[httpd]
+socket_options = [{nodelay, true}]</code></pre><h3 id="2-3-1-连接限制"><a href="#2-3-1-连接限制" class="headerlink" title="2.3.1 连接限制"></a>2.3.1 连接限制</h3><p><code>MochiWeb</code>处理<code>CouchDB</code>请求。默认最大连接数为2048。要更改此限制，请使用<code>server_options</code>配置变量。 <code>max</code>表示最大连接数。</p>
+<pre><code>[chttpd]
+server_options = [{backlog, 128}, {acceptor_pool_size, 16}, {max, 4096}]</code></pre><h2 id="2-4-CouchDB"><a href="#2-4-CouchDB" class="headerlink" title="2.4 CouchDB"></a>2.4 CouchDB</h2><h3 id="2-4-1-删除操作"><a href="#2-4-1-删除操作" class="headerlink" title="2.4.1 删除操作"></a>2.4.1 删除操作</h3><p>当您删除文档时，数据库将创建一个新的修订版，其中包含<code>_id</code>和<code>_rev</code>字段以及<code>_deleted</code>标志。即使在数据库压缩后，此修订版仍将保留，以便可以复制删除内容。像未删除的文档一样，已删除的文档可能会影响视图生成时间，<code>PUT</code>和<code>DELETE</code>请求时间以及数据库的大小，因为它们会增加<code>B+Tree</code>的大小。您可以在数据库信息中看到已删除文档的数量。如果您的用例创建了许多已删除的文档（例如，如果您存储日志条目，消息队列等短期数据），则可能需要定期切换到新数据库并删除已过期的旧数据库）。</p>
+<h3 id="2-4-2-文档ID"><a href="#2-4-2-文档ID" class="headerlink" title="2.4.2 文档ID"></a>2.4.2 文档ID</h3><p>数据库文件的大小源自您的文档和视图大小，但也取决于您的<code>_id</code>大小的倍数。<code>_id</code>不仅存在于文档中，而且它及其部分内容在<code>CouchDB</code>用来导航文件以首先找到文档的二叉树结构中也是重复的。作为一个现实世界的例子，一个用户从16个字节的ID切换到4个字节的ID，使数据库从21GB变为4GB，包含1000万个文档（从2.5GB到2GB的原始JSON文本）。<br>插入具有顺序（至少已排序）的ID的速度要比随机ID快。 因此，您应该考虑自己生成id，按顺序分配它们，并使用消耗更少字节的编码方案。例如，可以用4个基数62个数字（用10个数字，26个小写字母，26个大写字母）来完成需要16个十六进制数字表示的内容。</p>
+<h2 id="2-5-视图"><a href="#2-5-视图" class="headerlink" title="2.5 视图"></a>2.5 视图</h2><h3 id="2-5-1-视图生成"><a href="#2-5-1-视图生成" class="headerlink" title="2.5.1 视图生成"></a>2.5.1 视图生成</h3><p>当要处理的文档数量非常少时，使用JavaScript查询服务器生成的视图非常慢。生成过程甚至不会使单个CPU饱和，更不用说您的I/O了。原因是CouchDB服务器和单独的<code>couchjs</code>查询服务器中涉及的延迟，这显着表明了从实施中消除延迟的重要性。<br>您可以让视图访问权限“过时”，但要确定何时发生会给您带来快速响应以及何时更新视图会花费很长时间，这是不切实际的。(一个拥有1000万个文档的数据库大约需要10分钟才能加载到CouchDB中，而生成视图需要大约4个小时)。<br>在集群中，“陈旧的”请求由一组固定的分片服务，以便为用户提供请求之间的一致结果。这需要进行可用性权衡-固定的分片集可能不是集群中响应最快的/可用的。如果不需要这种一致性(例如，索引相对静态)，则可以通过指定<code>stable = false＆update = false</code>代替<code>stale = ok</code>或<code>stable = false＆update = lazy</code>代替<code>stale = update_after</code>。<br>视图信息不会被复制-它会在每个数据库上重建，因此您无法在单独的服务器上生成视图。</p>
+<h3 id="2-5-2-内置缩小功能"><a href="#2-5-2-内置缩小功能" class="headerlink" title="2.5.2 内置缩小功能"></a>2.5.2 内置缩小功能</h3><p>如果您使用的是非常简单的视图函数，仅执行求和或计数减少，则可以通过简单地编写<code>_sum</code>或<code>_count</code>代替函数声明来调用它们的本机<code>Erlang</code>实现。 这将大大加快速度，因为它减少了CouchDB和JavaScript查询服务器之间的IO。 例如，如邮件列表中所述，用于输出（已索引和缓存的）视图的时间大约为78,000个项目，时间从60秒减少到4秒。<br>之前：</p>
+<pre><code>{
+    &quot;_id&quot;: &quot;_design/foo&quot;,
+    &quot;views&quot;: {
+        &quot;bar&quot;: {
+            &quot;map&quot;: &quot;function (doc) { emit(doc.author, 1); }&quot;,
+            &quot;reduce&quot;: &quot;function (keys, values, rereduce) { return sum(values); }&quot;
+        }   
+    }
+}</code></pre><p>之后：</p>
+<pre><code>{
+    &quot;_id&quot;: &quot;_design/foo&quot;,
+    &quot;views&quot;: {
+        &quot;bar&quot;: {
+            &quot;map&quot;: &quot;function (doc) { emit(doc.author, 1); }&quot;,
+            &quot;reduce&quot;: &quot;_sum&quot;
+        }
+    }
+}</code></pre><h1 id="3-CouchDB备份"><a href="#3-CouchDB备份" class="headerlink" title="3 CouchDB备份"></a>3 CouchDB备份</h1><hr>
+<p>CouchDB在运行时可以创建三种不同类型的文件：</p>
+<ul>
+<li>数据库文件（包括二级索引）</li>
+<li>配置文件(<code>* .ini</code>)</li>
+<li>日志文件（如果配置为记录到磁盘）</li>
+</ul>
+<p>以下是确保所有这些文件的备份一致的策略。</p>
+<h2 id="3-1-数据库备份"><a href="#3-1-数据库备份" class="headerlink" title="3.1 数据库备份"></a>3.1 数据库备份</h2><p>CouchDB备份的最简单，最简单的方法是使用CouchDB复制到另一个CouchDB安装。您可以根据需要在普通（单次）复制或连续复制之间进行选择。<br>但是，您也可以随时从CouchDB数据目录(默认为<code>data/</code>)中复制实际的<code>.couch</code>文件，而不会出现问题。 CouchDB的数据库和二级索引的仅追加存储格式可确保这种方法可以正常工作。<br>为了确保备份的可靠性，建议先备份二级索引(存储在<code>data/.shards</code>下)，然后再备份主数据库文件(存储在<code>data/ shards</code>以及父级<code>data/</code>下的系统级数据库)目录)。这是因为CouchDB将在下一次读取访问时通过更新视图/二级索引来自动处理稍微过时的视图/二级索引，但是比其关联数据库新的视图或二级索引将触发索引的完全重建。这可能是一项非常昂贵且耗时的操作，并且会影响您在灾难情况下快速恢复的能力。<br>在受支持的操作系统/存储环境上，您还可以使用存储快照。这些优点是在使用块存储系统(例如<code>ZFS</code>或<code>LVM</code>或<code>Amazon EBS</code>)时几乎是即时的。在块存储级别使用快照时，请确保在必要时使用OS级实用程序(例如Linux的<code>fsfreeze</code>)使文件系统停顿。如果不确定，请查阅操作系统或云提供商的文档以获取更多详细信息。</p>
+<h2 id="3-2-配置备份"><a href="#3-2-配置备份" class="headerlink" title="3.2 配置备份"></a>3.2 配置备份</h2><p>CouchDB的配置系统将数据存储在配置目录(默认为<code>etc/</code>)下的<code>.ini</code>文件中。 如果在运行时对配置进行了更改，则配置链中的最后一个文件将使用更改进行更新。<br>从备份还原后，简单地备份整个<code>etc/</code>目录，以确保配置一致。<br>如果在运行时未通过HTTP API对配置进行任何更改，并且所有配置文件都由配置管理系统(例如<code>Ansible</code>或<code>Chef</code>)管理，则无需备份配置目录。</p>
+<h2 id="3-3-日志备份"><a href="#3-3-日志备份" class="headerlink" title="3.3 日志备份"></a>3.3 日志备份</h2><p>如果配置为记录到文件，则可能要备份CouchDB编写的日志文件。这些文件的任何备份解决方案都可以使用。<br>在类似UNIX的系统上，如果使用日志轮换软件，则必须采用“复制然后截断”的方法。创建副本后，这会将原始日志文件截断为零。CouchDB无法识别要关闭其日志文件并创建一个新信号的任何信号。因此，并且由于文件处理功能的差异，除了定期重新启动CouchDB进程外，在Microsoft Windows下没有简单的日志轮换解决方案。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/CouchDb">CouchDb</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "CouchDB学习-维护&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

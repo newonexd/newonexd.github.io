@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>TLS ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期一, 十一月 25日 2019, 7:58 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    4.8k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      20 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md" target="_blank" rel="noopener">TLS</a><br>etcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.<br>要启动并运行，首先要获得一个成员的CA证书和签名密钥对。 建议为集群中的每个成员创建并签名一个新的密钥对。<br>为了方便起见，<a href="https://github.com/cloudflare/cfssl" target="_blank" rel="noopener">cfssl</a>工具提供了一个简单的接口来生成证书，我们在<a href="https://github.com/etcd-io/etcd/blob/master/hack/tls-setup" target="_blank" rel="noopener">此处</a>提供了使用该工具的示例。 或者，尝试使用本指南<a href="https://github.com/coreos/docs/blob/master/os/generate-self-signed-certificates.md" target="_blank" rel="noopener">生成自签名密钥对</a>。</p>
+<h2 id="基本设置"><a href="#基本设置" class="headerlink" title="基本设置"></a>基本设置</h2><hr>
+<p>etcd通过命令行参数或环境变量采用了几种与证书相关的配置选项：</p>
+<p><strong>客户端到服务器的通信：</strong><br><code>--cert-file=&lt;path&gt;</code>:用于SSL/TLS<strong>与</strong>etcd的连接的证书。设置此选项后，advertise-client-urls可以使用HTTPS模式。<br><code>--key-file=&lt;path&gt;</code>:证书的密钥。 必须未加密。<br><code>--client-cert-auth</code>:设置此选项后，etcd将检查所有传入的HTTPS请求以查找由受信任CA签名的客户端证书，不提供有效客户端证书的请求将失败。 如果启用了身份验证，则证书将为“公用名”字段指定的用户名提供凭据。<br><code>--trusted-ca-file=&lt;path&gt;</code>:受信任的证书颁发机构。<br><code>--auto-tls</code>:使用自动生成的自签名证书进行与客户端的TLS连接。</p>
+<p><strong>对等节点(服务器到服务器/集群)间的通信：</strong><br>对等节点选项的工作方式与客户端到服务器的选项相同：<br><code>--peer-cert-file=&lt;path&gt;</code>:用于SSL/TLS<strong>与</strong>对等节点之间的连接的证书。这将用于监听对等方地址以及向其他对等方发送请求。<br><code>--peer-key-file=&lt;path&gt;</code>:证书的密钥。 必须未加密。<br><code>--peer-client-cert-auth</code>:设置此选项后，etcd将检查所有传入的对等节点请求以查找由受信任CA签名的客户端证书.<br><code>--peer-trusted-ca-file=&lt;path&gt;</code>:受信任的证书颁发机构。<br><code>--peer-auto-tls</code>:使用自动生成的自签名证书进行与对等节点之间的TLS连接。<br>如果提供了客户端到服务器或对等节点证书，则还必须设置密钥。 所有这些配置选项也可以通过环境变量<code>ETCD_CA_FILE</code>，<code>ETCD_PEER_CA_FILE</code>等获得。<br><code>--cipher-suites</code>:服务器/客户端与对等方之间受支持的TLS密码套件的逗号分隔列表（空将由Go自动填充）。从<code>v3.2.22+,v3.3.7+</code>和<code>v3.4+</code>起可用。</p>
+<h2 id="示例1：客户端通过HTTPS与服务器进行加密传输"><a href="#示例1：客户端通过HTTPS与服务器进行加密传输" class="headerlink" title="示例1：客户端通过HTTPS与服务器进行加密传输"></a>示例1：客户端通过HTTPS与服务器进行加密传输</h2><hr>
+<p>为此，请准备好CA证书（<code>ca.crt</code>）和签名密钥对（<code>server.crt</code>，<code>server.key</code>）。<br>让我们配置etcd以逐步提供简单的HTTPS传输安全性：</p>
+<pre><code>$ etcd --name infra0 --data-dir infra0 \
+  --cert-file=/path/to/server.crt --key-file=/path/to/server.key \
+  --advertise-client-urls=https://127.0.0.1:2379 --listen-client-urls=https://127.0.0.1:2379</code></pre><p>这应该可以正常启动，并且可以通过对etcd用HTTPS方式来测试配置：</p>
+<pre><code>$ curl --cacert /path/to/ca.crt https://127.0.0.1:2379/v2/keys/foo -XPUT -d value=bar -v</code></pre><p>该命令应显示握手成功。 由于我们使用具有自己的证书颁发机构的自签名证书，因此必须使用<code>--cacert</code>选项将CA传递给curl。 另一种可能性是将CA证书添加到系统的受信任证书目录（通常在<code>/etc/pki/tls/certs</code>或<code>/etc/ssl/certs</code>中）。<br><strong>OSX10.9+的用户：</strong>OSX 10.9+上的curl 7.30.0无法理解在命令行中传递的证书。可以替代的方法是将虚拟<code>ca.crt</code>直接导入到钥匙串中，或添加<code>-k</code>标志来<code>curl</code>以忽略错误。要在没有-k标志的情况下进行测试，请运行打开的<code>./fixtures/ca/ca.crt</code>并按照提示进行操作。测试后请删除此证书！如果有解决方法，请告诉我们。</p>
+<h2 id="示例2：使用HTTPS客户端证书的客户端到服务器身份验证"><a href="#示例2：使用HTTPS客户端证书的客户端到服务器身份验证" class="headerlink" title="示例2：使用HTTPS客户端证书的客户端到服务器身份验证"></a>示例2：使用HTTPS客户端证书的客户端到服务器身份验证</h2><hr>
+<p>目前，我们已经为etcd客户端提供了验证服务器身份并提供传输安全性的功能。 但是，我们也可以使用客户端证书来防止对etcd的未经授权的访问。<br>客户端将向服务器提供其证书，服务器将检查证书是否由提供的CA签名并决定是否满足请求。<br>为此，需要第一个示例中提到的相同文件，以及由同一证书颁发机构签名的客户端密钥对（<code>client.crt</code>，<code>client.key</code>）。</p>
+<pre><code>$ etcd --name infra0 --data-dir infra0 \
+  --client-cert-auth --trusted-ca-file=/path/to/ca.crt --cert-file=/path/to/server.crt --key-file=/path/to/server.key \
+  --advertise-client-urls https://127.0.0.1:2379 --listen-client-urls https://127.0.0.1:2379</code></pre><p>现在，对该服务器尝试与上述相同的请求：</p>
+<pre><code>$ curl --cacert /path/to/ca.crt https://127.0.0.1:2379/v2/keys/foo -XPUT -d value=bar -v</code></pre><p>该请求应该是被服务器拒绝：</p>
+<pre><code>...
+routines:SSL3_READ_BYTES:sslv3 alert bad certificate
+...</code></pre><p>为了使其成功，我们需要将CA签名的客户端证书提供给服务器：</p>
+<pre><code>$ curl --cacert /path/to/ca.crt --cert /path/to/client.crt --key /path/to/client.key \
+  -L https://127.0.0.1:2379/v2/keys/foo -XPUT -d value=bar -v</code></pre><p>输出应包括：</p>
+<pre><code>...
+SSLv3, TLS handshake, CERT verify (15):
+...
+TLS handshake, Finished (20)</code></pre><p>以及服务器的响应：</p>
+<pre><code>{
+    &quot;action&quot;: &quot;set&quot;,
+    &quot;node&quot;: {
+        &quot;createdIndex&quot;: 12,
+        &quot;key&quot;: &quot;/foo&quot;,
+        &quot;modifiedIndex&quot;: 12,
+        &quot;value&quot;: &quot;bar&quot;
+    }
+}</code></pre><p>指定密码套件以阻止<a href="https://github.com/etcd-io/etcd/issues/8320" target="_blank" rel="noopener">较弱的TLS密码套件</a>。<br>当使用无效密码套件请求客户端问候时，TLS握手将失败。<br>例如：</p>
+<pre><code>$ etcd \
+  --cert-file ./server.crt \
+  --key-file ./server.key \
+  --trusted-ca-file ./ca.crt \
+  --cipher-suites TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</code></pre><p>然后，客户端请求必须指定服务器中指定的密码套件之一：</p>
+<pre><code># 有效的加密套件
+$ curl \
+  --cacert ./ca.crt \
+  --cert ./server.crt \
+  --key ./server.key \
+  -L [CLIENT-URL]/metrics \
+  --ciphers ECDHE-RSA-AES128-GCM-SHA256
+
+# 成功请求
+etcd_server_version{server_version=&quot;3.2.22&quot;} 1
+...</code></pre><pre><code># 无效的加密套件
+$ curl \
+  --cacert ./ca.crt \
+  --cert ./server.crt \
+  --key ./server.key \
+  -L [CLIENT-URL]/metrics \
+  --ciphers ECDHE-RSA-DES-CBC3-SHA
+
+# 请求失败
+(35) error:14094410:SSL routines:ssl3_read_bytes:sslv3 alert handshake failure</code></pre><h2 id="示例3：集群中的传输安全性和客户端证书"><a href="#示例3：集群中的传输安全性和客户端证书" class="headerlink" title="示例3：集群中的传输安全性和客户端证书"></a>示例3：集群中的传输安全性和客户端证书</h2><hr>
+<p>etcd支持与上述对等节点通信相同的模型，这意味着集群中etcd成员之间的通信。<br>假设我们有这个<code>ca.crt</code>和两个由此CA签名的成员，它们具有自己的密钥对（<code>member1.crt</code>和<code>member1.key</code>，<code>member2.crt</code>和<code>member2.key</code>），我们按以下方式启动etcd：</p>
+<pre><code>DISCOVERY_URL=... # from https://discovery.etcd.io/new
+
+# member1
+$ etcd --name infra1 --data-dir infra1 \
+  --peer-client-cert-auth --peer-trusted-ca-file=/path/to/ca.crt --peer-cert-file=/path/to/member1.crt --peer-key-file=/path/to/member1.key \
+  --initial-advertise-peer-urls=https://10.0.1.10:2380 --listen-peer-urls=https://10.0.1.10:2380 \
+  --discovery ${DISCOVERY_URL}
+
+# member2
+$ etcd --name infra2 --data-dir infra2 \
+  --peer-client-cert-auth --peer-trusted-ca-file=/path/to/ca.crt --peer-cert-file=/path/to/member2.crt --peer-key-file=/path/to/member2.key \
+  --initial-advertise-peer-urls=https://10.0.1.11:2380 --listen-peer-urls=https://10.0.1.11:2380 \
+  --discovery ${DISCOVERY_URL}</code></pre><p>etcd成员将形成一个集群，并且集群中成员之间的所有通信都将使用客户端证书进行加密和身份验证。 etcd的输出将显示它连接以使用HTTPS的地址。</p>
+<h2 id="示例4：自动自签名传输安全性"><a href="#示例4：自动自签名传输安全性" class="headerlink" title="示例4：自动自签名传输安全性"></a>示例4：自动自签名传输安全性</h2><hr>
+<p>对于需要通信加密而不是身份验证的情况，etcd支持使用自动生成的自签名证书来加密其消息。 因为不需要在etcd之外管理证书和密钥，所以这简化了部署。<br>配置etcd以使用带有<code>--auto-tls</code>和<code>--peer-auto-tls</code>标志的自签名证书进行客户端和对等节点连接：</p>
+<pre><code>DISCOVERY_URL=... # from https://discovery.etcd.io/new
+
+# member1
+$ etcd --name infra1 --data-dir infra1 \
+  --auto-tls --peer-auto-tls \
+  --initial-advertise-peer-urls=https://10.0.1.10:2380 --listen-peer-urls=https://10.0.1.10:2380 \
+  --discovery ${DISCOVERY_URL}
+
+# member2
+$ etcd --name infra2 --data-dir infra2 \
+  --auto-tls --peer-auto-tls \
+  --initial-advertise-peer-urls=https://10.0.1.11:2380 --listen-peer-urls=https://10.0.1.11:2380 \
+  --discovery ${DISCOVERY_URL}</code></pre><p>自签名证书不会验证身份，因此curl将返回错误：</p>
+<pre><code>curl: (60) SSL certificate problem: Invalid certificate chain</code></pre><p>要禁用证书链检查，请使用<code>-k</code>标志调用<code>curl</code>：</p>
+<pre><code>$ curl -k https://127.0.0.1:2379/v2/keys/foo -Xput -d value=bar -v</code></pre><h2 id="DNS-SRV的注意事项"><a href="#DNS-SRV的注意事项" class="headerlink" title="DNS SRV的注意事项"></a>DNS SRV的注意事项</h2><hr>
+<p>如果连接是安全的，则<code>etcd proxy</code>从其客户端TLS终端，并使用<code>--peer-key-file</code>和<code>--peer-cert-file</code>中指定的代理自身的密钥/证书与etcd成员进行通信。</p>
+<p>代理通过给定成员的<code>--advertise-client-urls</code>和<code>--advertise-peer-urls</code>与etcd成员进行通信。 它将客户端请求转发到etcd成员广播的客户端URL，并通过etcd成员广播的对等URL同步初始集群配置。</p>
+<p>为etcd成员启用客户端身份验证后，管理员必须确保代理的<code>--peer-cert-file</code>选项中指定的对等节点证书对该身份验证有效。如果启用了对等节点身份验证，则代理的对等节点证书也必须对对等节点身份验证有效。</p>
+<h2 id="TLS-身份验证的注意事项"><a href="#TLS-身份验证的注意事项" class="headerlink" title="TLS 身份验证的注意事项"></a>TLS 身份验证的注意事项</h2><hr>
+<p>从<a href="https://github.com/etcd-io/etcd/pull/7829" target="_blank" rel="noopener">v3.2.0开始，TLS证书将在每个客户端连接上重新加载</a>。 这在不停止etcd服务器而替换到期证书时很有用； 可以通过用新证书覆盖旧证书来完成。 刷新每个连接的证书应该没有太多的开销，但是将来可以通过缓存层进行改进。 示例测试可以在<a href="https://github.com/coreos/etcd/blob/b041ce5d514a4b4aaeefbffb008f0c7570a18986/integration/v3_grpc_test.go#L1601-L1757" target="_blank" rel="noopener">这里</a>找到。</p>
+<p>从<a href="https://github.com/etcd-io/etcd/pull/7687" target="_blank" rel="noopener">v3.2.0开始，服务器使用错误的IP <code>SAN</code>拒绝传入的对等证书</a>。 例如，如果对等节点证书在“使用者备用名称”（SAN）字段中包含任何IP地址，则服务器仅在远程IP地址与这些IP地址之一匹配时才对对等节点身份验证。 这是为了防止未经授权的端点加入群集。 例如，对等节点B的CSR（带有cfssl）为：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd peer&quot;,
+  &quot;hosts&quot;: [
+    &quot;*.example.default.svc&quot;,
+    &quot;*.example.default.svc.cluster.local&quot;,
+    &quot;10.138.0.27&quot;
+  ],
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;rsa&quot;,
+    &quot;size&quot;: 2048
+  },
+  &quot;names&quot;: [
+    {
+      &quot;C&quot;: &quot;US&quot;,
+      &quot;L&quot;: &quot;CA&quot;,
+      &quot;ST&quot;: &quot;San Francisco&quot;
+    }
+  ]
+}</code></pre><p>当对等节点B的实际IP地址是<code>10.138.0.2</code>，而不是<code>10.138.0.27</code>。 当对等节点B尝试加入集群时，对等节点A将拒绝B，并显示错误x509：证书对<code>10.138.0.27</code>有效，而不对<code>10.138.0.2</code>有效，因为B的远程IP地址与“使用者备用名称（SAN）”字段中的地址不匹配。</p>
+<p>从<a href="https://github.com/etcd-io/etcd/pull/7767" target="_blank" rel="noopener">v3.2.0开始，服务器在检查SAN时解析TLS DNSNames</a>。 例如，如果对等节点证书在“使用者备用名称”（SAN）字段中仅包含DNS名称（不包含IP地址），则仅当这些DNS名称上的正向查找（<code>dig b.com</code>）具有与远程IP匹配的IP时，服务器才对对等身份验证 地址。 例如，对等B的CSR（带有<code>cfssl</code>）为：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd peer&quot;,
+  &quot;hosts&quot;: [
+    &quot;b.com&quot;
+  ],</code></pre><p>当对等节点B的远程IP地址为<code>10.138.0.2</code>时。 当对等节点B尝试加入集群时，对等节点A查找传入的主机<code>b.com</code>以获取IP地址列表（例如<code>dig b.com</code>）。如果列表不包含IP <code>10.138.0.2</code>，则出现错误<code>tls: 10.138.0.2 does not match any of DNSNames [&quot;b.com&quot;]</code>.</p>
+<p>从<a href="https://github.com/etcd-io/etcd/pull/8223" target="_blank" rel="noopener">v3.2.2开始，如果IP匹配，服务器将接受连接，而无需检查DNS条目</a>。 例如，如果对等节点证书在“使用者备用名称（SAN）”字段中包含IP地址和DNS名称，并且远程IP地址与这些IP地址之一匹配，则服务器仅接受连接而无需进一步检查DNS名称。 例如，对等节点B的CSR（带有<code>cfssl</code>）为：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd peer&quot;,
+  &quot;hosts&quot;: [
+    &quot;invalid.domain&quot;,
+    &quot;10.138.0.2&quot;
+  ],</code></pre><p>当对等节点B的远程IP地址是<code>10.138.0.2</code>并且<code>invalid.domain</code>是无效的主机时。 当对等节点B尝试加入集群时，对等节点A成功地对节点B进行了身份验证，因为“使用者备用名称（SAN）”字段具有有效的匹配IP地址。 有关更多详细信息，请参见问题<a href="https://github.com/etcd-io/etcd/issues/8206" target="_blank" rel="noopener">＃8206</a>。</p>
+<p>从<a href="https://github.com/etcd-io/etcd/pull/8281" target="_blank" rel="noopener">v3.2.5开始，服务器支持在通配符DNS <code>SAN</code>上进行反向查找</a>。 例如，如果对等节点证书在“使用者备用名称”（SAN）字段中仅包含DNS名称（不包含IP地址），则服务器首先对远程IP地址进行反向查找，以获取映射到该地址的名称列表（例如<code>nslookup IPADDR</code>）。如果这些名称的名称与对等节点证书的DNS名称（通过完全匹配或通配符匹配）匹配，则接受连接。 如果没有匹配项，则服务器将对等节点证书中的每个DNS条目进行正向查找（例如，如果条目为<code>*.example.default.svc</code>，则查找<code>example.default.svc</code>），并且仅在主机的解析地址具有匹配的IP时接受连接 地址和对等节点的远程IP地址。 例如，对等B的CSR（带有<code>cfssl</code>）为：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd peer&quot;,
+  &quot;hosts&quot;: [
+    &quot;*.example.default.svc&quot;,
+    &quot;*.example.default.svc.cluster.local&quot;
+  ],</code></pre><p>当对等节点B的远程IP地址为<code>10.138.0.2</code>时。 当对等节点B尝试加入集群时，对等节点A反向查找IP <code>10.138.0.2</code>以获取主机名列表。 并且，“主题备用名称”（SAN）字段中的主机名必须与对等节点B的证书DNS名称完全匹配或与通配符匹配。 如果反向/正向查找均无效，则返回错误<code>&quot;tls: &quot;10.138.0.2&quot; does not match any of DNSNames [&quot;*.example.default.svc&quot;,&quot;*.example.default.svc.cluster.local&quot;]</code>。有关更多详细信息，请参见问题<a href="https://github.com/etcd-io/etcd/issues/8268" target="_blank" rel="noopener">＃8268</a>。</p>
+<p><a href="https://github.com/etcd-io/etcd/blob/master/CHANGELOG-3.3.md" target="_blank" rel="noopener">v3.3.0</a>添加了<a href="https://github.com/etcd-io/etcd/pull/8616" target="_blank" rel="noopener">etcd –peer-cert-allowed-cn</a>参数，以支持<a href="https://github.com/etcd-io/etcd/issues/8262" target="_blank" rel="noopener">基于CN（通用名称）的对等节点连接的身份验证</a>。 Kubernetes TLS引导涉及为etcd成员和其他系统组件（例如API服务器，kubelet等）生成动态证书。 为每个组件维护不同的CA可提供对etcd集群的更严格的访问控制，但通常很乏味。 指定<code>--peer-cert-allowed-cn</code>标志时，即使具有共享的CA，节点也只能以匹配的通用名称加入。 例如，三节点群集中的每个成员都设置有CSR（使用<code>cfssl</code>），如下所示：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd.local&quot;,
+  &quot;hosts&quot;: [
+    &quot;m1.etcd.local&quot;,
+    &quot;127.0.0.1&quot;,
+    &quot;localhost&quot;
+  ],</code></pre><pre><code>{
+  &quot;CN&quot;: &quot;etcd.local&quot;,
+  &quot;hosts&quot;: [
+    &quot;m2.etcd.local&quot;,
+    &quot;127.0.0.1&quot;,
+    &quot;localhost&quot;
+  ],</code></pre><pre><code>{
+  &quot;CN&quot;: &quot;etcd.local&quot;,
+  &quot;hosts&quot;: [
+    &quot;m3.etcd.local&quot;,
+    &quot;127.0.0.1&quot;,
+    &quot;localhost&quot;
+  ],</code></pre><p>如果给定<code>--peer-cert-allowed-cn etcd.local</code>，则只有具有相同通用名称的对等方将被认证。 CSR中具有不同CN或<code>--peer-cert-allowed-cn</code>的节点将被拒绝：</p>
+<pre><code>$ etcd --peer-cert-allowed-cn m1.etcd.local
+
+I | embed: rejected connection from &quot;127.0.0.1:48044&quot; (error &quot;CommonName authentication failed&quot;, ServerName &quot;m1.etcd.local&quot;)
+I | embed: rejected connection from &quot;127.0.0.1:55702&quot; (error &quot;remote error: tls: bad certificate&quot;, ServerName &quot;m3.etcd.local&quot;)</code></pre><p>每个进程都应以以下内容开始：</p>
+<pre><code>etcd --peer-cert-allowed-cn etcd.local
+
+I | pkg/netutil: resolving m3.etcd.local:32380 to 127.0.0.1:32380
+I | pkg/netutil: resolving m2.etcd.local:22380 to 127.0.0.1:22380
+I | pkg/netutil: resolving m1.etcd.local:2380 to 127.0.0.1:2380
+I | etcdserver: published {Name:m3 ClientURLs:[https://m3.etcd.local:32379]} to cluster 9db03f09b20de32b
+I | embed: ready to serve client requests
+I | etcdserver: published {Name:m1 ClientURLs:[https://m1.etcd.local:2379]} to cluster 9db03f09b20de32b
+I | embed: ready to serve client requests
+I | etcdserver: published {Name:m2 ClientURLs:[https://m2.etcd.local:22379]} to cluster 9db03f09b20de32b
+I | embed: ready to serve client requests
+I | embed: serving client requests on 127.0.0.1:32379
+I | embed: serving client requests on 127.0.0.1:22379
+I | embed: serving client requests on 127.0.0.1:2379</code></pre><p><a href="https://github.com/etcd-io/etcd/blob/master/CHANGELOG-3.2.md" target="_blank" rel="noopener">v3.2.19</a>和<a href="https://github.com/etcd-io/etcd/blob/master/CHANGELOG-3.3.md" target="_blank" rel="noopener">v3.3.4</a>修复了<a href="https://github.com/etcd-io/etcd/issues/9541" target="_blank" rel="noopener">当证书SAN字段仅包含IP地址但不包含域名时TLS重新加载的问题</a>。 例如，如下设置了具有CSR（具有<code>cfssl</code>）的成员：</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd.local&quot;,
+  &quot;hosts&quot;: [
+    &quot;127.0.0.1&quot;
+  ],</code></pre><p>在Go中，仅当服务器的<code>（* tls.Config）.Certificates</code>字段不为空或<code>（* tls.ClientHelloInfo）.ServerName</code>不为空且具有有效SNI时，服务器才会调用<code>（* tls.Config）.GetCertificate</code>来重新加载TLS 来自客户。 以前，etcd始终填充<code>（* tls.Config）</code>。在初始客户端TLS握手上的证书为非空。 因此，总是希望客户端提供匹配的SNI，以便通过TLS验证并触发<code>（* tls.Config）.GetCertificate</code>以重新加载TLS数据。</p>
+<p>但是，其SAN字段<a href="https://github.com/etcd-io/etcd/issues/9541" target="_blank" rel="noopener">仅包括IP地址不包含任何域名的证书</a>将请求<code>* tls.ClientHelloInfo</code>带有空的<code>ServerName</code>字段，从而无法在初始TLS握手时触发TLS重新加载；当需要在线更换过期证书时，这将成为一个问题。</p>
+<p>现在,<code>（* tls.Config）.Certificates</code>在初始TLS客户端握手时创建为空，首先触发<code>（* tls.Config）.GetCertificate</code>，然后在每个新的TLS连接上填充其余证书，即使客户端SNI为 为空（例如，证书仅包括IP）。</p>
+<h2 id="主机白名单的注意事项"><a href="#主机白名单的注意事项" class="headerlink" title="主机白名单的注意事项"></a>主机白名单的注意事项</h2><hr>
+<p><code>etcd --host-whitelist</code>参数指定HTTP客户端请求中可接受的主机名。 客户端源策略可以防止对不安全的etcd服务器的“<a href="https://en.wikipedia.org/wiki/DNS_rebinding" target="_blank" rel="noopener">DNS重新绑定</a>”攻击。 也就是说，任何网站都可以简单地创建一个授权的DNS名称，并将DNS定向到“<code>localhost</code>”（或任何其他地址）。 然后，侦听“<code>localhost</code>”上的etcd服务器的所有HTTP端点都可以访问，因此容易受到DNS重新绑定攻击。 有关更多详细信息，请参见<a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1447#c2" target="_blank" rel="noopener">CVE-2018-5702</a>。</p>
+<p>客户原始策略的工作方式如下：</p>
+<ol>
+<li>如果客户端通过HTTPS连接是安全的，则允许使用任何主机名。</li>
+<li>如果客户端连接不安全且“<code>HostWhitelist</code>”不为空，则仅允许其Host字段列在白名单中的HTTP请求。</li>
+</ol>
+<p>请注意，无论是否启用身份验证，都会实施客户端来源策略，以进行更严格的控制。</p>
+<p>默认情况下，<code>etcd --host-whitelist</code>和<code>embed.Config.HostWhitelist</code>设置为空以允许所有主机名。请注意，在指定主机名时，不会自动添加回送地址。 要允许环回接口，请手动将其添加到白名单（例如“ <code>localhost</code>”，“<code>127.0.0.1</code>”等）。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><hr>
+<p>使用TLS客户端身份验证时，我看到SSLv3警报握手失败？<br><code>golang</code>的<code>crypto/tls</code>软件包在使用之前检查证书公钥的密钥用法。要使用证书公共密钥进行客户端身份验证，我们需要在创建证书公共密钥时将<code>clientAuth</code>添加到“<code>Extended Key Usage</code>”中。</p>
+<p>这是操作方法：</p>
+<p>将以下部分添加到openssl.cnf中：</p>
+<pre><code>[ ssl_client ]
+...
+  extendedKeyUsage = clientAuth
+...
+</code></pre><p>创建证书时，请确保在<code>-extensions</code>参数中引用它：</p>
+<pre><code>$ openssl ca -config openssl.cnf -policy policy_anything -extensions ssl_client -out certs/machine.crt -infiles machine.csr</code></pre><p>通过对等证书身份验证，我收到“证书对127.0.0.1有效，而不对$我的Ip有效”</p>
+<p>确保使用主题名称（成员的公共IP地址）对证书进行签名。 例如，<code>etcd-ca</code>工具为其<code>new-cert</code>命令提供了<code>--ip=</code>选项。</p>
+<p>需要在其使用者名称中为成员的FQDN签署证书，使用使用者备用名称（简称IP SAN）添加IP地址。 <code>etcd-ca</code>工具为其<code>new-cert</code>命令提供了<code>--domain=</code>选项，<code>openssl</code>也可以做到<a href="http://wiki.cacert.org/FAQ/subjectAltName" target="_blank" rel="noopener">这</a>一点。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TLS&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

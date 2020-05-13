@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>深入解析Hyperledger Fabric搭建的全过程 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 6:46 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      10 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>在这篇文章中，使用<code>fabric-samples/first-network</code>中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。<br>至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章<a href="https://ifican.top/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="noopener">Hyperledger Fabric环境搭建过程</a><br>fabric网络：单机，solo类型，两个组织，分别有两个节点<br>首先看一下该文件夹内有哪些文件：</p>
+<pre><code>base                  connection-org2.json    docker-compose-cli.yaml           docker-compose-org3.yaml
+byfn.sh               connection-org2.yaml    docker-compose-couch-org3.yaml    eyfn.sh
+channel-artifacts     connection-org3.json    docker-compose-couch.yaml         org3-artifacts
+configtx.yaml         connection-org3.yaml    docker-compose-e2e-template.yaml  README.md
+connection-org1.json  crypto-config.yaml      docker-compose-etcdraft2.yaml     scripts
+connection-org1.yaml  docker-compose-ca.yaml  docker-compose-kafka.yaml</code></pre><p>将本次用不到的文件删除，剩余的文件：</p>
+<pre><code>.
+├── base
+│   ├── docker-compose-base.yaml
+│   └── peer-base.yaml
+├── channel-artifacts
+├── configtx.yaml
+├── crypto-config.yaml
+├── docker-compose-cli.yaml
+├── docker-compose-couch.yaml
+├── docker-compose-e2e-template.yaml
+</code></pre><h2 id="1-证书的生成"><a href="#1-证书的生成" class="headerlink" title="1.证书的生成"></a>1.证书的生成</h2><p>在Fabric网络环境中，第一步需要生成各个节点的证书文件，所用到的配置文件为<code>crypto-config.yaml</code>，说明一下文件内各字段的意义：</p>
+<pre><code>OrdererOrgs:    #定义一个Order组织
+  - Name: Orderer    #order节点的名称,当前网络模式为solo类型，所以只定义了一个Order节点
+    Domain: example.com    #order节点的域
+    Specs:      #暂时用不到
+      - Hostname: orderer
+      - Hostname: orderer2
+      - Hostname: orderer3
+      - Hostname: orderer4
+      - Hostname: orderer5
+
+PeerOrgs:      #定义Peer组织
+  - Name: Org1      #声明Peer组织名称为Org1
+    Domain: org1.example.com    #Org1组织的域
+    EnableNodeOUs: true    #暂时没搞清楚该字段的意义
+    Template:       #在这里可以定义所生成的Org1组织中的Peer节点证书数量，不包括Admin
+      Count: 2      #表明需要生成两个Peer节点的证书，如果需要其他数量的Peer节点，只需要更改这里的数量。
+    Users:        #在这里可以定义所生成的Org1组织中类型为User的证书数量，不包括Admin
+      Count: 1    #生成用户的证书的数量
+
+  - Name: Org2   #声明第二个Peer组织名称为Org2，如果需要更多的Peer组织证书，只需要按该模板添加即可。
+    Domain: org2.example.com  #与以上相同 
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1</code></pre><p>我们这里就使用两个组织，每个组织分别有两个节点和一个User。接下来我们使用该文件生成对应数量的证书：</p>
+<pre><code>#路径需要更改为自己的路径
+cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/  
+#在这里可能会报错，通常是权限问题，可以添加sudo重新执行
+cryptogen generate --config=./crypto-config.yaml
+#执行完毕后，当前文件夹下会出现一个新的文件夹：crypto-config，在该文件夹下就是刚刚生成的证书.</code></pre><p>文件夹内证书不再详解，会在另一篇文章中专门解释Fabric-ca的内容。</p>
+<h2 id="2-生成创世区块，通道配置，锚节点配置文件"><a href="#2-生成创世区块，通道配置，锚节点配置文件" class="headerlink" title="2 生成创世区块，通道配置，锚节点配置文件"></a>2 生成创世区块，通道配置，锚节点配置文件</h2><p>在这里需要用到<code>configtxgen</code>这个二进制文件。</p>
+<h4 id="2-1生成创世区块"><a href="#2-1生成创世区块" class="headerlink" title="2.1生成创世区块"></a>2.1生成创世区块</h4><pre><code>#首先进入文件夹
+cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/  
+#执行命令生成创世区块 
+configtxgen -profile TwoOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
+#如果没有channel-artifacts这个文件夹，则需要手动去创建</code></pre><p>如果没有出现错误的话，在<code>channel-artifacts</code>文件夹中可以看至生成的<code>genesis.block</code>文件。</p>
+<h4 id="2-2生成通道配置信息"><a href="#2-2生成通道配置信息" class="headerlink" title="2.2生成通道配置信息"></a>2.2生成通道配置信息</h4><pre><code>#执行命令生成通道配置信息
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel</code></pre><p>同样，在<code>channel-artifacts</code>文件夹中可以看至生成的<code>channel.tx</code>文件。</p>
+<h4 id="2-3生成锚节点配置文件"><a href="#2-3生成锚节点配置文件" class="headerlink" title="2.3生成锚节点配置文件"></a>2.3生成锚节点配置文件</h4><pre><code>#首先生成Org1的锚节点配置文件
+configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
+#生成Org2的锚节点配置文件
+configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP</code></pre><p>所有需要的配置文件全部建立完成，在<code>channel-artifacts</code>中应该有以下几个文件:</p>
+<pre><code>channel.tx  genesis.block  Org1MSPanchors.tx  Org2MSPanchors.tx</code></pre><h2 id="3启动网络"><a href="#3启动网络" class="headerlink" title="3启动网络"></a>3启动网络</h2><p>到了这一步，可以启动网络了。</p>
+<pre><code>#首先进入``fabric-samples/first-network``文件夹。
+cd ~/go/src/github.com/hyperledger/fabric/scripts/fabric-samples/first-network/
+#启动容器
+sudo docker-compose -f docker-compose-cli.yaml up -d</code></pre><p>执行以下命令查看容器是否启动成功:</p>
+<pre><code>sudo docker ps
+#如果可以看到如下信息说明启动成功
+CONTAINER ID        IMAGE                               COMMAND             CREATED             STATUS              PORTS                      NAMES
+17d79586b1b7        hyperledger/fabric-tools:latest     &quot;/bin/bash&quot;         30 seconds ago      Up 28 seconds                                  cli
+0f4adb6b578e        hyperledger/fabric-orderer:latest   &quot;orderer&quot;           57 seconds ago      Up 29 seconds       0.0.0.0:7050-&gt;7050/tcp     orderer.example.com
+e2795ea9d43b        hyperledger/fabric-peer:latest      &quot;peer node start&quot;   57 seconds ago      Up 30 seconds       0.0.0.0:10051-&gt;10051/tcp   peer1.org2.example.com
+247a6e4fdd62        hyperledger/fabric-peer:latest      &quot;peer node start&quot;   57 seconds ago      Up 30 seconds       0.0.0.0:9051-&gt;9051/tcp     peer0.org2.example.com
+ad4af3309e8c        hyperledger/fabric-peer:latest      &quot;peer node start&quot;   57 seconds ago      Up 31 seconds       0.0.0.0:8051-&gt;8051/tcp     peer1.org1.example.com
+f6d25896b517        hyperledger/fabric-peer:latest      &quot;peer node start&quot;   58 seconds ago      Up 40 seconds       0.0.0.0:7051-&gt;7051/tcp     peer0.org1.example.com</code></pre><h4 id="3-1创建通道"><a href="#3-1创建通道" class="headerlink" title="3.1创建通道"></a>3.1创建通道</h4><p>创建通道需要进入cli容器：</p>
+<pre><code>sudo docker exec -it cli bash
+#看到光标前的信息变为
+root@17d79586b1b7:/opt/gopath/src/github.com/hyperledger/fabric/peer# 
+#则成功进入容器</code></pre><p>首先配置环境变量：</p>
+<pre><code>#当前cli容器默认配置是节点peer0,所以不需要其他配置信息
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+#创建通道信息
+peer channel create -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/channel.tx --tls true --cafile $ORDERER_CA
+#看到如下信息说明创建通道成功
+2019-06-20 13:05:55.829 UTC [channelCmd] InitCmdFactory -&gt; INFO 001 Endorser and orderer connections initialized
+2019-06-20 13:05:55.926 UTC [cli.common] readBlock -&gt; INFO 002 Received block: 0
+#将生成的文件移动到channel-artifacts文件夹中
+mv mychannel.block channel-artifacts/</code></pre><h4 id="3-2加入通道"><a href="#3-2加入通道" class="headerlink" title="3.2加入通道"></a>3.2加入通道</h4><pre><code>#因为当前cli容器使用的是peer0的配置，所以可以直接将peer0加入通道 
+ peer channel join -b channel-artifacts/mychannel.block
+#更新环境变量使其他节点也加入通道
+#=========peer1.org1===========  注意这里端口要与上面文件中配置的端口号相同
+CORE_PEER_ADDRESS=peer1.org1.example.com:8051  
+#=========peer0.org2============
+CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot;
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+peer channel join -b channel-artifacts/mychannel.block 
+#=========peer1.org2=============
+CORE_PEER_ADDRESS=peer1.org2.example.com:10051
+peer channel join -b channel-artifacts/mychannel.block
+#退出容器
+exit</code></pre><h4 id="3-3更新锚节点"><a href="#3-3更新锚节点" class="headerlink" title="3.3更新锚节点"></a>3.3更新锚节点</h4><pre><code>#重新进入容器
+sudo docker exec -it cli bash
+#更新环境变量
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+#========Org1================
+peer channel update -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/Org1MSPanchors.tx --tls true --cafile $ORDERER_CA
+#========Org2================
+CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot;
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+peer channel update -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/Org2MSPanchors.tx --tls true --cafile $ORDERER_CA
+#退出容器
+exit</code></pre><h4 id="3-4安装链码"><a href="#3-4安装链码" class="headerlink" title="3.4安装链码"></a>3.4安装链码</h4><pre><code>#链码的安装仍然需要在所有节点上进行操作
+#进入容器
+sudo docker exec -it cli bash
+#更新环境变量
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+#=========peer0.org1=========== 
+#这里很有可能会出现路径不存在的错误，解决方法是在容器内找到对应的链码所在位置，然后替换当前链码路径
+##比如本文中链码路径为/opt/gopath/src/github.com/chaincode/chaincode_example02/go
+##则可以将以下命令的链码路径更改为github.com/chaincode/chaincode_example02
+
+peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02
+#实例化链码 该步骤创建了a,b两个账户，其中a账户余额定义为100，b账户余额定义为200
+peer chaincode instantiate -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc -v 1.0 -c &#39;{&quot;Args&quot;:[&quot;init&quot;,&quot;a&quot;,&quot;100&quot;,&quot;b&quot;,&quot;200&quot;]}&#39; -P &quot;OR      (&#39;Org1MSP.member&#39;,&#39;Org2MSP.member&#39;)&quot;
+#这一步执行完毕后可以在其他节点上也安装链码，具体环境变量配置见本文中4.2</code></pre><h4 id="3-5调用链码"><a href="#3-5调用链码" class="headerlink" title="3.5调用链码"></a>3.5调用链码</h4><pre><code>#以peer0.org1为例
+#首先进入cli容器
+sudo docker exec -it cli bash
+#执行以下命令进行查询a账户余额
+peer chaincode query -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]}&#39;
+#如果命令行输出100说明链码成功调用.
+
+#接下来我们发起一笔交易：通过peer0.org1节点将a账户余额转账给b20
+peer chaincode invoke -o orderer.example.com:7050  --tls true --cafile $ORDERER_CA -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;10&quot;]}&#39;
+#然后登陆peer1.org1节点进行查询
+CORE_PEER_ADDRESS=peer1.org1.example.com:8051 
+peer chaincode query -C mychannel -n mycc -c &#39;{&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]}&#39;
+#如果输出结果为:80
+说明Fabric网络手动搭建成功
+#退出容器
+exit</code></pre><p>最后关闭网络：</p>
+<pre><code>sudo docker-compose -f docker-compose-cli.yaml down --volumes 
+#删除生成的文件，下次启动网络需要重新生成
+sudo rm -r channel-artifacts crypto-config</code></pre><h2 id="4总结"><a href="#4总结" class="headerlink" title="4总结"></a>4总结</h2><p>本文并没有使用CouchDb作为fabric网络的数据库，准备放到下一篇多机搭建Fabric网络中一起讲解。到这里，整个网络的手动搭建过程已经完成，希望大家能够有所收获。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "深入解析Hyperledger Fabric搭建的全过程&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

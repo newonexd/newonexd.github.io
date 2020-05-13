@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>Hyperledger Fabric使用硬件安全模块(HSM) ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 十二月 24日 2019, 10:54 上午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="使用硬件安全模块"><a href="#使用硬件安全模块" class="headerlink" title="使用硬件安全模块"></a>使用硬件安全模块</h1><p><a href="https://hyperledger-fabric.readthedocs.io/en/latest/hsm.html" target="_blank" rel="noopener">官方文档</a><br>可以通过<code>Fabric</code>节点使用硬件安全模块<code>(HSM)</code>来产生和存储私钥。<code>HSM</code>用于保护私钥和处理加密操作。允许<code>peer</code>节点与<code>orderer</code>节点在不暴露他们的私钥的条件下去签名和背书交易，当前<code>Fabric</code>只支持使用<code>PKCS11</code>标准与<code>HSM</code>进行通信。</p>
+<h2 id="配置HSM"><a href="#配置HSM" class="headerlink" title="配置HSM"></a>配置HSM</h2><p>为了在<code>Fabric</code>节点上使用<code>HSM</code>，需要更新关于节点配置文件如<code>core.yaml</code>中的<code>BCCSP</code>(加密服务提供者)部分.在<code>BCCSP</code>部分，需要选择<code>PKCS11</code>作为提供者并提供需要使用的<code>PKCS11</code>库的路径。还需要提供为加密操作创建的令牌的标签和密码。可以使用令牌去生成和存储多个秘钥。<br>预先构建的<code>Hyperledger Fabric Docker</code>镜像不能够使用<code>PKCS11</code>。如果使用<code>Docker</code>部署<code>Fabric</code>，需要通过以下的命令启动<code>PKCS11</code>构建自己的镜像。</p>
+<pre><code>make docker GO_TAGS=pkcs11</code></pre><p>同时也需要确保<code>PKCS11</code>的库文件是有效的，挂载到容器内部或者通过节点安装后是可以使用的。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>接下来的示例说明了如何去配置一个可以使用<code>HSM</code>的<code>Fabirc</code>节点。</p>
+<p>首先，需要安装一个实现了<code>PKCS11</code>的接口。本例使用开源的<a href="https://github.com/opendnssec/SoftHSMv2" target="_blank" rel="noopener">softhsm</a>实现。在下载和配置完成<code>softhsm</code>后，需要设置环境变量<code>SOFTHSM2_CONF</code>指向<code>softhsm2</code>配置文件。</p>
+<p>可以使用<code>softhsm</code>去创建用于处理关于<code>Fabric</code>节点在<code>HSM</code>插槽中用于加密操作令牌。在这个示例中，我们创建了一个标签为<code>fabric</code>，密码为<code>71811222</code>的令牌。在创建令牌完成之后，更新配置文件来使用<code>PKCS11</code>，并将令牌作为加密服务提供者。可以在下面发现关于<code>BCCSP</code>部分配置的例子：</p>
+<pre><code>#############################################################################
+# BCCSP (区块链加密服务提供者) 部分，用于选择使用的已实现的加密库文件
+#############################################################################
+bccsp:
+  default: PKCS11
+  pkcs11:
+    Library: /etc/hyperledger/fabric/libsofthsm2.so
+    Pin: 71811222
+    Label: fabric
+    hash: SHA2
+    security: 256</code></pre><p>也可以通过环境变量来覆盖配置文件中相关的字段。如果通过<code>Fabric CA</code>服务器连接到了<code>HSM</code>，则需要设置以下环境变量：</p>
+<pre><code>FABRIC_CA_SERVER_BCCSP_DEFAULT=PKCS11
+FABRIC_CA_SERVER_BCCSP_PKCS11_LIBRARY=/etc/hyperledger/fabric/libsofthsm2.so
+FABRIC_CA_SERVER_BCCSP_PKCS11_PIN=71811222
+FABRIC_CA_SERVER_BCCSP_PKCS11_LABEL=fabric</code></pre><p>如果使用<code>docker compose</code>部署了节点，在构建完自己的镜像后，可以更新<code>docker compose</code>文件通过<code>volumes</code>将<code>softhsm</code>库文件和配置文件挂载到容器中。例如，可以添加下面的环境和<code>volumes</code>变量到<code>docker compose</code>文件：</p>
+<pre><code>  environment:
+     - SOFTHSM2_CONF=/etc/hyperledger/fabric/config.file
+  volumes:
+     - /home/softhsm/config.file:/etc/hyperledger/fabric/config.file
+     - /usr/local/Cellar/softhsm/2.1.0/lib/softhsm/libsofthsm2.so:/etc/hyperledger/fabric/libsofthsm2.so</code></pre><h2 id="配置使用HSM的网络"><a href="#配置使用HSM的网络" class="headerlink" title="配置使用HSM的网络"></a>配置使用<code>HSM</code>的网络</h2><p>如果使用<code>HSM</code>部署了<code>Fabric</code>节点，私钥将会在<code>HSM</code>内部生成而不是节点本地的<code>MSP</code>中的<code>keystore</code>文件夹内。<code>MSP</code>中的<code>keystore</code>文件夹将为空文件夹。另外，<code>Fabric</code>节点将使用关于<code>signcerts</code>文件夹内的签名证书的主题秘钥标识符去接收<code>HSM</code>中的私钥。这个创建<code>MSP</code>文件夹的过程将和之前不同，取决于自己使用的<code>Fabric</code> 证书认证中心。</p>
+<h3 id="使用Fabric-CA"><a href="#使用Fabric-CA" class="headerlink" title="使用Fabric CA"></a>使用Fabric CA</h3><p>可以通过编辑相同的配置文件配置<code>Fabric CA</code>使<code>peer</code>节点或者是<code>orderer</code>节点使用<code>HSM</code>。因为可以使用<code>Fabric CA</code>内部的<code>HSM</code>来生成秘钥。通过下面的步骤将直接创建本地的<code>MSP</code>文件夹：</p>
+<ol>
+<li>创建一个<code>HSM</code>令牌并将它指向<code>Fabirc CA</code>的配置文件。当<code>Fabric CA</code>服务启动时，将会在<code>HSM</code>中生成<code>CA</code>签名证书。如果不担心<code>CA</code>签名证书是否暴露，可以跳过该步骤。</li>
+<li>使用<code>Fabric CA</code>客户端通过自己的<code>CA</code>去注册<code>peer</code>或者<code>order</code>节点身份。</li>
+<li>编辑<code>Fabric CA</code>客户端配置文件或者是环境变量使用<code>HSM</code>作为加密服务提供者并再次登录获取节点的身份。登录命令将通过<code>HSM</code>生成私钥文件.</li>
+<li>更新关于<code>peer</code>或者<code>orderer</code>节点的配置文件中的<code>BCCSP</code>部分使用<code>PKCS11</code>，并将令牌作为加密服务提供者。指向由<code>Fabric CA</code>客户端创建的<code>MSP</code>文件夹。一旦部署完成，<code>peer</code>节点或者<code>orderer</code>节点将可以通过由<code>HSM</code>提供保护的私钥文件签名和背书交易。</li>
+</ol>
+<h3 id="通过自己的CA使用HSM"><a href="#通过自己的CA使用HSM" class="headerlink" title="通过自己的CA使用HSM"></a>通过自己的<code>CA</code>使用<code>HSM</code></h3><p>如果使用自己的<code>CA</code>证书中心来部署<code>Fabric</code>组件，可以通过以下几步使用<code>HSM</code>:</p>
+<ol>
+<li>配置自己的<code>CA</code>使用<code>PKCS11</code>创建令牌与<code>HSM</code>进行通信。然后使用自己的<code>CA</code>去为每一个节点生成私钥和签名证书。私钥由<code>HSM</code>内部进行生成。</li>
+<li>使用<code>CA</code>去构建节点的<code>MSP</code>文件夹。将步骤一中生成的签名证书放入<code>signcerts</code>文件夹内。可以保持<code>keystore</code>文件夹为空。</li>
+<li>更新关于<code>peer</code>或者<code>orderer</code>节点的配置文件中的<code>BCCSP</code>部分使用<code>PKCS11</code>，并将令牌作为加密服务提供者。指向由<code>Fabric CA</code>客户端创建的<code>MSP</code>文件夹。一旦部署完成，<code>peer</code>节点或者<code>orderer</code>节点将可以通过由<code>HSM</code>提供保护的私钥文件签名和背书交易。</li>
+</ol>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/fabric">fabric</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hyperledger Fabric使用硬件安全模块(HSM)&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

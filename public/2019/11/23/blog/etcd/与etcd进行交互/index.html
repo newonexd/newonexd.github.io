@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>与etcd进行交互 ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十一月 23日 2019, 12:32 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.8k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      11 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>原文地址：<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/interacting_v3.md" target="_blank" rel="noopener">Interacting with etcd</a></p>
+<h2 id="与etcd进行交互"><a href="#与etcd进行交互" class="headerlink" title="与etcd进行交互"></a>与etcd进行交互</h2><p>用户更多的是通过putting或者是getting从etcd获取一个键对应的值。这一部分描述了如何通过etcdctl做这些工作。etcdctl是一个与etcd服务器进行交互的命令行工具.这里的描述适用于gRPC APIs或者是客户端库的APIs。<br>用于与etcd交互的API版本可以通过环境变量<code>ETCDCTL_API</code>设置为2或者3.默认情况下，分支为(3.4)的主版本使用V3 的API，而早期的版本(3.3或者更早)默认使用V2 API。<br>注意使用V2 API所创建的任何Key不能够通过V3 API进行访问。而V3 API <code>etcdctl get</code>获取V2 的Key将返回0并退出，这是预料之中的情况。</p>
+<pre><code>export ETCDCTL_API=3</code></pre><h3 id="发现版本"><a href="#发现版本" class="headerlink" title="发现版本"></a>发现版本</h3><p>使用合适的命令在执行不同版本的etcd时etcdctl和服务器API的版本将会有用。<br>这里的命令可用于发现版本信息：</p>
+<pre><code>$ etcdctl version
+etcdctl version:3.1.0-alpha.0+git
+API version:3.1</code></pre><h3 id="写入一个KEY"><a href="#写入一个KEY" class="headerlink" title="写入一个KEY"></a>写入一个KEY</h3><p>应用程序通过向etcd集群写入Keys来存储Keys，每次存储的Key将会通过Raft协议实现一致性与可扩展性复制到所有的etcd集群成员中。<br>这里的命令是将Key<code>foo</code>的值存储到<code>bar</code>上：</p>
+<pre><code>$ etcdctl put foo bar
+OK</code></pre><p>给Key附上一个租约，Key将在一个具体的时间间隔被设置。<br>这里的命令是在10秒后将Key<code>foo</code>的值存储到<code>bar</code>上：</p>
+<pre><code>$ etcdctl put foo1 bar1 --lease=1234abcd</code></pre><p>注意：以上命令中租约ID为1234abcd将会在租约创建10秒后将id返回，这个id将附在Key上。</p>
+<h3 id="读取Keys"><a href="#读取Keys" class="headerlink" title="读取Keys"></a>读取Keys</h3><p>应用程序可以从一个etcd集群中读取Key，可能会查询到单个Key，或者是一个范围内的Key。<br>比如etcd集群中存储以下Key：</p>
+<pre><code>foo = bar
+foo1 = bar1
+foo2 = bar2
+foo3 = bar3</code></pre><p>这里的命令是读取Key<code>foo</code>对应的值：</p>
+<pre><code>$ etcdctl get foo
+foo
+bar</code></pre><p>这里的命令是读取Key<code>foo</code>对应的十六进制的值:</p>
+<pre><code>$ etcdctl get foo --hex
+\x66\x6f\x6f       #Key
+\x62\x61\x72       #Value</code></pre><p>这里的命令是只读取Key<code>foo</code>对应的值：</p>
+<pre><code>$ etcdctl get foo --print-value-only
+bar</code></pre><p>这里的命令是读取从Key<code>foo</code>到Key<code>foo3</code>范围内对应的值：</p>
+<pre><code>$ etcdctl get foo foo3
+foo
+bar
+foo1
+bar1
+foo2
+bar2</code></pre><p>注意这里Key为<code>foo3</code>不包括在内因为这里的范围是半开区间<code>[foo,foo3)</code>，不包括<code>foo3</code>。</p>
+<p>这里的命令是获取前缀为<code>foo</code>的Key的范围内所有的值：</p>
+<pre><code>$ etcdctl get --prefix foo
+foo
+bar
+foo1
+bar1
+foo2
+bar2
+foo3
+bar3</code></pre><p>这里的命令是获取前缀为<code>foo</code>的Key的范围内所有的值,并且限制结果集为2：</p>
+<pre><code>$ etcdctl get --prefix --limit=2 foo
+foo
+bar
+foo1
+bar1</code></pre><h3 id="读取之前版本的Keys："><a href="#读取之前版本的Keys：" class="headerlink" title="读取之前版本的Keys："></a>读取之前版本的Keys：</h3><p>应用程度可能希望读取一个被替代的版本的Key。例如，一个应用程序可能想要通过读取一个先前版本的Key来回滚到一个老的配置。另外，一个应用程序可能想要通过访问Key的历史记录对多个Key通过多个请求获取一致性的结果。由于对etcd集群中键值对的每一次修改都会增加对在etcd集群中的全局修订存储，应用程序可以通过提供一个老的版本来读取被替代的Keys。<br>比如一个etcd集群中存在以下的Keys：</p>
+<pre><code>foo = bar         # revision = 2
+foo1 = bar1       # revision = 3
+foo = bar_new     # revision = 4
+foo1 = bar1_new   # revision = 5</code></pre><p>这里的例子是访问过去版本的Keys：</p>
+<pre><code>$ etcdctl get --prefix foo # access the most recent versions of keys
+foo
+bar_new
+foo1
+bar1_new
+
+$ etcdctl get --prefix --rev=4 foo # access the versions of keys at revision 4
+foo
+bar_new
+foo1
+bar1
+
+$ etcdctl get --prefix --rev=3 foo # access the versions of keys at revision 3
+foo
+bar
+foo1
+bar1
+
+$ etcdctl get --prefix --rev=2 foo # access the versions of keys at revision 2
+foo
+bar
+
+$ etcdctl get --prefix --rev=1 foo # access the versions of keys at revision 1</code></pre><h3 id="读取大于或等于一个具体的Key的比特值的Key："><a href="#读取大于或等于一个具体的Key的比特值的Key：" class="headerlink" title="读取大于或等于一个具体的Key的比特值的Key："></a>读取大于或等于一个具体的Key的比特值的Key：</h3><p>应用程序可能想要读取大于或等于一个具体的Key的byte值的Key。<br>一个etcd集群中有以下的Keys：</p>
+<pre><code>a = 123
+b = 456
+z = 789</code></pre><p>这里的命令是读取大于或等于Key <code>b</code>的byte值的Key：</p>
+<pre><code>$ etcdctl get --from-key b
+b
+456
+z
+789</code></pre><h3 id="删除-Keys"><a href="#删除-Keys" class="headerlink" title="删除 Keys"></a>删除 Keys</h3><p>应用程序可以从etcd集群中删除一个Key或者删除一个范围内的Key：<br>一个etcd集群中有以下的Keys：</p>
+<pre><code>foo = bar
+foo1 = bar1
+foo3 = bar3
+zoo = val
+zoo1 = val1
+zoo2 = val2
+a = 123
+b = 456
+z = 789</code></pre><p>这里的命令是删除Key<code>foo</code>:</p>
+<pre><code>$ etcdctl del foo
+1 # 1 个 key 被删除</code></pre><p>这里的命令是删除从Key<code>foo</code>到Key<code>foo9</code>范围内的Key:</p>
+<pre><code>$ etcdctl del foo foo9
+2 # 2 个 keys 被删除</code></pre><p>这里的命令是删除Key<code>zoo</code>并将已删除的键值对返回:</p>
+<pre><code>$ etcdctl del --prev-kv zoo
+1   # 1 个 key 被删除
+zoo # 被删除的Key
+val # 被删除的Key所对应的Value</code></pre><p>这里的命令是删除前缀为<code>zoo</code>的Keys:</p>
+<pre><code>$ etcdctl del --prefix zoo
+2 # 2 个 key 被删除</code></pre><p>这里的命令是读取大于或等于Key <code>b</code>的byte值的Keys：</p>
+<pre><code>$ etcdctl del --from-key b
+2 # 2 个 key 被删除</code></pre><h3 id="观察key的变化"><a href="#观察key的变化" class="headerlink" title="观察key的变化"></a>观察key的变化</h3><p>应用程序可以监视一个Key或者一个范围内的Keys的每一次更新。<br>这里的命令是观察key<code>foo</code>:</p>
+<pre><code>$ etcdctl watch foo
+# 在另一个终端执行: etcdctl put foo bar
+PUT
+foo
+bar</code></pre><p>这里的命令是观察十六进制的key<code>foo</code>:</p>
+<pre><code>$ etcdctl watch foo --hex
+# 在另一个终端执行: etcdctl put foo bar
+PUT
+\x66\x6f\x6f          # Key
+\x62\x61\x72          # Value</code></pre><p>这里的命令是观察从Key<code>foo</code>到Key<code>foo9</code>范围内的Key：</p>
+<pre><code>$ etcdctl watch foo foo9
+# 在另一个终端执行: etcdctl put foo bar
+PUT
+foo
+bar
+# 在另一个终端执行: etcdctl put foo1 bar1
+PUT
+foo1
+bar1</code></pre><p>这里的命令是观察前缀为<code>foo</code>的Key的范围内所有的值：</p>
+<pre><code>$ etcdctl watch --prefix foo
+# 在另一个终端执行: etcdctl put foo bar
+PUT
+foo
+bar
+# 在另一个终端执行: etcdctl put fooz1 barz1
+PUT
+fooz1
+barz1</code></pre><p>这里的命令是观察多个Keys<code>foo</code>和<code>zoo</code>:</p>
+<pre><code>$ etcdctl watch -i
+$ watch foo
+$ watch zoo
+# 在另一个终端执行: etcdctl put foo bar
+PUT
+foo
+bar
+# 在另一个终端执行: etcdctl put zoo val
+PUT
+zoo
+val</code></pre><h3 id="观察Keys的历史版本"><a href="#观察Keys的历史版本" class="headerlink" title="观察Keys的历史版本"></a>观察Keys的历史版本</h3><p>应用程序可能想要观察etcd中Keys的更新历史。例如，应用程序可能想获取key的所有修改；如果应用程序保持与etcd的连接，那么命令<code>watch</code>已经足够。然而，如果应用程序或者etcd宕机，一次更新可能就会失败，应用程序可能不能实时接收Key的更新。为了保证更新可以被交付，应用程序必须通过观察到Keys的历史更新。为了做到这些，应用程序要指定观察的历史版本，就像读取历史版本的Keys：<br>我们首先完成以下操作：</p>
+<pre><code>$ etcdctl put foo bar         # revision = 2
+OK
+$ etcdctl put foo1 bar1       # revision = 3
+OK
+$ etcdctl put foo bar_new     # revision = 4
+OK
+$ etcdctl put foo1 bar1_new   # revision = 5
+OK</code></pre><p>这里有个例子观察历史更新：</p>
+<pre><code># watch for changes on key `foo` since revision 2
+$ etcdctl watch --rev=2 foo
+PUT
+foo
+bar
+PUT
+foo
+bar_new</code></pre><pre><code># watch for changes on key `foo` since revision 3
+$ etcdctl watch --rev=3 foo
+PUT
+foo
+bar_new</code></pre><p>这里有例子只观察最后一次的更新：</p>
+<pre><code># watch for changes on key `foo` and return last revision value along with modified value
+$ etcdctl watch --prev-kv foo
+# 在另一个终端执行 etcdctl put foo bar_latest
+PUT
+foo         # key
+bar_new     # last value of foo key before modification
+foo         # key
+bar_latest  # value of foo key after modification</code></pre><h3 id="观察进度"><a href="#观察进度" class="headerlink" title="观察进度"></a>观察进度</h3><p>应用程序可能想要检查观察者进度以确定最新的观察者流的状态。例如，如果观察者更新的缓存，那么就可以通过原子读取与修改进度进行比较知道缓存内容是否已经过时。<br>进度请求可以通过<code>progress</code>命令与观察者session进行交互在一个观察者流中告诉服务器发送一个进度提示更新.</p>
+<pre><code>$ etcdctl watch -i
+$ watch a
+$ progress
+progress notify: 1
+# 在另一个终端执行: etcdctl put x 0
+# 在另一个终端执行: etcdctl put y 1
+$ progress
+progress notify: 3</code></pre><p>注意，在进度提示响应中的修改号来自观察者流连接到的本地etcd服务器。如果该节点被分区并且不是该分区的一部分，这个进度提示修改版本可能会低于由未分区的etcd服务器节点返回的修改版本。</p>
+<h3 id="压缩修改"><a href="#压缩修改" class="headerlink" title="压缩修改"></a>压缩修改</h3><p>正如我们提到的，etcd保持修改信息所以应用可以读取过去版本的Keys，然而，为了避免无数的修改历史累积，对过去的修改进行压缩是很重要的。在压缩后，etcd移除了历史修改，释放资源为以后使用。在压缩修改版本之前所有的被修改的替代版本数据将不能获取。<br>这里的命令是对修改进行压缩：</p>
+<pre><code>$ etcdctl compact 5
+compacted revision 5
+
+# any revisions before the compacted one are not accessible
+$ etcdctl get --rev=4 foo
+Error:  rpc error: code = 11 desc = etcdserver: mvcc: required revision has been compacted</code></pre><p>注意：etcd服务器的当前版本可以使用json格式的命令通过(存在或不存在的)key发现。例如下面的通过查看在etcd服务器中不存在的myKey:</p>
+<pre><code>$ etcdctl get mykey -w=json
+{&quot;header&quot;:{&quot;cluster_id&quot;:14841639068965178418,&quot;member_id&quot;:10276657743932975437,&quot;revision&quot;:15,&quot;raft_term&quot;:4}}</code></pre><h3 id="授予租约"><a href="#授予租约" class="headerlink" title="授予租约"></a>授予租约</h3><p>应用程序可以为etcd集群上的Keys授予一个租约。当Key附上租约后，它的生命周期会绑定到租约的生命周期并由存活时间(TTL)进行管理。每一个租约都有一个由应用程序授予的最小的TTL值.这个租约实际的TTL值至少是最小的TTL值，由etcd集群决定。一旦超过租约的TTL，租约将会超时并删除附上的所有的Keys。<br>这里有命令授予一个租约：</p>
+<pre><code># grant a lease with 60 second TTL
+$ etcdctl lease grant 60
+lease 32695410dcc0ca06 granted with TTL(60s)
+
+# attach key foo to lease 32695410dcc0ca06
+$ etcdctl put --lease=32695410dcc0ca06 foo bar
+OK</code></pre><h3 id="撤销租约"><a href="#撤销租约" class="headerlink" title="撤销租约"></a>撤销租约</h3><p>应用程序可以根据租约ID撤销租约，撤销一个租约将删除附上的所有的Keys。<br>例如我们完成下面的操作：</p>
+<pre><code>$ etcdctl lease grant 60
+lease 32695410dcc0ca06 granted with TTL(60s)
+$ etcdctl put --lease=32695410dcc0ca06 foo bar
+OK</code></pre><p>这里的命令可以撤销该租约：</p>
+<pre><code>$ etcdctl lease revoke 32695410dcc0ca06
+lease 32695410dcc0ca06 revoked
+
+$ etcdctl get foo
+# empty response since foo is deleted due to lease revocation</code></pre><h3 id="保持租约存活"><a href="#保持租约存活" class="headerlink" title="保持租约存活"></a>保持租约存活</h3><p>应用程序可以通过刷新租约的TTL使它不会超时保证租约存活。<br>例如我们完成下面的操作：</p>
+<pre><code>$ etcdctl lease grant 60
+lease 32695410dcc0ca06 granted with TTL(60s)</code></pre><p>这里有命令保持租约存活：</p>
+<pre><code>$ etcdctl lease keep-alive 32695410dcc0ca06
+lease 32695410dcc0ca06 keepalived with TTL(60)
+lease 32695410dcc0ca06 keepalived with TTL(60)
+lease 32695410dcc0ca06 keepalived with TTL(60)
+...</code></pre><h3 id="获取租约信息"><a href="#获取租约信息" class="headerlink" title="获取租约信息"></a>获取租约信息</h3><p>应用程序可能想知道关于租约的信息，所以可以通过重新创建或者检查租约是否仍然生存或已经超时。应用程序可能也想知道一个具体的租约上所附的Key。<br>例如我们完成下面的操作：</p>
+<pre><code># grant a lease with 500 second TTL
+$ etcdctl lease grant 500
+lease 694d5765fc71500b granted with TTL(500s)
+
+# attach key zoo1 to lease 694d5765fc71500b
+$ etcdctl put zoo1 val1 --lease=694d5765fc71500b
+OK
+
+# attach key zoo2 to lease 694d5765fc71500b
+$ etcdctl put zoo2 val2 --lease=694d5765fc71500b
+OK</code></pre><p>这里有命令获取关于租约的信息:</p>
+<pre><code>$ etcdctl lease timetolive 694d5765fc71500b
+lease 694d5765fc71500b granted with TTL(500s), remaining(258s)</code></pre><p>这里有命令获取租约上所依附的关于Keys的信息：</p>
+<pre><code>$ etcdctl lease timetolive --keys 694d5765fc71500b
+lease 694d5765fc71500b granted with TTL(500s), remaining(132s), attached keys([zoo2 zoo1])
+
+# if the lease has expired or does not exist it will give the below response:
+Error:  etcdserver: requested lease not found</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/etcd">etcd</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">143.4k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "与etcd进行交互&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
