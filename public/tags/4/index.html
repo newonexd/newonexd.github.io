@@ -136,6 +136,206 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%93%88%E5%B8%8C/">
+        <p class="h4 index-header">IPFS学习-哈希</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Hashes哈希函数是接受一些任意输入并返回固定长度值的函数。具体值取决于所使用的给定哈希算法，例如SHA-1(GIT在使用),SHA-256,或者是BLAKE2,但是给予一个输入使用哈希算法总是返回相同的输出。例如：输入以下：
+Hello world使用SHA-1则会输出：
+0x7B502C3A1F48C8609AE212CDFB639DEE39673F5E然而相同的输入使用SHA-256将会输出以下：
+0x64EC88CA00B268E5BA1A35678A1B5316D212F4F366B2477232534A8AECA37F3C第二个哈希值长度要大于第一个，这是因为SHA-1创建一个160比特的哈希值，而SHA-256创建一个256比特的哈希值。同样，前置的0x只是一个指示符，告诉我们以下的哈希表示为基数16（或十六进制）的数字。哈希可以用不同的基数表示（base2，base16，base32等）。 实际上，IPFS将此作为其内容标识符的一部分，并使用Multibase协议同时支持多种基本表示形式。例如，”Hello World”的SHA-256哈希值使用base32表示为：
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    635 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-DNS%E9%93%BE%E6%8E%A5/">
+        <p class="h4 index-header">IPFS学习-DNS链接</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">DNSLink什么是DNS链接DNS链接使用DNS TXT记录映射域名(如ipfs.io)到一个IPFS地址。因为你可以编辑自己的DNS记录，可以使他们总是指向最新版本的IPFS中的对象(如果修改了IPFS中的对象则IPFS中的对象地址也会改变)。由于DNS链接使用DNS记录，所以可以设计名字/路径/(子)域/任何容易分类，阅读和记的名字。一个DNS链接地址看起来像一个IPNS地址，但是DNS链接使用域名代替了被哈希的公钥:
+/ipns/myexampledomain.org就像普通的IPFS地址，可以包含链接到其他的文件-或者是其他类型的IPFS支持的资源，像目录和链接：
+/ipns/myexampledomain.org/media/使用子域名发布虽然您可以根据需要将TXT记录发布到确切的域，但是使用称为_dnslink的特殊子域来发布DNSLink记录会更有利。这使您可以提高自动设置的安全性，或将对DNSLink记录的控制权委派给第三方，而不必放弃对原始DNS区域的完全控制权。例如，docs.ipfs.io没有含有TXT记录，但是页面仍然可以加载因为TXT记录在_dnslink.</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    492 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%86%85%E5%AE%B9%E6%A0%87%E8%AF%86%E7%AC%A6CID/">
+        <p class="h4 index-header">IPFS学习-内容标识符(CIDs)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">内容标识符(CIDs)内容标识符也称为CID，是用于指向IPFS中材料的标签。 它不会指示内容的存储位置，但会根据内容本身形成一种地址。 CID简短，无论其基础内容的大小如何。
+CID基于内容的加密哈希，意思是：
+
+任何不相同的内容将会产生不同的CID
+内容中相同的部分添加到两个不同的IPFS节点通过相同的设置应该产生相同的CID。
+
+CID格式基于不同的编码或者是CID的版本使得CID具有不同的格式。多数存在的IPFS工具仍生成版本0的CID。但是file(MFS)和object现在默认使用CID V1.
+版本0当IPFS初始设计的时候，使用base58多次哈希作为内容标识符(虽然简单，但是与新的CID相比缺乏灵活性。)CIDv0仍然是许多IPFS默认选项，所以IPFS版本应该支持v0。
+如果一个CID具有46字符并以Qm开头，说明是一个CIDv0
+版本1CID v1包含一些前导标识符，这些标识符明确说明了使用哪种表示形式以及内容哈希本身。 这些包括：
+
+multibase前缀，指定用于其余CID的编码.
+CID版本标识符，指示这是哪个CID版本
+一个多编解码器标识符，指示目标内容的</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    565 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/18/blog/ipfs/IPFS%E5%AD%A6%E4%B9%A0-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8DHT/">
+        <p class="h4 index-header">IPFS学习-分布式哈希表DHT</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Distributed Hash Tables(DHT)分布式哈希表是一个分布式的键值对存储结构。在IPFS网络中，每一个节点都维护一个DHT的子集。当节点接受到一个请求。该节点要么直接回复，要么通过节点间传输直到找到可以回复该请求的节点。取决于实现方式，一个请求如果不能被第一个连接的节点回复
+
+进行节点间的转发，由最后一个节点联系收到请求的节点。
+进行节点间的转发，回复结果按照相同的路径转发回到原节点。
+由最优选择的节点对请求进行回复。
+
+IPFS使用这种策略。DHT的去中心化提供了相比于传统的键值对存储更好的优势。包括：
+
+扩展性。对长度为n的哈希请求只需要最多为log2n步即可解决。
+通过冗余进行错误容忍。即可能每一个节点都加入或离开DHT。另外，如果一个节点反应缓慢或者不可达，请求可以连接到其他节点。
+负载均衡，请求可以发送到任何节点，没有任何一个节点处理所有的请求。
+
+DHT如何工作Peer IDs每一个节点有有一个peerID，和DHT的键相同都是长度为n的哈希值。
+Buckets由每一个节点维护的DHT的子集被称为”桶“，一个桶映射的哈希值和节点ID具有相同的前缀。最多m</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/IPFS%E5%AD%A6%E4%B9%A0">IPFS学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IPFS">IPFS</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.1k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/17/blog/other/CURL%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%80/">
         <p class="h4 index-header">CURL命令学习一</p>
         
@@ -247,62 +447,6 @@ cd $GOPATH/src/github.com/hyperledger/从Github上面将Fabric-Ca仓库克隆到
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
-        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
-1.整体架构
-架构图直接贴过来好了：
-官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
-
-三个组织
-Org0  -&gt; 组织0   
-Org1  -&gt; 组织1   
-Org2  -&gt; 组织2   
-
-
-组织中的成员
-Org0   一个Orderer节点，一个Org0的Admi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.7k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0%E7%BB%84%E7%BB%87%E5%88%B0%E7%BD%91%E7%BB%9C%E4%B8%AD/">
         <p class="h4 index-header">Hyperledger Fabric动态添加组织到网络中</p>
         
@@ -350,6 +494,62 @@ Org</div>
                 &nbsp;<i class="far fa-chart-bar"></i>
                 <span class="post-count">
                     4.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/08/blog/fabric/Hyperledger_Fabric%E6%89%8B%E5%8A%A8%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6%E6%90%AD%E5%BB%BAFabric%E7%BD%91%E7%BB%9C/">
+        <p class="h4 index-header">Hyperledger Fabric手动生成CA证书搭建Fabric网络</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前介绍了使用官方脚本自动化启动一个Fabric网络，并且所有的证书都是通过官方的命令行工具cryptogen直接生成网络中的所有节点的证书。在开发环境可以这么简单进行，但是生成环境下还是需要我们自定义对网络中的节点的证书进行配置。所以在本文中，将会详细介绍一个从手动生成证书一直到启动网络的整体步骤。本文只交代整体的搭建步骤。对于Fabric-Ca的讲解不在本文的范围内，将在另一篇文章中说明。正篇文章也是根据官方的文档进行的。但是由于官方的文档尚未完工，也是好多没有交代清楚的，并且有些地方是错误的，所以笔者也是一步一步摸索出来的，所以如果本文哪里没有交代清楚或者错误的地方，希望各位批评指正。在这里贴出官方文档地址.
+1.整体架构
+架构图直接贴过来好了：
+官方文档采用的是多机环境，这里简洁化一点，所有的操作都在一台机器上进行，至于多机环境，以后再补充好了。介绍一下本文所采用的整体架构：
+
+三个组织
+Org0  -&gt; 组织0   
+Org1  -&gt; 组织1   
+Org2  -&gt; 组织2   
+
+
+组织中的成员
+Org0   一个Orderer节点，一个Org0的Admi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric-ca%E5%BA%94%E7%94%A8">fabric-ca应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+            <a href="/tags/fabric-ca">fabric-ca</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.7k 字
                   </span>&nbsp;
             
       </div>
@@ -450,220 +650,11 @@ Org</div>
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/25/blog/etcd/%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6/">
-        <p class="h4 index-header">基于角色的访问控制</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：Role-based access control
-总览
-身份验证已添加到etcd 2.1中。 etcd v3 API略微修改了身份验证功能的API和用户界面，以更好地适应新的数据模型。本指南旨在帮助用户在etcd v3中设置基本身份验证和基于角色的访问控制。
-特殊用户和角色
-有一个特殊用户root，一个特殊角色root。
-用户root在激活身份验证之前，必须创建对etcd具有完全访问权限的root用户。 root用户的想法是出于管理目的：管理角色和普通用户。 root用户必须具有root角色，并且可以在etcd中进行任何更改。
-角色root可以将角色root授予除root用户之外的任何用户。 具有root角色的用户既具有全局读写访问权限，又具有更新集群的身份验证配置的权限。 此外，root角色授予常规集群维护的特权，包括修改集群成员资格，对存储进行碎片整理以及拍摄快照。
-用户的工作方式
-etcdctl的user子命令处理与用户帐户有关的所有事情。可以通过以下方式找到用户列表：
-$ etcdctl user list通过以下方式创建新用户：
-$ etcdctl user ad</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/25/blog/etcd/TLS/">
-        <p class="h4 index-header">TLS</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：TLSetcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.要启动并运行，首先要获得一个成员的CA证书和签名密钥对。 建议为集群中的每个成员创建并签名一个新的密钥对。为了方便起见，cfssl工具提供了一个简单的接口来生成证书，我们在此处提供了使用该工具的示例。 或者，尝试使用本指南生成自签名密钥对。
-基本设置
-etcd通过命令行参数或环境变量采用了几种与证书相关的配置选项：
-客户端到服务器的通信：--cert-file=&lt;path&gt;:用于SSL/TLS与etcd的连接的证书。设置此选项后，advertise-client-urls可以使用HTTPS模式。--key-file=&lt;path&gt;:证书的密钥。 必须未加密。--client-cert-auth:设置此选项后，etcd将检查所有传入的HTTPS请求以查找由受信任CA签名的客户端证书，不提供有效客户端证书的请求将失败。 如果启用了身份验证，则证书将为“公用名”字段指定的用户名提供凭据。--trusted-ca-file=&lt;path&gt;</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">
-        <p class="h4 index-header">系统限制</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:System limits
-请求大小限制
-etcd被设计用来处理小键值对典型的如元数据。较大的请求数据也起作用，但可能会增加其他请求的延迟。默认情况下，任意的请求最大的空间为1.5MiB，这个限制参数可以通过--max-request-bytes参数对etcd服务器进行配置。
-存储大小限制
-默认的存储大小限制为2GB,可以通过参数--quota-backend-bytes进行配置。正常环境下8GB是etcd支持的最大存储大小，如果配置的值超过它，etcd将在启动时发出警告。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    161 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/24/blog/etcd/%E8%AF%8D%E6%B1%87%E8%A1%A8/">
-        <p class="h4 index-header">词汇表</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址:词汇表本文档定义了etcd文档，命令行和源代码中使用的各种术语。
-Alarm
-每当集群需要操作员干预以保持可靠性时，etcd服务器都会发出警报。
-Authentication
-身份验证管理etcd资源的用户访问权限。
-Client
-客户端连接到etcd集群以发出服务请求，例如获取键值对，写入数据或监视更新。
-Cluster
-集群由几个成员组成。
-每个成员中的节点均遵循Raft共识协议来复制日志。 集群从成员那里接收提议，将它们提交并应用于本地存储。
-Compaction
-在给定修订之前，压缩会丢弃所有etcd事件历史记录和取代的密钥。 它用于回收etcd后端数据库中的存储空间。
-Election
-etcd集群在其成员之间举行选举，以选择一名领导人作为Raft共识协议的一部分。
-Endpoint
-指向etcd服务或资源的URL。
-Key
-用户定义的标识符，用于在etcd中存储和检索用户定义的值。
-Key range
-包含单个键，所有x的词法间隔（例如a &lt;x &lt;= b）或大于给定键的所有键的一组键。
-Keyspace
-etcd集群中所有键的集合。
-Lease
-短期可</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    626 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/tags/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/tags/5/">5</a><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/5/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/tags/3/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/tags/5/">5</a><a class="page-number" href="/tags/6/">6</a><a class="page-number" href="/tags/7/">7</a><a class="extend next" rel="next" href="/tags/5/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -733,7 +724,7 @@ Lease
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">143.4k</span> 字
+  全站共 <span class="post-count">152.5k</span> 字
   <br>
 
 

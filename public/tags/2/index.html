@@ -136,6 +136,221 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/05/blog/consensus/raft-log/">
+        <p class="h4 index-header">Raft算法之日志复制</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">上一篇文章:Raft算法之Leader选举&emsp;&emsp;之前说完了Raft算法中的Leader选举过程，本文将在上一篇文章的基础上说明日志复制。
+Raft算法之日志复制&emsp;&emsp;先看以下日志所包含的基本内容:
+
+可以被复制状态机执行的命令
+任期号 :创建该日志时Leader所处的当前任期号
+索引号 :整数，用于标识日志所在的位置
+
+日志的状态分为两种:未被提交，已被提交(日志为安全的，不会被删除或覆盖)。
+1 正常情况
+当Leader接收到由客户端发送的请求(请求中包含可以被复制状态机执行的命令)时，Leader将会把该请求作为新的内容添加到日志中(任期号为当前Leader所处的任期号，索引号为当前Leader本地存储的日志集合中的日志的最高索引号加1)。
+Leader在当前任期内最多只能创建一个给定索引号的日志(即不可能在一个任期内创建两个以上的具有相同索引的日志条目)
+
+
+然后将该日志通过AppendEntries RPC消息发送到网络中其他的服务器(以下简称Follower)，从而复制该日志。
+在网络中Follower接收到该日志消息后则会返回复制成功的回</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.5k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/04/blog/consensus/raft-election/">
+        <p class="h4 index-header">Raft算法之Leader选举</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">&emsp;&emsp;记录一下对Raft算法的理解，算法的内容比较多，所以准备将算法的全部过程分成四个部分来写。分别是
+
+Raft算法之Leader选举
+Raft算法之日志复制
+Raft算法之成员关系变化
+Raft算法之日志压缩
+
+该文章为第一部分。
+Raft算法之Leader选举简单介绍&emsp;&emsp;首先需要了解Raft中的一个关键词:Term,本文中以下部分简单称为任期。任期通过连续的整数编号表示并且是单调递增的，代表任意长度的一段时间。在网络中所有服务器都有自己的任期编号，在网络中大部分正常运行阶段，所有服务器的任期号都是相同的。Raft算法中服务器主要分为三种角色:Leader,Follower,Candidate，并且三种角色相互独立，也就是服务器在同一时间内只可能扮演其中一种角色。
+
+Leader:用于对所有用户的请求进行处理。以及之后要说明的日志的复制等等。
+Follower:不会主动发送消息，只响应来自Leader与Candidate的请求。
+Candidate:用于选举新的Leader。
+
+&emsp;&emsp;在本文介绍的范围内，网络状态分为两种情况:</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.9k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/04/blog/consensus/raft/">
+        <p class="h4 index-header">Raft算法论文(部分)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址-&gt;Raft算法
+摘要Raft是用于管理被复制的日志的共识算法。它与multi-Paxos算法产生的效果相同，并且和Paxos算法一样高效。但是结构与Paxos不同。这使得Raft算法比Paxos算法更容易理解。也为构建实际系统提供了更好的基础。为了加强理解，Raft将几个关键元素分离，比如leader选举，日志复制，安全性。并增强了一致性，以减少必须考虑的状态数。一项用户研究的结果表明，与Paxos相比，Raft算法更易于学生学习。Raft也提供了用于更新集群成员关系的新的机制。它使用重叠的多数来保证安全。
+1 介绍共识算法允许一组计算机的集合作为一个一致的的小组工作，这些小组可以承受某些成员的故障。正因为如此，共识机制在构建可信的大规模软件系统中起着至关重要的作用。在过去的十年中，Paxos一直主导着共识算法的讨论。很多共识算法都是基于Paxos或者受它的影响。Paxos称为了教受学生关于共识算法的主要工具。不幸的是，尽管进行了许多尝试以使Paxos更加平易近人，Paxos仍然非常难以理解。此外，其体系结构需要复杂的更改以支持实际系统。结果，系统构建者和学生都与Pax</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/algorithm">algorithm</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/algorithm">algorithm</a>&nbsp;
+          
+            <a href="/tags/Raft">Raft</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    15k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/31/blog/fabric/%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AERaft%E8%8A%82%E7%82%B9/">
+        <p class="h4 index-header">Hyperledger Fabric动态配置Raft节点</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Hyperledger Fabric动态配置Raft节点最近看官方文档发现新的共识算法etcdRaft允许动态添加或删除排序节点，所以也花了一天时间操作了以下，写篇文章把整个过程记录一下。初始网络本文设置了4个Orderer节点，1个Peer节点(用于更新配置文件以及测试用),然后动态添加第五个Orderer节点。本文分成两个部分:
+
+第一部分是手动通过Fabric-CA生成每一个节点的证书文件
+第二部分是更新Fabric网络配置添加新的Orderer节点。
+
+本文基于Fabric v2.0.0-beta版本。版本号只要高于1.4.1就行
+1 搭建定制化的Fabric网络前提条件是成功跑起来Fabric的示例网络，可以看这里-&gt;Hyperledger Fabric环境搭建
+首先在$GOPATH下(本文路径地址为$GOPATH/src/github.com/hyperledger/fab)建立如下几个文件夹用于之后的操作:
+.  # 这里是根目录fab
+├── ca    # 用于生成CA证书的ca配置文件的文件夹
+│   ├── org1
+│   │   └── fabric-c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-31&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/fabric">fabric</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    7.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/12/28/blog/fabric/TLS_SDK%E8%B0%83%E7%94%A8/">
         <p class="h4 index-header">Hyperledger Fabric 开启TLS调用Java SDK</p>
         
@@ -427,290 +642,11 @@ make docker GO_TAGS=pkcs11同时也需要确保PKCS11的库文件是有效的，
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/23/blog/consensus/paxos/">
-        <p class="h4 index-header">Paxos算法</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">使Paxos变简单摘要Paxos算法，用英语说明时，变得非常简单。
-1 介绍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人们一直认为，用于实现容错分布式系统的Paxos算法难以理解，可能是因为最初的演示文稿对许多读者来说是希腊文.事实上，它是分布式算法中最简单，最有效的方法之一。它的核心是共识算法。下一节将说明这种共识算法几乎不可避免地遵循了我们希望它满足的特性。最后一部分介绍了完整的Paxos算法，该算法是通过将共识直接应用于构建分布式系统的状态机方法而获得的，这种方法应该是众所周知的，因为它是有关分布式系统理论的最常被引用的文章的主题。
-2 共识算法2.1 问题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假设有一个可以提出值的进程的集合。共识算法确保只有一个提出的值被选中。如果没有值被提出，则没有值应该被选中。如果一个值被选中，那么所有过程应该能够learn被选中的值。共识需要满足以下要求：
-
-只有被提出的值才可以被选中
-被选中的只有一个值
-除非一个值真正地被选中，否则某个进程不</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/algorithm">algorithm</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/algorithm">algorithm</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    6.4k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/22/blog/linux/Linux%E5%91%BD%E4%BB%A4-grep_sed_awk/">
-        <p class="h4 index-header">Linux命令-grep,sed,awk</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">grep
-(global search regular expression[RE] and print out the line)正则表达式全局搜索并将行打印出来
-
-在文件中查找包含字符串”text”的行
-
-grep text local_file
-grep &quot;text&quot; local_file #另一种方式
-grep &quot;text&quot; local_file1 local_file2 ...  #查找多个文件
-在文件中查找不包含字符串”text”的行
-
-grep -v &quot;text&quot; local_file
-忽略大小写
-
-grep -i &quot;TeXt&quot; local_file
-grep -y &quot;TeXt&quot; local_file
-不显示错误信息，常用于脚本文件中
-
-grep -s &quot;text&quot; local_file
-只打印出匹配到的字符串
-
-grep -o &quot;text&quot; local_file
-统计文件中有多少行包含需要查找的字符串
-
-grep -c &quot;</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/Linux%E5%91%BD%E4%BB%A4">Linux命令</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Linux">Linux</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    742 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/22/blog/linux/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-        <p class="h4 index-header">正则表达式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">字符位置
-
-
-符号表示
-符号含义
-示例
-
-
-
-^str
-需要查找的字符在行首
-^a 查找以字符a开头
-
-
-str$
-需要查找的字符在行尾
-a$ 查找以字符a结尾
-
-
-字符表示
-
-
-符号表示
-符号含义
-示例
-
-
-
-\
-转义符
-将特殊字符变为普通字符如\^
-
-
-.
-说明一定有一个任意的字符
-a.b 说明字符a与b之间一定存在一个字符
-
-
-*
-说明存在零个或者多个前一个字符
-a*说明字符a后边可能存在0个或多个字符a .*表示存在任意字符
-
-
-+
-扩展正则说明存在一个或一个以上前一个字符
-a+说明字符a后边可能存在1个或多个字符a
-
-
-?
-扩展正则说明存在0个或一个前一个字符
-ab？查找字符ab或者是a
-
-
-`
-`
-或
-
-
-()
-扩展正则字符集合
-`(ab
-
-
-()+
-扩展正则多个重复字符集合
-(ab)+:查找具有一个以上ab子字符串的字符串
-
-
-[list]
-列出可能存在的字符
-a[bc]查找字符ab或者是ac
-
-
-[n1-n2]
-列出可能存在的字符区间
-[a-g] 查找字符区间a-g中任意字符
-
-
-[^list}
-列出不需要的字符即反向选择
-[^a] 查找字符中不存在a的字符
-
-
-\{n</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    474 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/22/blog/couchDB/CouchDB%E5%AD%A6%E4%B9%A0-%E7%BB%B4%E6%8A%A4/">
-        <p class="h4 index-header">CouchDB学习-维护</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">官方文档
-1 压缩
-压缩操作是通过从数据库或者视图索引文件中移除无用的和老的数据减少硬盘使用空间.操作非常简单类似于其他数据库(SQLite等)管理系统。在压缩目标期间，CouchDB将创建扩展名为.compact的新文件，并将仅实际数据传输到该文件中。 因此，CouchDB首先检查可用磁盘空间-它应比压缩文件的数据大两倍。当所有实际数据都成功传输到压缩文件后，CouchDB用目标文件替换目标文件。
-1.1 数据库压缩数据库压缩通过删除更新期间创建的未使用的文件部分来压缩数据库文件。 旧文档修订版被少量称为tombstone的元数据代替，该元数据用于复制期间的冲突解决。 可以使用_revs_limitURL配置存储的修订版本（以及tombstone）的数量。压缩是每个数据库手动触发的操作，并作为后台任务运行。要针对特定的数据库启动它，需要发送目标数据库的HTTP POST/{db}/_compact子资源：
-curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984/my_db/_co</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-22&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CouchDb%E5%AD%A6%E4%B9%A0">CouchDb学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CouchDb">CouchDb</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    4.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/tags/7/">7</a><a class="extend next" rel="next" href="/tags/3/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -780,7 +716,7 @@ curl -H &quot;Content-Type: application/json&quot; -X POST http://localhost:5984
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">143.4k</span> 字
+  全站共 <span class="post-count">152.5k</span> 字
   <br>
 
 

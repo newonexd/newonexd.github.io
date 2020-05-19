@@ -136,6 +136,215 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/25/blog/etcd/%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6/">
+        <p class="h4 index-header">基于角色的访问控制</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：Role-based access control
+总览
+身份验证已添加到etcd 2.1中。 etcd v3 API略微修改了身份验证功能的API和用户界面，以更好地适应新的数据模型。本指南旨在帮助用户在etcd v3中设置基本身份验证和基于角色的访问控制。
+特殊用户和角色
+有一个特殊用户root，一个特殊角色root。
+用户root在激活身份验证之前，必须创建对etcd具有完全访问权限的root用户。 root用户的想法是出于管理目的：管理角色和普通用户。 root用户必须具有root角色，并且可以在etcd中进行任何更改。
+角色root可以将角色root授予除root用户之外的任何用户。 具有root角色的用户既具有全局读写访问权限，又具有更新集群的身份验证配置的权限。 此外，root角色授予常规集群维护的特权，包括修改集群成员资格，对存储进行碎片整理以及拍摄快照。
+用户的工作方式
+etcdctl的user子命令处理与用户帐户有关的所有事情。可以通过以下方式找到用户列表：
+$ etcdctl user list通过以下方式创建新用户：
+$ etcdctl user ad</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.4k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/25/blog/etcd/TLS/">
+        <p class="h4 index-header">TLS</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址：TLSetcd支持用于客户端到服务器以及对等方（服务器到服务器/集群）通信的自动TLS以及通过客户端证书的身份验证.要启动并运行，首先要获得一个成员的CA证书和签名密钥对。 建议为集群中的每个成员创建并签名一个新的密钥对。为了方便起见，cfssl工具提供了一个简单的接口来生成证书，我们在此处提供了使用该工具的示例。 或者，尝试使用本指南生成自签名密钥对。
+基本设置
+etcd通过命令行参数或环境变量采用了几种与证书相关的配置选项：
+客户端到服务器的通信：--cert-file=&lt;path&gt;:用于SSL/TLS与etcd的连接的证书。设置此选项后，advertise-client-urls可以使用HTTPS模式。--key-file=&lt;path&gt;:证书的密钥。 必须未加密。--client-cert-auth:设置此选项后，etcd将检查所有传入的HTTPS请求以查找由受信任CA签名的客户端证书，不提供有效客户端证书的请求将失败。 如果启用了身份验证，则证书将为“公用名”字段指定的用户名提供凭据。--trusted-ca-file=&lt;path&gt;</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    4.8k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/25/blog/etcd/%E7%B3%BB%E7%BB%9F%E9%99%90%E5%88%B6/">
+        <p class="h4 index-header">系统限制</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址:System limits
+请求大小限制
+etcd被设计用来处理小键值对典型的如元数据。较大的请求数据也起作用，但可能会增加其他请求的延迟。默认情况下，任意的请求最大的空间为1.5MiB，这个限制参数可以通过--max-request-bytes参数对etcd服务器进行配置。
+存储大小限制
+默认的存储大小限制为2GB,可以通过参数--quota-backend-bytes进行配置。正常环境下8GB是etcd支持的最大存储大小，如果配置的值超过它，etcd将在启动时发出警告。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    161 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/24/blog/etcd/%E8%AF%8D%E6%B1%87%E8%A1%A8/">
+        <p class="h4 index-header">词汇表</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">原文地址:词汇表本文档定义了etcd文档，命令行和源代码中使用的各种术语。
+Alarm
+每当集群需要操作员干预以保持可靠性时，etcd服务器都会发出警报。
+Authentication
+身份验证管理etcd资源的用户访问权限。
+Client
+客户端连接到etcd集群以发出服务请求，例如获取键值对，写入数据或监视更新。
+Cluster
+集群由几个成员组成。
+每个成员中的节点均遵循Raft共识协议来复制日志。 集群从成员那里接收提议，将它们提交并应用于本地存储。
+Compaction
+在给定修订之前，压缩会丢弃所有etcd事件历史记录和取代的密钥。 它用于回收etcd后端数据库中的存储空间。
+Election
+etcd集群在其成员之间举行选举，以选择一名领导人作为Raft共识协议的一部分。
+Endpoint
+指向etcd服务或资源的URL。
+Key
+用户定义的标识符，用于在etcd中存储和检索用户定义的值。
+Key range
+包含单个键，所有x的词法间隔（例如a &lt;x &lt;= b）或大于给定键的所有键的一组键。
+Keyspace
+etcd集群中所有键的集合。
+Lease
+短期可</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/etcd">etcd</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    626 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/11/24/blog/etcd/%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%86%85%E8%BF%90%E8%A1%8Cetcd%E9%9B%86%E7%BE%A4/">
         <p class="h4 index-header">在容器中运行etcd集群</p>
         
@@ -447,226 +656,11 @@ gRPC代理将同一键或范围上的多个客户端监视程序（c-watcher）�
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Fabric%E6%90%AD%E5%BB%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
-        <p class="h4 index-header">深入解析Hyperledger Fabric搭建的全过程</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">在这篇文章中，使用fabric-samples/first-network中的文件进行fabric网络(solo类型的网络)搭建全过程的解析。如有错误欢迎批评指正。至于Fabric网络的搭建这里不再介绍，可以参考这一篇文章Hyperledger Fabric环境搭建过程fabric网络：单机，solo类型，两个组织，分别有两个节点首先看一下该文件夹内有哪些文件：
-base                  connection-org2.json    docker-compose-cli.yaml           docker-compose-org3.yaml
-byfn.sh               connection-org2.yaml    docker-compose-couch-org3.yaml    eyfn.sh
-channel-artifacts     connection-org3.json    docker-compose-couch.yaml         org3-artifacts
-configtx.yaml         connect</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.3k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/Fabric%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-        <p class="h4 index-header">Hyperledger Fabric环境搭建</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">简单记录一下fabric版本1.4的环境搭建，运行环境为Ubuntu18.04，其中一些内容是根据官方文档整理的，如有错误欢迎批评指正。本文只介绍最简单的环境搭建方法，具体的环境搭建解析在这里深入解析Hyperledger Fabric启动的全过程。
-1.搭建Fabric的前置条件为了提高下载速度，这里将Ubuntu的源改为国内的源(以阿里源为例)：
-#首先进行配置文件的备份
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#编辑配置文件
-sudo vim /etc/apt/sources.list在配置文件中开头添加以下内容(阿里源)：
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyu</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/fabric/Fabric1.4%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2/">
-        <p class="h4 index-header">Hyperledger Fabric多机部署</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前的文章深入解析Hyperledger Fabric启动的全过程主要讲解了Fabric的网络搭建，以及启动的整体流程，但是都是通过单机完成的。而区块链本身就是去中心化的，所以最终还是要完成Fabric网络的多机部署。在本文中，将会详细说明Fabric如何完成多机部署。
-1搭建环境 本文使用的是Fabric 1.4版本，搭建solo模式的4+1的架构:1Order,4Peer，数据库使用CouchDb，所以这里需要五台机器。同时，五台机器的网络需要互通，系统使用Ubuntu16.04。
-
-
-
-域名
-ip地址
-
-
-
-orderer.example.com
-10.65.182.150
-
-
-peer0.org1.example.com
-10.65.26.64
-
-
-peer1.org1.example.com
-10.65.26.140
-
-
-peer0.org2.example.com
-10.65.200.182
-
-
-peer1.org2.example.com
-10.65.200.44
-
-
-Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger Fabric环境搭建过程
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/23/blog/etcd/%E8%BF%90%E8%A1%8C%E6%97%B6%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE/">
-        <p class="h4 index-header">运行时重新配置</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址：runtime reconfigurationetcd带有增量运行时重新配置的支持。允许我们在集群运行的时候更新集群成员关系。仅当大多数集群成员都在运行时，才能处理重新配置请求，强烈建议在生产环境中集群的大小应该始终大于2。从两个成员的集群中移除一个成员是不安全的。两个成员的集群中大多数成员始终是2，如果在删除过程中出现故障，集群将很难继续运行需要重新从主要成员失败中重新启动集群。为了更好的理解运行时重新配置设计，请阅读运行时重新配置设计。
-重新配置使用案例
-本节将介绍一些重新配置集群的常见原因。 其中大多数原因仅涉及添加或删除成员的组合，群集重新配置操作下将对此进行说明。
-循环或更新多机如果由于计划的维护（硬件升级，网络停机等）而需要移动多个群集成员，建议一次修改一个成员。移除领导者是安全的，但是在选举过程中会出现短暂的停机时间。 如果群集包含的版本为v2的数据超过50MB，则建议迁移成员的数据目录。
-改变集群大小增加群集大小可以增强容错能力并提供更好的读取性能,由于客户端可以从任何成员读取，因此增加成员数量将增加整体序列化读取吞吐量。减小群集大小可以提高群集的写入性能，但</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/etcd%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91">etcd文档翻译</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/etcd">etcd</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    2.8k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/tags/4/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/6/"><i class="fas fa-angle-double-right"></i></a>
+      <a class="extend prev" rel="prev" href="/tags/4/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/3/">3</a><a class="page-number" href="/tags/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/tags/6/">6</a><a class="page-number" href="/tags/7/">7</a><a class="extend next" rel="next" href="/tags/6/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -736,7 +730,7 @@ Fabric的环境搭建过程不再详解，可以参考这一篇文章Hyperledger
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">143.4k</span> 字
+  全站共 <span class="post-count">152.5k</span> 字
   <br>
 
 

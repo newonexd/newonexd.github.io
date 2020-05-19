@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="学习区块链技术ing...">
+  <meta name="author" content="任晓东">
+  <meta name="keywords" content="blockchain fabric">
+  <title>搭建你的第一个区块链网络(四) ~ 触不可及的官方网站</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.10.2/css/all.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.8.9/css/mdb.min.css"  >
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>触不可及的官方网站</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">主页</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 五月 19日 2020, 3:01 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.6k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      15 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>前一篇文章: <a href="https://www.cnblogs.com/cbkj-xd/p/12905706.html" target="_blank" rel="noopener">搭建你的第一个区块链网络(三)</a></p>
+<h2 id="UTXO"><a href="#UTXO" class="headerlink" title="UTXO"></a>UTXO</h2><h4 id="组成部分"><a href="#组成部分" class="headerlink" title="组成部分"></a>组成部分</h4><p>UTXO是比特币中一个重要的概念，这一节我们来实现一个简单的UTXO。我们把UTXO的组成部分分为以下三点:</p>
+<ul>
+<li><strong>UTXOId:</strong> 标识该UTXO</li>
+<li><strong>TxInput:</strong> 交易输入，即coin的输入地址以及金额</li>
+<li><strong>TxOutput:</strong> 交易输出，即coin的输出地址以及金额</li>
+</ul>
+<p>其中<code>TxInput</code>与<code>TxOutput</code>分别具有以下几个属性:</p>
+<p><strong>TxInput:</strong>  交易输入</p>
+<ul>
+<li><strong>preTxId</strong>: 指向的前一个UTXO的id</li>
+<li><strong>value</strong>： 输入的金额</li>
+<li><strong>unLockScript:</strong> 解锁脚本</li>
+</ul>
+<p>其中交易输入需要引用之前的UTXO的输出。这样很容易知道当前的交易输入的金额是由之前的哪一笔交易中的交易输出的金额传递的。<br>保证每一笔未消费的金额都可以找到它的源地址。<br>解锁脚本的作用是用于解锁当前交易输入所引用的交易输出的。因为每一笔金额都有所属，被锁定在某一个地址上面。只有该金额的所有者才具有权限消费进行消费。而解锁脚本一般都是一个数字签名。</p>
+<p><strong>TxOutput</strong> 交易输出</p>
+<ul>
+<li><strong>value</strong> :输出的金额</li>
+<li><strong>lockScript</strong>: 锁定脚本</li>
+</ul>
+<p>每当一笔coin被转移，都会被锁定在一个地址上面，因此锁定脚本一般都是一个地址。</p>
+<p>对于每一笔UTXO，输入的金额一定是等于输出的金额的。另外UTXO有一个特点，就是不能够只花费其中一部分。而是需要全部消费，而多余的再返还给原地址。<br>比如用户a具有10个coin被锁定在一个UTXO中，如果a需要转账给b5个coin，那么需要将10个coin全部花费掉，其中5个coin输出到b的地址，剩余的5个coin输出到a的地址。<br>因此一笔UTXO可以有多个交易输出，同时也可以有多个输入。</p>
+<p>大致概念介绍差不多了，我们来实现它:</p>
+<pre><code>#TxInput.java
+//因为我们采用的序列化保存区块，而该数据需要写入区块，因此需要实现Serializable接口
+public class TxInput implements Serializable{
+    private static final long serialVersionUID = 1L;
+    // 所引用的前一个交易ID
+    public String preTxId;
+    // 该输入中包含的coin
+    public int values;
+    // 解锁脚本 通常为数字签名
+    public String unLockScript;
+    public TxInput(String txId, TxOutput top, Wallet wallet) throws Exception {
+        //对引用的Txoutput中的地址进行签名，用于解锁引用的TxOutPut.
+        this.unLockScript = wallet.sign(top.getLockScript());
+        //记录引用的上一个交易ID
+        this.preTxId = txId;
+        //coin值等于引用的Txoutput的coin值
+        this.values = top.value;
+    }
+}</code></pre><p>接下来是交易输出:</p>
+<pre><code>#TxOutput.java
+
+@Getter
+public class TxOutput implements Serializable{
+    //同理需要实现Serializable接口
+    private static final long serialVersionUID = 1L;
+    // 交易输出的coin值。
+    public int value;
+    //锁定脚本 通常为地址
+    public String lockScript;
+    public TxOutput(int value,String address){
+        this.value = value;
+        this.lockScript = address;
+    }
+}</code></pre><p>最后是UTXO的实现: 我们使用<code>Transaction</code>进行表示。</p>
+<pre><code>#Transaction.java
+
+@Getter
+@Setter
+public class Transaction implements Serializable{
+    //为了后期调试方便，引入了log4j的包，导入方法和之前一样
+    private transient static final Logger LOGGER = Logger.getLogger(Transaction.class);
+    private static final long serialVersionUID = 1L;
+    //COINBASE之后再进行解释
+    private transient static final int COINBASE = 50;
+    //UTXOId
+    public String txId;
+    // 交易输入的集合
+    public ArrayList&lt;TxInput&gt; tips;
+    // 交易输出的集合 String:address
+    public HashMap&lt;String, TxOutput&gt; tops;
+
+    private Transaction() {
+        #这里只创建了保存交易输出的集合,因为涉及到Coinbase，暂时先不创建ArrayList
+        this.tops = new HashMap&lt;&gt;(4);
+    }
+    @Override
+    public String toString(){
+        return JSONObject.toJSONString(this);
+    }
+}</code></pre><p>log4j日志包:</p>
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;1.2.17&lt;/version&gt;
+        &lt;/dependency&gt;</code></pre><p>这里为了方便起见分别使用<code>ArrayList</code>和<code>HashMap</code>存储交易输入与输出.</p>
+<h3 id="创建UTXO"><a href="#创建UTXO" class="headerlink" title="创建UTXO"></a>创建UTXO</h3><p>接下来是创建UTXO的核心方法，比较复杂，我们先来分析一下:<br>首先传入的参数需要有: 发送coin的源地址，发送coin的目的地址，coin的值。<br>返回值为一个<code>Transaction</code>实例。</p>
+<p>接下来分析如何创建UTXO：</p>
+<ol>
+<li>首先需要遍历整个区块链，查找到所有<strong>未消费的</strong>被锁定在源地址的交易输出。</li>
+<li>将查找到的所有包含符合条件的交易输出的UTXO记录在集合中。</li>
+<li>遍历该集合，将每一笔UTXO中未消费的输出相加，直到满足转账金额或者是统计完全部UTXO。</li>
+<li>将统计的每一笔UTXO中交易输出创建为新的交易输入用于消费。</li>
+<li>判断是否coin值刚好等于需要转账的coin。如果相等则创建一个交易输出将coin转账到目的地址。</li>
+<li>如果有多余的则再创建一个交易输出返回多余的coin到源地址。</li>
+</ol>
+<p>OK，分析完了可以开发了:</p>
+<pre><code>#Transaction.java
+    public static Transaction newUTXO(String fromAddress, String toAddress, int value)
+            throws NoSuchAlgorithmException, Exception {
+        //第一步遍历区块链统计UTXO
+        Transaction[] txs = Blockchain.getInstance().findAllUnspendableUTXO(fromAddress);
+        if (txs.length == 0) {
+            LOGGER.info(&quot;当前地址&quot;+fromAddress+&quot;没有未消费的UTXO！！！&quot;);
+            throw new Exception(&quot;当前地址&quot;+fromAddress+&quot;没有未消费的UTXO,交易失败！！！&quot;);
+        }
+        TxOutput top;
+        // 记录需要使用的TxOutput
+        HashMap&lt;String, TxOutput&gt; tops = new HashMap&lt;String, TxOutput&gt;();
+        int maxValue = 0;
+        // 遍历交易集合
+        for (int i = 0; i &lt; txs.length; i++) {
+            // 查找包括地址为fromAddress的TxOutput
+            if (txs[i].tops.containsKey(fromAddress)) {
+                top = txs[i].tops.get(fromAddress);
+                // 添加进Map
+                tops.put(txs[i].txId, top);
+                // 记录该TxOutput中的value
+                maxValue += top.value;
+                // 如果大于需要使用的则退出
+                if (maxValue &gt;= value) {
+                    break;
+                }
+            }
+        }
+        // 是否有足够的coin
+        if (maxValue &gt;= value) {
+            // 创建tx
+            Transaction t = new Transaction();
+            t.tips = new ArrayList&lt;TxInput&gt;(tops.size());
+            // 遍历所有需要用到的Txoutput
+            tops.forEach((s, to) -&gt; {
+                // 变为TxInput
+                try {
+                    t.tips.add(new TxInput(s, to, Wallet.getInstance()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            //如果值不均等
+            if(maxValue&gt;value){
+                //创建TxOutput返还多余的coin
+                top = new TxOutput(maxValue-value, Wallet.getInstance().getAddress());
+                t.tops.put(top.getLockScript(), top);
+            }
+            //目的地址
+            top = new TxOutput(value, toAddress);
+            t.tops.put(top.getLockScript(), top);
+            LOGGER.info(&quot;创建UTXO: &quot;+t.toString());
+            return t;
+        }
+        LOGGER.info(&quot;当前地址余额不足!!,余额为&quot;+maxValue);
+        throw new Exception(&quot;当前地址余额不足!!,余额为&quot;+maxValue);
+    }</code></pre><h3 id="统计未消费的UTXO"><a href="#统计未消费的UTXO" class="headerlink" title="统计未消费的UTXO"></a>统计未消费的UTXO</h3><p>然后是另外一个核心方法，统计区块链中符合条件的全部未消费的UTXO：<br>我们使用比较简单易理解的方式，先统计地址匹配的所有的交易输出。<br>然后统计所有的满足条件的交易输入。交易输入需要满足两个条件：</p>
+<ol>
+<li>地址是自己的地址</li>
+<li>交易输入中引用的UTXOid可以追溯到。</li>
+</ol>
+<p>我们将符合条件的<code>TxInput</code>中引用的UTXOId在所有未消费的UTXO中匹配，<br>如果匹配到说明该UTXO已经被花费掉了，我们移除掉花费掉的UTXO，剩下的就是满足条件的未消费的UTXO了。</p>
+<pre><code>#Blockchain.java
+public Transaction[] findAllUnspendableUTXO(String address)
+            throws FileNotFoundException, ClassNotFoundException, IOException {
+        LOGGER.info(&quot;查找所有未消费的UTXO...............&quot;);
+        HashMap&lt;String, Transaction&gt; txs = new HashMap&lt;&gt;();
+        Block block = this.block;
+        Transaction tx;
+        // 从当前区块向前遍历查找UTXO txOutput
+        do{
+            //从区块中获取交易信息
+            tx = block.getTransaction();
+            // 如果存在交易信息，且TxOutput地址包含address
+            if (tx != null &amp;&amp; tx.getTops().containsKey(address)) {
+                txs.put(tx.getTxId(), tx);
+            }
+            //指向前一个区块
+            block = block.getPrevBlock();
+            //一直遍历到创世区块
+        }while(block!=null &amp;&amp; block.hasPrevBlock()) ;
+        // 再遍历一次查找已消费的UTXO
+        block = this.block;
+        do {
+            tx = block.getTransaction();
+            if (tx != null) {
+                // 如果交易中的TxInput包含的交易ID存在于txs，移除
+                tx.getTips().forEach(tip -&gt; {
+                    try {
+                        //需要满足两个条件，一是Txinput中引用的UTXOId存在，说明该UTXO已经被使用了
+                        //二是需要保证地址相同，确认该TxInput是coin所有者消费的
+                        if (Wallet.getInstance().verify(address,tip.unLockScript) 
+                                &amp;&amp; txs.containsKey(tip.preTxId))
+                            //满足两个条件则移除该UTXO
+                            txs.remove(tip.preTxId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            block = block.getPrevBlock();
+        }while (block!=null &amp;&amp; block.hasPrevBlock());
+        //创建UTXO数组返回
+        Transaction[] t = new Transaction[txs.size()];
+        return txs.values().toArray(t);
+    }</code></pre><p>看这里的代码：</p>
+<pre><code> if (Wallet.getInstance().verify(address,tip.unLockScript) &amp;&amp; txs.containsKey(tip.preTxId))
+    ...</code></pre><p>首先验证<code>TxInput</code>的解锁脚本是否对我们钱包的地址进行签名得到的，即验证这一笔输入是否是自己消费的。<br>如果是自己消费的然后比对UTXO的Id，如果相同则说明这笔UTXO已经被消费掉了。那么需要移除它。<br>在钱包中添加一个新的方法，用于验证解锁脚本是否可以解锁交易输出。我们简单采用哈希值匹配的方式模拟验证。</p>
+<pre><code>#Wallet.java
+    public boolean verify(String data,String sign) throws DecoderException, Exception {
+        LOGGER.info(&quot;验证签名: &quot;+data);
+        String[] str = data.split(&quot;%%%&quot;);
+        // 原文     encry(hash(原文))
+        if(str.length!=2){
+            return false;
+        }
+        String hash2 = Hex.encodeHexString(this.decrypt(str[1]));
+        String hash3 = Util.getSHA256(data);
+        if(hash3.equals(hash2)){
+            LOGGER.info(&quot;签名验证成功！！&quot;);
+            return true;
+        }
+        LOGGER.info(&quot;签名验证失败！！&quot;);
+        return false;
+    }</code></pre><h3 id="更新区块信息"><a href="#更新区块信息" class="headerlink" title="更新区块信息"></a>更新区块信息</h3><p>加入了UTXO的概念，那我们需要更新区块以及区块链的属性信息了。</p>
+<pre><code>#Block.java
+@Getter
+@Setter
+public class Block implements Serializable{
+    ...
+    //当前区块中的交易
+    public Transaction transaction;
+    ...
+    //添加一个新的构造方法
+    public Block(int blkNum,Transaction transaction,String prevBlockHash){
+        this.blkNum = blkNum;
+        this.transaction = transaction;
+        this.prevBlockHash = prevBlockHash;
+        this.timeStamp = Util.getTimeStamp();
+    }
+    ...
+}</code></pre><p>然后是区块链，也要更新一个方法:</p>
+<pre><code>#Blockchain.java
+public final class Blockchain {
+    ...
+    public Block addBlock(Transaction tx) throws IOException {
+        int num = this.block.getBlkNum();
+        Block block = new Block(num + 1, tx, this.block.curBlockHash);
+        // 每次将区块添加进区块链之前需要计算难度值
+        block.setNonce(Pow.calc(block));
+        // 计算区块哈希值
+        String hash = Util.getSHA256(block.getBlkNum() + block.getData() + block.getPrevBlockHash()
+                + block.getPrevBlockHash() + block.getNonce());
+        block.setCurBlockHash(hash);
+        // 序列化
+        Storage.Serialize(block);
+        this.block = block;
+        LOGGER.info(&quot;当前区块信息为:&quot;+block.toString());
+        return this.block;
+    }
+    ...
+}</code></pre><p>之前区块中将字符串保存为区块信息，我们更新为一笔交易。需要创建一笔交易才可以创建区块。</p>
+<h3 id="Coinbase"><a href="#Coinbase" class="headerlink" title="Coinbase"></a>Coinbase</h3><p>关于UTXO，我们之前讲到每一笔输出都会对应着一个输入，那么第一笔被输出的coin是哪里来的呢，<br>在比特币中，每产出一个区块将会奖励一定数量的BItcoin，称为Coinbase。同理，我们这里也实现它。<br>因此第一笔被输出的coin来自于coinbase。我们将coinbase固定为50，正如之前设定的属性:</p>
+<pre><code>#Transaction.java
+    private transient static final int COINBASE = 50;</code></pre><p>所以我们还需要一个生成coinbase的交易的构造方法:</p>
+<pre><code>#Blockchain.java
+    public static Transaction newCoinBase() throws NoSuchAlgorithmException, Exception {
+        Transaction t = new Transaction();
+        t.tips = new ArrayList&lt;&gt;();
+        t.tops.put(Wallet.getInstance().getAddress(), new TxOutput(COINBASE, Wallet.getInstance().getAddress()));
+        LOGGER.info(&quot;创建Coinbase.....&quot;+t.toString());
+        return t;
+    }</code></pre><p>可以看到，交易输出的地址我们设置为钱包的地址。<br>比较简单，接下来修改一下创世区块的生成方法，将coinbase的交易添加进去。</p>
+<pre><code>#Blockchain.java
+    private Block CrtGenesisBlock() throws NoSuchAlgorithmException, Exception {
+        // Block block = new Block(1,&quot;Genesis Block&quot;,&quot;00000000000000000&quot;);
+        Block block = new Block(1, Transaction.newCoinBase(), &quot;00000000000000000&quot;);
+        ...
+    }</code></pre><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>一切都完成了，测试一下:</p>
+<pre><code>#Test.java
+public class Test {
+    public static void main(String[] args) throws NoSuchAlgorithmException, Exception {
+        Blockchain.getInstance().addBlock(
+            Transaction.newUTXO(
+                Wallet.getInstance().getAddress(), &quot;address&quot;, 30));
+        Blockchain.getInstance().addBlock(
+            Transaction.newUTXO(
+                &quot;address&quot;, &quot;address1&quot;, 20));
+    }
+}</code></pre><p>分析一下测试用例：</p>
+<pre><code>Blockchain.getInstance()
+#############################
+#Blockchain.java CrtGenesisBlock()
+Block block = new Block(1, Transaction.newCoinBase(), &quot;00000000000000000&quot;);
+#newCoinBase()
+t.tops.put(Wallet.getInstance().getAddress(), new TxOutput(COINBASE, Wallet.getInstance().getAddress()));</code></pre><p>首先获取区块链实例，因此创建了创始区块，看上面的代码我们可以知道创建了一笔coinbase交易，50个coin被锁定在我们钱包的地址。</p>
+<pre><code>Blockchain.getInstance().addBlock(
+            Transaction.newUTXO(
+                Wallet.getInstance().getAddress(), &quot;address&quot;, 30));</code></pre><p>然后是第二个区块，我们创建了一个UTXO，从钱包的地址转移30个coin到地址<code>address</code>。</p>
+<pre><code>        Blockchain.getInstance().addBlock(
+            Transaction.newUTXO(
+                &quot;address&quot;, &quot;address1&quot;, 20));</code></pre><p>最后是第三个区块，从地址<code>address</code>转移20个coin到地址<code>address1</code>.<br>测试一下：</p>
+<pre><code>...
+[INFO ] 2020-05-18 14:10:19,501 method:org.xd.chain.transaction.Transaction.newCoinBase(Transaction.java:42)
+创建Coinbase.....{&quot;tips&quot;:[],&quot;tops&quot;:{&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;:{&quot;lockScript&quot;:&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;,&quot;value&quot;:50}}}
+...
+[INFO ] 2020-05-18 14:10:19,757 method:org.xd.chain.core.Blockchain.findAllUnspendableUTXO(Blockchain.java:117)
+查找所有未消费的UTXO...............
+[INFO ] 2020-05-18 14:10:19,804 method:org.xd.chain.wallet.Wallet.sign(Wallet.java:86)
+使用私钥对数据签名: R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a
+[INFO ] 2020-05-18 14:10:20,382 method:org.xd.chain.transaction.Transaction.newUTXO(Transaction.java:100)
+创建UTXO: {&quot;tips&quot;:[{&quot;unLockScript&quot;:&quot;523133363335343866383934363532396464373339323262323635343762363131306639313539613330636339623034373434333563316330646233373834326364336334313030303832313832323237653335366338313138333064366235623536643836323838306238356632303335356366626333383736343136353361%%%4251d1ae7091f422bef3a95b29867ebeaeeedb0e20239a4edf96967d1a1f15a8f061873acc01aa86c726e1ad128aefeaaf5c447aed27e5729bdd24f0026d6c23&quot;,&quot;values&quot;:50}],&quot;tops&quot;:{&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;:{&quot;lockScript&quot;:&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;,&quot;value&quot;:20},&quot;address&quot;:{&quot;lockScript&quot;:&quot;address&quot;,&quot;value&quot;:30}}}
+...
+[INFO ] 2020-05-18 14:10:20,468 method:org.xd.chain.core.Blockchain.addBlock(Blockchain.java:86)
+当前区块信息为:{&quot;blkNum&quot;:2,&quot;curBlockHash&quot;:&quot;00005f0690489e8763bd3db0ce7112592cdb118507945c65d07bfe27e0ad3031&quot;,&quot;nonce&quot;:4350,&quot;prevBlockHash&quot;:&quot;000011de81afdac44e08e81b9be434cbcb625808a9d0f8008275ab9a6ffb809f&quot;,&quot;timeStamp&quot;:&quot;2020-05-18 14:10:20&quot;,&quot;transaction&quot;:{&quot;tips&quot;:[{&quot;unLockScript&quot;:&quot;523133363335343866383934363532396464373339323262323635343762363131306639313539613330636339623034373434333563316330646233373834326364336334313030303832313832323237653335366338313138333064366235623536643836323838306238356632303335356366626333383736343136353361%%%4251d1ae7091f422bef3a95b29867ebeaeeedb0e20239a4edf96967d1a1f15a8f061873acc01aa86c726e1ad128aefeaaf5c447aed27e5729bdd24f0026d6c23&quot;,&quot;values&quot;:50}],&quot;tops&quot;:{&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;:{&quot;lockScript&quot;:&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;,&quot;value&quot;:20},&quot;address&quot;:{&quot;lockScript&quot;:&quot;address&quot;,&quot;value&quot;:30}}}}
+[INFO ] 2020-05-18 14:10:20,575 method:org.xd.chain.core.Blockchain.findAllUnspendableUTXO(Blockchain.java:117)
+查找所有未消费的UTXO...............
+...
+[INFO ] 2020-05-18 14:10:20,725 method:org.xd.chain.wallet.Wallet.verify(Wallet.java:124)
+验证签名: address
+...
+[INFO ] 2020-05-18 14:10:20,731 method:org.xd.chain.wallet.Wallet.sign(Wallet.java:86)
+使用私钥对数据签名: address
+[INFO ] 2020-05-18 14:10:20,734 method:org.xd.chain.transaction.Transaction.newUTXO(Transaction.java:100)
+创建UTXO: {&quot;tips&quot;:[{&quot;unLockScript&quot;:&quot;61646472657373%%%8ad16095a9f1947e323eb5ef3601a0cc2ad552ad3f7331406123577a1cc0c68dc614f3262505f079f7c3acfc1d681fdb432f7ba0f4ac3d69cb46dead5446b2cd&quot;,&quot;values&quot;:30}],&quot;tops&quot;:{&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;:{&quot;lockScript&quot;:&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;,&quot;value&quot;:10},&quot;address1&quot;:{&quot;lockScript&quot;:&quot;address1&quot;,&quot;value&quot;:20}}}
+...
+[INFO ] 2020-05-18 14:10:20,990 method:org.xd.chain.core.Blockchain.addBlock(Blockchain.java:86)
+当前区块信息为:{&quot;blkNum&quot;:3,&quot;curBlockHash&quot;:&quot;00006e8918bba9831374f578caa3d80fa936997598072145bc0654cbca2d084e&quot;,&quot;nonce&quot;:74607,&quot;prevBlockHash&quot;:&quot;00005f0690489e8763bd3db0ce7112592cdb118507945c65d07bfe27e0ad3031&quot;,&quot;timeStamp&quot;:&quot;2020-05-18 14:10:20&quot;,&quot;transaction&quot;:{&quot;tips&quot;:[{&quot;unLockScript&quot;:&quot;61646472657373%%%8ad16095a9f1947e323eb5ef3601a0cc2ad552ad3f7331406123577a1cc0c68dc614f3262505f079f7c3acfc1d681fdb432f7ba0f4ac3d69cb46dead5446b2cd&quot;,&quot;values&quot;:30}],&quot;tops&quot;:{&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;:{&quot;lockScript&quot;:&quot;R1363548f8946529dd73922b26547b6110f9159a30cc9b0474435c1c0db37842cd3c4100082182227e356c811830d6b5b56d862880b85f20355cfbc387641653a&quot;,&quot;value&quot;:10},&quot;address1&quot;:{&quot;lockScript&quot;:&quot;address1&quot;,&quot;value&quot;:20}}}}</code></pre><p>省略掉其他日志信息，看起来测试是没有问题的，共生成了3个区块。创世区块中有一笔Coinbase交易。区块2中成功转移30coin到地址<code>address</code>，返还20coin到原地址。区块3中成功从地址<code>address</code>转移20coin到地址<code>address1</code>，返还10coin到地址<code>address</code>。</p>
+<p>还有部分未完善部分，比如coinbase只在创世区块中生成了。每个区块中只含有一笔交易等等，后期慢慢完善。</p>
+<h3 id="Github仓库地址在这里，随时保持更新中…"><a href="#Github仓库地址在这里，随时保持更新中…" class="headerlink" title="Github仓库地址在这里，随时保持更新中….."></a>Github仓库地址在这里，随时保持更新中…..</h3><p>Github地址：<a href="https://github.com/newonexd/Jchain" target="_blank" rel="noopener">Jchain</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/blockchain">blockchain</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61f05c79f7a13c277323',
+      clientSecret: '3564592f28eec1ac00931de44f215d4c0ed0939b',
+      repo: 'newonexd.github.io',
+      owner: 'newonexd',
+      admin: 'newonexd',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  全站共 <span class="post-count">152.5k</span> 字
+  <br>
+
+
+
+    
+
+
+    <!-- 在网页底部添加网站运行时间 -->
+    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime() {
+        var grt= new Date("11/23/2019 12:31:24");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站运行时长共计:"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js" ></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://cdn.staticfile.org/mdbootstrap/4.8.9/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="https://cdn.staticfile.org/tocbot/4.8.0/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="https://cdn.staticfile.org/smooth-scroll/16.1.0/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d54e5d165e17a670a03f855cd454a89a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="https://cdn.staticfile.org/prettify/r298/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/typed.js/2.0.10/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "搭建你的第一个区块链网络(四)&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/anchor-js/4.2.0/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
