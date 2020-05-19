@@ -136,6 +136,206 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/19/blog/blockchain/Jchain4/">
+        <p class="h4 index-header">搭建你的第一个区块链网络(四)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前一篇文章: 搭建你的第一个区块链网络(三)
+UTXO组成部分UTXO是比特币中一个重要的概念，这一节我们来实现一个简单的UTXO。我们把UTXO的组成部分分为以下三点:
+
+UTXOId: 标识该UTXO
+TxInput: 交易输入，即coin的输入地址以及金额
+TxOutput: 交易输出，即coin的输出地址以及金额
+
+其中TxInput与TxOutput分别具有以下几个属性:
+TxInput:  交易输入
+
+preTxId: 指向的前一个UTXO的id
+value： 输入的金额
+unLockScript: 解锁脚本
+
+其中交易输入需要引用之前的UTXO的输出。这样很容易知道当前的交易输入的金额是由之前的哪一笔交易中的交易输出的金额传递的。保证每一笔未消费的金额都可以找到它的源地址。解锁脚本的作用是用于解锁当前交易输入所引用的交易输出的。因为每一笔金额都有所属，被锁定在某一个地址上面。只有该金额的所有者才具有权限消费进行消费。而解锁脚本一般都是一个数字签名。
+TxOutput 交易输出
+
+value :输出的金额
+lockScript: 锁定脚本
+
+每当一笔coin被转移，都会被锁</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-19&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/blockchain">blockchain</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    3.6k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/19/blog/blockchain/Jchain3/">
+        <p class="h4 index-header">搭建你的第一个区块链网络(三)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前一篇文章: 搭建你的第一个区块链网络(二)
+钱包与CLI钱包对于区块链系统来说，密码学是必不可少的，因此加密与解密也是核心操作，而密钥通常使用钱包进行保存，这一节我们完成钱包的设计。这一节比较简单。在比特币网络中，使用的是非对称加密算法，密钥是通过椭圆曲线算法实现的，而本文中，暂且使用RSA算法进行实现，后期再对椭圆曲线算法进行添加。首先是RSA算法的工具类，参考这里.整理成以下方法:
+#RSAKey.java
+@Getter
+@Setter
+public final class RSAKey {
+     //非对称密钥算法
+     public static final String KEY_ALGORITHM = &quot;RSA&quot;;
+     /**
+      * 密钥长度必须是64的倍数，在512到65536位之间
+      */
+     private static final int KEY_SIZE = 512;
+     //公钥
+     private static final String PUBLIC_KEY = &quot;RSAPub</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-19&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/blockchain">blockchain</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/19/blog/blockchain/Jchain2/">
+        <p class="h4 index-header">搭建你的第一个区块链网络(二)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前一篇文章: 搭建你的第一个区块链网络(一)
+共识与本地化POW共识共识机制也是区块链系统中不可缺少的一部分，在比特币网络中，使用的是POW共识，概念相对比较简单，所以我们在该项目中使用POW共识机制(后期如果可以的话修改为可插拔的共识机制)。
+POW原理POW原理是通过解决一个数学难题，其实就是通过计算一个哈希值，如果计算出来的哈希值的前缀有足够多个”0”，就说明成功解决了该数学难题。通常哈希值中”0”的个数越多难度越大。难度值是通过之前生成的区块所消耗的时间动态调整的。而生成哈希值的原数据实际上就是区块信息，另外再加一个nonce属性，用于调整难度值。在比特币中，平均每10分钟产出一个区块，如果新区块的产出只消耗了9分钟，那么难度值将会增加。如果算力不发生变化的话，下一次产出区块将会消耗更多的时间。同理，如果新区块的产出消耗了11分钟，那么难度值则会相应地降低。动态调整难度值维持区块产出时间平均为10分钟。实际上比特币中的POW更加复杂，难度值的调整是通过过去的2016个区块产出的时间与20160分钟进行比较的。在这里，不设置那么麻烦，难度值不再动态调整，暂时将哈希值中”0”的数量</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-19&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/blockchain">blockchain</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    2.2k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/19/blog/blockchain/Jchain1/">
+        <p class="h4 index-header">搭建你的第一个区块链网络(一)</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">写一个系列文章，由简入深搭建一个区块链网络，也是从零开始开发一个开源项目。不再介绍区块链的基础知识了，所以希望读者提前了解区块链的基础知识，项目是使用SpringBoot(暂时用不到各项配置，为了以后方便)+JAVA开发，所以也需要读者了解JAVA语言。本文为第一篇。
+区块区块属性定义第一步首先是区块信息的定义，暂时不考虑那么复杂，这里只定义一些最基础的属性:
+
+区块号： 就是区块的序号。 
+当前区块哈希值： 保证区块唯一，同时后一个区块链通过保留这一属性链接该区块。
+前一区块哈希值： 用于链接上一个区块。
+时间戳： 记录该区块产出时间。
+数据： 区块中存储的数据，为了简单化，这里使用字符串代替。
+
+目前暂时只定义这些属性，后面开发如果需要其他属性再进行迭代。接下来是构造方法了:
+构造方法定义构建一个新的区块需要传入被构建区块的区块号，区块数据以及前一个区块的哈希值。
+#Block.java
+
+@Getter  # lombok工具包，加上这两个注释就不用写get(),set()方法了
+@Setter   #工具包在下面
+public class Block {
+    // 区块号
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-19&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/blockchain">blockchain</a>&nbsp;
+          
+        
+            
+                
+                &nbsp;<i class="far fa-chart-bar"></i>
+                <span class="post-count">
+                    1.3k 字
+                  </span>&nbsp;
+            
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/05/11/blog/other/bloom/">
         <p class="h4 index-header">布隆过滤器(Bloom Filter)</p>
         
@@ -456,226 +656,11 @@ Raft算法之成员关系变化&emsp;&emsp;有时候可能会遇到需要对集�
     </div>
   </div>
 
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/05/blog/consensus/raft-log/">
-        <p class="h4 index-header">Raft算法之日志复制</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">上一篇文章:Raft算法之Leader选举&emsp;&emsp;之前说完了Raft算法中的Leader选举过程，本文将在上一篇文章的基础上说明日志复制。
-Raft算法之日志复制&emsp;&emsp;先看以下日志所包含的基本内容:
-
-可以被复制状态机执行的命令
-任期号 :创建该日志时Leader所处的当前任期号
-索引号 :整数，用于标识日志所在的位置
-
-日志的状态分为两种:未被提交，已被提交(日志为安全的，不会被删除或覆盖)。
-1 正常情况
-当Leader接收到由客户端发送的请求(请求中包含可以被复制状态机执行的命令)时，Leader将会把该请求作为新的内容添加到日志中(任期号为当前Leader所处的任期号，索引号为当前Leader本地存储的日志集合中的日志的最高索引号加1)。
-Leader在当前任期内最多只能创建一个给定索引号的日志(即不可能在一个任期内创建两个以上的具有相同索引的日志条目)
-
-
-然后将该日志通过AppendEntries RPC消息发送到网络中其他的服务器(以下简称Follower)，从而复制该日志。
-在网络中Follower接收到该日志消息后则会返回复制成功的回</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-05&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/algorithm">algorithm</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/algorithm">algorithm</a>&nbsp;
-          
-            <a href="/tags/Raft">Raft</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    3.5k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/04/blog/consensus/raft-election/">
-        <p class="h4 index-header">Raft算法之Leader选举</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">&emsp;&emsp;记录一下对Raft算法的理解，算法的内容比较多，所以准备将算法的全部过程分成四个部分来写。分别是
-
-Raft算法之Leader选举
-Raft算法之日志复制
-Raft算法之成员关系变化
-Raft算法之日志压缩
-
-该文章为第一部分。
-Raft算法之Leader选举简单介绍&emsp;&emsp;首先需要了解Raft中的一个关键词:Term,本文中以下部分简单称为任期。任期通过连续的整数编号表示并且是单调递增的，代表任意长度的一段时间。在网络中所有服务器都有自己的任期编号，在网络中大部分正常运行阶段，所有服务器的任期号都是相同的。Raft算法中服务器主要分为三种角色:Leader,Follower,Candidate，并且三种角色相互独立，也就是服务器在同一时间内只可能扮演其中一种角色。
-
-Leader:用于对所有用户的请求进行处理。以及之后要说明的日志的复制等等。
-Follower:不会主动发送消息，只响应来自Leader与Candidate的请求。
-Candidate:用于选举新的Leader。
-
-&emsp;&emsp;在本文介绍的范围内，网络状态分为两种情况:</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/algorithm">algorithm</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/algorithm">algorithm</a>&nbsp;
-          
-            <a href="/tags/Raft">Raft</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    1.9k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/04/blog/consensus/raft/">
-        <p class="h4 index-header">Raft算法论文(部分)</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">原文地址-&gt;Raft算法
-摘要Raft是用于管理被复制的日志的共识算法。它与multi-Paxos算法产生的效果相同，并且和Paxos算法一样高效。但是结构与Paxos不同。这使得Raft算法比Paxos算法更容易理解。也为构建实际系统提供了更好的基础。为了加强理解，Raft将几个关键元素分离，比如leader选举，日志复制，安全性。并增强了一致性，以减少必须考虑的状态数。一项用户研究的结果表明，与Paxos相比，Raft算法更易于学生学习。Raft也提供了用于更新集群成员关系的新的机制。它使用重叠的多数来保证安全。
-1 介绍共识算法允许一组计算机的集合作为一个一致的的小组工作，这些小组可以承受某些成员的故障。正因为如此，共识机制在构建可信的大规模软件系统中起着至关重要的作用。在过去的十年中，Paxos一直主导着共识算法的讨论。很多共识算法都是基于Paxos或者受它的影响。Paxos称为了教受学生关于共识算法的主要工具。不幸的是，尽管进行了许多尝试以使Paxos更加平易近人，Paxos仍然非常难以理解。此外，其体系结构需要复杂的更改以支持实际系统。结果，系统构建者和学生都与Pax</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/algorithm">algorithm</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/algorithm">algorithm</a>&nbsp;
-          
-            <a href="/tags/Raft">Raft</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    15k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/31/blog/fabric/%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AERaft%E8%8A%82%E7%82%B9/">
-        <p class="h4 index-header">Hyperledger Fabric动态配置Raft节点</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">Hyperledger Fabric动态配置Raft节点最近看官方文档发现新的共识算法etcdRaft允许动态添加或删除排序节点，所以也花了一天时间操作了以下，写篇文章把整个过程记录一下。初始网络本文设置了4个Orderer节点，1个Peer节点(用于更新配置文件以及测试用),然后动态添加第五个Orderer节点。本文分成两个部分:
-
-第一部分是手动通过Fabric-CA生成每一个节点的证书文件
-第二部分是更新Fabric网络配置添加新的Orderer节点。
-
-本文基于Fabric v2.0.0-beta版本。版本号只要高于1.4.1就行
-1 搭建定制化的Fabric网络前提条件是成功跑起来Fabric的示例网络，可以看这里-&gt;Hyperledger Fabric环境搭建
-首先在$GOPATH下(本文路径地址为$GOPATH/src/github.com/hyperledger/fab)建立如下几个文件夹用于之后的操作:
-.  # 这里是根目录fab
-├── ca    # 用于生成CA证书的ca配置文件的文件夹
-│   ├── org1
-│   │   └── fabric-c</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-31&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/fabric%E5%BA%94%E7%94%A8">fabric应用</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/fabric">fabric</a>&nbsp;
-          
-        
-            
-                
-                &nbsp;<i class="far fa-chart-bar"></i>
-                <span class="post-count">
-                    7.2k 字
-                  </span>&nbsp;
-            
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="index posts navigation">
     <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/tags/6/">6</a><a class="extend next" rel="next" href="/tags/2/"><i class="fas fa-angle-double-right"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/tags/2/">2</a><a class="page-number" href="/tags/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/tags/7/">7</a><a class="extend next" rel="next" href="/tags/2/"><i class="fas fa-angle-double-right"></i></a>
     </span>
   </nav>
   
@@ -745,7 +730,7 @@ Candidate:用于选举新的Leader。
     &nbsp;<span id="busuanzi_container_site_uv">总访客数 
             <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
   
-  全站共 <span class="post-count">143.4k</span> 字
+  全站共 <span class="post-count">152.5k</span> 字
   <br>
 
 
