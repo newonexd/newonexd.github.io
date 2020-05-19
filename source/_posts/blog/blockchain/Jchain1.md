@@ -176,7 +176,7 @@ public class Test {
 {"blkNum":2,"curBlockHash":"bc6a75cf858241503a64ebdc5cf21ddcb187e6759c016b906f288cdac26ccae2","data":"Block 2","prevBlockHash":"db27dd5c1e51197f6e9580613d9dbd5198a053b8c92da6560538579834e83159","timeStamp":"2020-05-16 17:09:10"}
 ```
 
-后一篇文章: [搭建你的第一个区块链网络(二)](https://www.cnblogs.com/cbkj-xd/p/12904660.html)
+后一篇文章: [搭建你的第一个区块链网络(二)](https://ifican.top/2020/05/19/blog/blockchain/Jchain2/)
 
 #### Github仓库地址在这里，随时保持更新中.....
 Github地址：[Jchain](https://github.com/newonexd/Jchain)

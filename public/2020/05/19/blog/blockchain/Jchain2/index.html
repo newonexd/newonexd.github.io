@@ -163,7 +163,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>前一篇文章: <a href="https://www.cnblogs.com/cbkj-xd/p/12901312.html" target="_blank" rel="noopener">搭建你的第一个区块链网络(一)</a></p>
+            <p>前一篇文章: <a href="https://ifican.top/2020/05/19/blog/blockchain/Jchain1/" target="_blank" rel="noopener">搭建你的第一个区块链网络(一)</a></p>
 <h2 id="共识与本地化"><a href="#共识与本地化" class="headerlink" title="共识与本地化"></a>共识与本地化</h2><h3 id="POW共识"><a href="#POW共识" class="headerlink" title="POW共识"></a>POW共识</h3><p>共识机制也是区块链系统中不可缺少的一部分，在比特币网络中，使用的是POW共识，概念相对比较简单，所以我们在该项目中使用POW共识机制(后期如果可以的话修改为可插拔的共识机制)。</p>
 <h4 id="POW原理"><a href="#POW原理" class="headerlink" title="POW原理"></a>POW原理</h4><p>POW原理是通过解决一个数学难题，其实就是通过计算一个哈希值，如果计算出来的哈希值的前缀有足够多个”0”，就说明成功解决了该数学难题。通常哈希值中”0”的个数越多难度越大。难度值是通过之前生成的区块所消耗的时间动态调整的。而生成哈希值的原数据实际上就是区块信息，另外再加一个<code>nonce</code>属性，用于调整难度值。<br>在比特币中，平均每10分钟产出一个区块，如果新区块的产出只消耗了9分钟，那么难度值将会增加。如果算力不发生变化的话，下一次产出区块将会消耗更多的时间。同理，如果新区块的产出消耗了11分钟，那么难度值则会相应地降低。动态调整难度值维持区块产出时间平均为10分钟。实际上比特币中的POW更加复杂，难度值的调整是通过过去的2016个区块产出的时间与20160分钟进行比较的。<br>在这里，不设置那么麻烦，难度值不再动态调整，暂时将哈希值中”0”的数量固定保证每次生成区块的难度是相同的。同时也要设置一个最大难度值，防止无限循环计算。</p>
 <pre><code>#Pow.java
@@ -369,7 +369,7 @@ Current Last Block num is:2
         if(this.hasPrevBlock())
             return Storage.Deserialize(this.getBlkNum()-1);
         return null;          
-    }</code></pre><p>后一篇文章: <a href="https://www.cnblogs.com/cbkj-xd/p/12905706.html" target="_blank" rel="noopener">搭建你的第一个区块链网络(三)</a></p>
+    }</code></pre><p>后一篇文章: <a href="https://ifican.top/2020/05/19/blog/blockchain/Jchain3/" target="_blank" rel="noopener">搭建你的第一个区块链网络(三)</a></p>
 <h4 id="Github仓库地址在这里，随时保持更新中…"><a href="#Github仓库地址在这里，随时保持更新中…" class="headerlink" title="Github仓库地址在这里，随时保持更新中….."></a>Github仓库地址在这里，随时保持更新中…..</h4><p>Github地址：<a href="https://github.com/newonexd/Jchain" target="_blank" rel="noopener">Jchain</a></p>
 
             <hr>

@@ -3,7 +3,7 @@ title: 搭建你的第一个区块链网络(三)
 date: 2020-05-19 15:01:06
 tags: blockchain
 ---
-前一篇文章: [搭建你的第一个区块链网络(二)](https://www.cnblogs.com/cbkj-xd/p/12904660.html)
+前一篇文章: [搭建你的第一个区块链网络(二)](https://ifican.top/2020/05/19/blog/blockchain/Jchain2/)
 
 
 ## 钱包与CLI
@@ -387,7 +387,7 @@ public Key:  305c300d06092a864886f70d0101010500034b00304802410082a46b7f68d835b5e
 {"blkNum":5,"curBlockHash":"000047e8fc13a5fe0404aeca104f8624581738361f12f2a8c07c4f172dde62cc","data":"block","nonce":67701,"prevBlockHash":"0000287895ae8f4e4fc781137adee2b2fd0da4d7be3abb68c04507979157eb70","timeStamp":"2020-05-17 16:27:29"}
 ```
 
-后一篇文章: [搭建你的第一个区块链网络(二)](https://www.cnblogs.com/cbkj-xd/p/12910299.html)
+后一篇文章: [搭建你的第一个区块链网络(四)](https://ifican.top/2020/05/19/blog/blockchain/Jchain4/)
 
 #### Github仓库地址在这里，随时保持更新中.....
 Github地址：[Jchain](https://github.com/newonexd/Jchain)

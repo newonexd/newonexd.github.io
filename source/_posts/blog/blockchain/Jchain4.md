@@ -3,7 +3,7 @@ title: 搭建你的第一个区块链网络(四)
 date: 2020-05-19 15:01:22
 tags: blockchain
 ---
-前一篇文章: [搭建你的第一个区块链网络(三)](https://www.cnblogs.com/cbkj-xd/p/12905706.html)
+前一篇文章: [搭建你的第一个区块链网络(三)](https://ifican.top/2020/05/19/blog/blockchain/Jchain3/)
 
 ## UTXO
 

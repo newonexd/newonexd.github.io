@@ -163,7 +163,7 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>前一篇文章: <a href="https://www.cnblogs.com/cbkj-xd/p/12904660.html" target="_blank" rel="noopener">搭建你的第一个区块链网络(二)</a></p>
+            <p>前一篇文章: <a href="https://ifican.top/2020/05/19/blog/blockchain/Jchain2/" target="_blank" rel="noopener">搭建你的第一个区块链网络(二)</a></p>
 <h2 id="钱包与CLI"><a href="#钱包与CLI" class="headerlink" title="钱包与CLI"></a>钱包与CLI</h2><h3 id="钱包"><a href="#钱包" class="headerlink" title="钱包"></a>钱包</h3><p>对于区块链系统来说，密码学是必不可少的，因此加密与解密也是核心操作，而密钥通常使用钱包进行保存，这一节我们完成钱包的设计。这一节比较简单。<br>在比特币网络中，使用的是非对称加密算法，密钥是通过椭圆曲线算法实现的，而本文中，暂且使用RSA算法进行实现，后期再对椭圆曲线算法进行添加。<br>首先是RSA算法的工具类，参考<a href="https://www.jianshu.com/p/aff5492d64f0" target="_blank" rel="noopener">这里</a>.整理成以下方法:</p>
 <pre><code>#RSAKey.java
 @Getter
@@ -452,7 +452,7 @@ public class CliTest {
 private Key:  30820154020100300d06092a864886f70d01010105000482013e3082013a02010002410082a46b7f68d835b5e8047b8794cfd4d5daf4b6f3d8258a8a78f670052f35bab562f52aa7a6eeeb69bc14e03f0d8019db5b754d68e8d0918aa6f2f4b636ba0f070203010001024009de8ffc6d18405e80abae055d19a253919a012444c4f94562c4034c70f79726372e85f8853b9093e984b2fee8d828cf6078b2b66239e5871e299985a9b85ea1022100bed5f1748ffeabd423e7518c2c9840d9299f5190f3e482b0ec50ae203cd25b17022100af409e3b74a06c4937f8ca3bc12776ff21217750a4b5e1d02de71d1a7ceda19102202085d3959ae8bb1df75477d85ccd41d800b8ef2cb5f40eb5da4051bc9ac0fad702206342871c87b6e0fe2b6c872687051239f88adae85b12051f0310b6842d23ee710221008ebb60975fc2ee07e94242da08e0cb81478b7c57091e20e2177aa325883e4714
 
 public Key:  305c300d06092a864886f70d0101010500034b00304802410082a46b7f68d835b5e8047b8794cfd4d5daf4b6f3d8258a8a78f670052f35bab562f52aa7a6eeeb69bc14e03f0d8019db5b754d68e8d0918aa6f2f4b636ba0f070203010001
-{&quot;blkNum&quot;:5,&quot;curBlockHash&quot;:&quot;000047e8fc13a5fe0404aeca104f8624581738361f12f2a8c07c4f172dde62cc&quot;,&quot;data&quot;:&quot;block&quot;,&quot;nonce&quot;:67701,&quot;prevBlockHash&quot;:&quot;0000287895ae8f4e4fc781137adee2b2fd0da4d7be3abb68c04507979157eb70&quot;,&quot;timeStamp&quot;:&quot;2020-05-17 16:27:29&quot;}</code></pre><p>后一篇文章: <a href="https://www.cnblogs.com/cbkj-xd/p/12910299.html" target="_blank" rel="noopener">搭建你的第一个区块链网络(二)</a></p>
+{&quot;blkNum&quot;:5,&quot;curBlockHash&quot;:&quot;000047e8fc13a5fe0404aeca104f8624581738361f12f2a8c07c4f172dde62cc&quot;,&quot;data&quot;:&quot;block&quot;,&quot;nonce&quot;:67701,&quot;prevBlockHash&quot;:&quot;0000287895ae8f4e4fc781137adee2b2fd0da4d7be3abb68c04507979157eb70&quot;,&quot;timeStamp&quot;:&quot;2020-05-17 16:27:29&quot;}</code></pre><p>后一篇文章: <a href="https://ifican.top/2020/05/19/blog/blockchain/Jchain4/" target="_blank" rel="noopener">搭建你的第一个区块链网络(四)</a></p>
 <h4 id="Github仓库地址在这里，随时保持更新中…"><a href="#Github仓库地址在这里，随时保持更新中…" class="headerlink" title="Github仓库地址在这里，随时保持更新中….."></a>Github仓库地址在这里，随时保持更新中…..</h4><p>Github地址：<a href="https://github.com/newonexd/Jchain" target="_blank" rel="noopener">Jchain</a></p>
 
             <hr>

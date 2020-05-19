@@ -4,7 +4,7 @@ date: 2020-05-19 15:00:49
 tags: blockchain
 ---
 
-前一篇文章: [搭建你的第一个区块链网络(一)](https://www.cnblogs.com/cbkj-xd/p/12901312.html)
+前一篇文章: [搭建你的第一个区块链网络(一)](https://ifican.top/2020/05/19/blog/blockchain/Jchain1/)
 
 
 ## 共识与本地化
@@ -290,7 +290,7 @@ Current Last Block num is:2
     }
 ```
 
-后一篇文章: [搭建你的第一个区块链网络(三)](https://www.cnblogs.com/cbkj-xd/p/12905706.html)
+后一篇文章: [搭建你的第一个区块链网络(三)](https://ifican.top/2020/05/19/blog/blockchain/Jchain3/)
 
 #### Github仓库地址在这里，随时保持更新中.....
 Github地址：[Jchain](https://github.com/newonexd/Jchain)
