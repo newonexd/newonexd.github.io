@@ -373,7 +373,7 @@ public Transaction[] findAllUnspendableUTXO(String address)
 <pre><code>#Wallet.java
     public boolean verify(String data,String sign) throws DecoderException, Exception {
         LOGGER.info(&quot;验证签名: &quot;+data);
-        String[] str = data.split(&quot;%%%&quot;);
+        String[] str = sign.split(&quot;%%%&quot;);
         // 原文     encry(hash(原文))
         if(str.length!=2){
             return false;
