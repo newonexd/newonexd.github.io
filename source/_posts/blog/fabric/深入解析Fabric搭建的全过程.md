@@ -145,6 +145,7 @@ mv mychannel.block channel-artifacts/
 #更新环境变量使其他节点也加入通道
 #=========peer1.org1===========  注意这里端口要与上面文件中配置的端口号相同
 CORE_PEER_ADDRESS=peer1.org1.example.com:8051  
+peer channel join -b channel-artifacts/mychannel.block 
 #=========peer0.org2============
 CORE_PEER_LOCALMSPID="Org2MSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
@@ -189,7 +190,7 @@ ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrga
 peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02
 #实例化链码 该步骤创建了a,b两个账户，其中a账户余额定义为100，b账户余额定义为200
 peer chaincode instantiate -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR      ('Org1MSP.member','Org2MSP.member')"
-#这一步执行完毕后可以在其他节点上也安装链码，具体环境变量配置见本文中4.2
+#这一步执行完毕后可以在其他节点上也安装链码，具体环境变量配置见本文中3.2
 ```
 #### 3.5调用链码
 ```
